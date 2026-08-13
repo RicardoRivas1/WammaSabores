@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #121214;
+  color: #F5F5F7;
+}
+
+:root {
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: #e65100;
+  color: #fff;
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .char-divider {
+    background-image: repeating-linear-gradient(
+      100deg,
+      transparent 0 10px,
+      rgba(253, 251, 247, 0.06) 10px 12px
+    );
+  }
+
+  .card-fade-overlay::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.55) 100%);
+  }
+
+  .safe-bottom {
+    bottom: calc(16px + var(--safe-bottom));
+  }
+}
