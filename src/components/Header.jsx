@@ -16,7 +16,7 @@ export default function Header({ query, onQueryChange }) {
         <img 
           src="wamma.jpg" 
           alt="Wamma Sabores Logo" 
-          className="h-[46px] w-[46px] flex-none rounded-xl object-cover shadow-lg border border-white/10" 
+          className="h-[55px] w-[55px] flex-none rounded-xl object-cover shadow-lg border border-white/10" 
         />
 
         <div>
