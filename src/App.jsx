@@ -30,14 +30,12 @@ export default function App() {
           selectedCategory={selectedCategory} 
           onSelectCategory={setSelectedCategory} 
         />
-
-        <ProductGrid 
-          products={filteredProducts} 
-          onAddToCart={(product) => {
-            addToCart(product);
-            setIsCartOpen(true);
-          }} 
-        />
+        <ProductGrid
+         products={filteredProducts}
+        onAddToCart={(product) => {
+           addToCart(product);
+         }}
+/>
       </main>
 
       {/* CartDrawer debe recibir isOpen e onClose */}
