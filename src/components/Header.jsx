@@ -2,11 +2,7 @@ import React from 'react';
 import { useCart } from '../context/CartContext';
 
 export default function Header({ onOpenCart }) {
-  const { cart } = useCart();
-  
-  // Cuenta cuántos productos hay en total
-  const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
-
+ 
   return (
     <header className="sticky top-0 z-30 bg-neutral-900/90 backdrop-blur-md border-b border-wamma-gold/20 px-4 py-3 flex justify-between items-center">
       <div className="flex items-center gap-2">
