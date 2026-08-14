@@ -1,4 +1,6 @@
 import React from 'react';
+// Si tenías un componente custom para buscar direcciones, asegúrate de importarlo aquí. 
+// Ejemplo: import AddressAutocomplete from './AddressAutocomplete';
 
 export default function CartDrawer({
   isOpen,
@@ -61,7 +63,7 @@ export default function CartDrawer({
         {cart.length > 0 && (
           <div className="space-y-4 border-t border-zinc-800 pt-4">
             
-            {/* Opciones de Delivery / Pickup */}
+            {/* Tipo de Entrega */}
             <div>
               <label className="block text-xs font-semibold text-zinc-300 mb-2">🛵 Opciones de Entrega:</label>
               <div className="grid grid-cols-2 gap-2">
@@ -90,21 +92,31 @@ export default function CartDrawer({
               </div>
             </div>
 
-            {/* Campo Dirección si selecciona Delivery */}
+            {/* Dirección con Búsqueda Activa */}
             {deliveryOption === 'delivery' && (
-              <div>
+              <div className="relative">
                 <label className="block text-xs font-semibold text-zinc-300 mb-1">📍 Dirección de entrega:</label>
-                <input
-                  type="text"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  placeholder="Ej: Urbanización, Edf/Casa, Número de apto..."
-                  className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
-                />
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    placeholder="Escribe para buscar tu zona o dirección..."
+                    className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2.5 pr-8 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
+                  />
+                  {address && (
+                    <button 
+                      onClick={() => setAddress('')}
+                      className="absolute right-2.5 top-2.5 text-zinc-500 hover:text-white text-xs font-bold"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
               </div>
             )}
 
-            {/* Observaciones / Quitar ingredientes */}
+            {/* Observaciones */}
             <div>
               <label className="block text-xs font-semibold text-zinc-300 mb-1">📝 Observaciones (Quitar ingredientes, etc.):</label>
               <textarea
