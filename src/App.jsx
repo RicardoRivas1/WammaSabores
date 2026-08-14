@@ -5,15 +5,15 @@ import ProductGrid from './components/ProductGrid';
 import CartDrawer from './components/CartDrawer';
 import WhatsAppFab from './components/WhatsAppFab';
 import { products as initialProducts } from './data/products';
+import { useCart } from './context/CartContext'; 
 
 export default function App() {
-  // Estado para controlar la categoría seleccionada
   const [selectedCategory, setSelectedCategory] = useState('todos');
-  
-  // Estado para abrir/cerrar el carrito (CartDrawer)
   const [isCartOpen, setIsCartOpen] = useState(false);
+  
+  // Obtenemos la función para agregar al carrito desde el Context
+  const { addToCart } = useCart(); 
 
-  // Filtrado de productos según la categoría activa
   const filteredProducts = selectedCategory === 'todos' 
     ? initialProducts 
     : initialProducts.filter((product) => product.category === selectedCategory);
@@ -21,36 +21,31 @@ export default function App() {
   return (
     <div className="min-h-screen bg-neutral-950 text-white flex flex-col font-sans pb-20">
       
-      {/* 1. Encabezado con Logo y botón del carrito */}
+      {/* Header con botón para abrir carrito */}
       <Header onOpenCart={() => setIsCartOpen(true)} />
 
-      {/* 2. Navegación por Categorías */}
       <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-4 space-y-6">
         <CategoryNav 
           selectedCategory={selectedCategory} 
           onSelectCategory={setSelectedCategory} 
         />
 
-        {/* 3. Parrilla de Productos con apertura automática del carrito */}
+        {/* Al hacer clic: guarda el producto Y abre el CartDrawer */}
         <ProductGrid 
           products={filteredProducts} 
           onAddToCart={(product) => {
-            // Nota: Si usas CartContext, addToCart vendrá del hook.
-            // Si manejas el estado del carrito aquí en App.jsx, agrega la lógica de agregar al arreglo.
-            
-            // Forzamos a que el panel del carrito se abra en pantalla:
-            setIsCartOpen(true);
+            addToCart(product);   // 1. Agrega al carrito
+            setIsCartOpen(true);  // 2. Despliega el carrito
           }} 
         />
       </main>
 
-      {/* 4. Panel desplegable del Carrito con Delivery por KM */}
+      {/* Panel del Carrito con Delivery por KM */}
       <CartDrawer 
         isOpen={isCartOpen} 
         onClose={() => setIsCartOpen(false)} 
       />
 
-      {/* 5. Botón flotante de WhatsApp */}
       <WhatsAppFab />
     </div>
   );
