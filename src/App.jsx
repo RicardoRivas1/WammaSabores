@@ -74,7 +74,7 @@ export default function App() {
     }
 
     const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/TU_NUMERO_AQUI?text=${encodedMessage}`, '_blank');
+    window.open(`https://wa.me/584242608180?text=${encodedMessage}`, '_blank');
   };
 
   return (
