@@ -6,25 +6,27 @@ import CartDrawer from './components/CartDrawer';
 import WhatsAppFab from './components/WhatsAppFab';
 import { PRODUCTS as initialProducts } from './data/products.js';
 import { useCart } from './context/CartContext';
+import ProductCard from './components/ProductCard';
 import { sendOrderToWhatsApp } from './utils/whatsapp';
 
 export default function App() {
-  const [selectedCategory, setSelectedCategory] = useState('todos');
+  // 1. Cambiamos 'todos' a 'todas'
+  const [selectedCategory, setSelectedCategory] = useState('todas');
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const { addToCart, cart, tasaBcv } = useCart();
 
   const totalItems = cart ? cart.reduce((acc, item) => acc + item.quantity, 0) : 0;
 
+  // 2. Aquí también cambiamos 'todos' a 'todas'
   const filteredProducts =
-    selectedCategory === 'todos'
+    selectedCategory === 'todas'
       ? initialProducts
       : initialProducts.filter(
           (product) =>
             product.cat === selectedCategory ||
             product.category === selectedCategory
         );
-
   // Lógica para enviar el pedido al hacer clic en el botón flotante de abajo
   const handleWhatsAppClick = () => {
     const subtotalUSD = cart ? cart.reduce((sum, item) => {
