@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
-import SearchBar from './components/SearchBar'; // Importamos la lupa
+import { useCart } from './context/CartContext'; // 👈 IMPORTACIÓN CORREGIDA AQUÍ
+import SearchBar from './components/SearchBar';
+import CategoryNav from './components/CategoryNav';
+import ProductGrid from './components/ProductGrid';
+import CartDrawer from './components/CartDrawer';
+import Header from './components/Header';
+import { initialProducts } from './data/products';
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('todas');
-  const [searchTerm, setSearchTerm] = useState(''); // Estado para la lupa
-  const [orderNotes, setOrderNotes] = useState(''); // Notas para quitar ingredientes
+  const [searchTerm, setSearchTerm] = useState('');
+  const [orderNotes, setOrderNotes] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  const { addToCart, cart, tasaBcv } = useCart();
+  const { addToCart, cart, tasaBcv, updateQuantity } = useCart();
 
   const totalItems = cart ? cart.reduce((acc, item) => acc + item.quantity, 0) : 0;
 
-  // Filtrado combinado: Categoría + Buscador por texto
+  // Filtrado por Categoría + Lupa
   const filteredProducts = initialProducts.filter((product) => {
     const matchesCategory =
       selectedCategory === 'todas' ||
@@ -27,23 +33,32 @@ export default function App() {
     return matchesCategory && matchesSearch;
   });
 
-  // Envío a WhatsApp ajustado para incluir las notas de los clientes
+  // Envío a WhatsApp con las notas de ingredientes
   const handleWhatsAppClick = () => {
     const subtotalUSD = cart
       ? cart.reduce((sum, item) => {
-          const price =
-            Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
+          const price = Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
           return sum + price * (item.quantity || 1);
         }, 0)
       : 0;
 
-    sendOrderToWhatsApp({
-      cart,
-      totalUSD: subtotalUSD,
-      totalVES: tasaBcv ? subtotalUSD * tasaBcv : 0,
-      tasaBcv,
-      notes: orderNotes // Pasamos los ingredientes a quitar
+    let message = `🛒 *NUEVO PEDIDO - WAMMA SABORES*\n\n`;
+
+    cart.forEach((item) => {
+      message += `• ${item.quantity}x ${item.name} - $${(item.price * item.quantity).toFixed(2)}\n`;
     });
+
+    if (orderNotes && orderNotes.trim() !== '') {
+      message += `\n📌 *Observaciones / Sin ingredientes:* \n_${orderNotes.trim()}_\n`;
+    }
+
+    message += `\n💰 *Total USD:* $${subtotalUSD.toFixed(2)}`;
+    if (tasaBcv) {
+      message += `\n🇻🇪 *Total VES:* Bs. ${(subtotalUSD * tasaBcv).toFixed(2)} (Tasa BCV: ${tasaBcv})`;
+    }
+
+    const encodedMessage = encodeURIComponent(message);
+    window.open(`https://wa.me/TU_NUMERO_AQUI?text=${encodedMessage}`, '_blank');
   };
 
   return (
@@ -51,29 +66,32 @@ export default function App() {
       <Header />
 
       <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-4 space-y-4">
-        {/* Barra de Búsqueda con Lupa */}
+        {/* Barra de Búsqueda / Lupa */}
         <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-        {/* Navegación por Categorías */}
+        {/* Categorías */}
         <CategoryNav
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
         />
 
-        {/* Grilla de Productos */}
+        {/* Productos */}
         <ProductGrid
           products={filteredProducts}
           onAddToCart={(product) => addToCart(product)}
         />
       </main>
 
-      {/* Carrito con el apartado de observaciones */}
+      {/* Carrito */}
       <CartDrawer
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
+        cart={cart}
+        onUpdateQuantity={updateQuantity}
         orderNotes={orderNotes}
         setOrderNotes={setOrderNotes}
         onSendWhatsApp={handleWhatsAppClick}
+        tasaBcv={tasaBcv}
       />
     </div>
   );
