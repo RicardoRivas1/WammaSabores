@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useCart } from './context/CartContext'; // 👈 IMPORTACIÓN CORREGIDA AQUÍ
+import { useCart } from './context/CartContext';
 import SearchBar from './components/SearchBar';
 import CategoryNav from './components/CategoryNav';
 import ProductGrid from './components/ProductGrid';
 import CartDrawer from './components/CartDrawer';
 import Header from './components/Header';
-import { initialProducts } from './data/products';
+import { PRODUCTS } from './data/products'; 
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('todas');
@@ -18,7 +18,7 @@ export default function App() {
   const totalItems = cart ? cart.reduce((acc, item) => acc + item.quantity, 0) : 0;
 
   // Filtrado por Categoría + Lupa
-  const filteredProducts = initialProducts.filter((product) => {
+  const filteredProducts = PRODUCTS.filter((product) => {
     const matchesCategory =
       selectedCategory === 'todas' ||
       product.cat === selectedCategory ||
