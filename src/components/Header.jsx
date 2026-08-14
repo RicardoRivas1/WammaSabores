@@ -1,49 +1,35 @@
-import EmberField from './EmberField'
+import React from 'react';
 
-export default function Header({ query, onQueryChange }) {
+export default function Header() {
   return (
-    <header
-      className="relative overflow-hidden border-b border-line px-5 pt-6 pb-4"
-      style={{
-        background:
-          'radial-gradient(120% 90% at 15% 0%, rgba(230,81,0,0.20) 0%, rgba(230,81,0,0) 55%), linear-gradient(180deg, #201f1d 0%, #1C1C1E 100%)',
-      }}
-    >
-      <EmberField />
+    <header className="sticky top-0 z-50 bg-neutral-900/90 backdrop-blur-md border-b border-orange-500/20 shadow-xl">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        {/* Marca y Logo */}
+        <div className="flex items-center gap-4">
+          <div className="relative group">
+            <div className="absolute -inset-1 bg-gradient-to-r from-orange-600 to-amber-500 rounded-2xl blur opacity-30 group-hover:opacity-75 transition duration-300"></div>
+            <img 
+              src="ISOTIPO A.pdf" 
+              alt="Wamma Sabores Logo" 
+              className="relative h-14 w-14 rounded-xl object-cover shadow-2xl border border-orange-500/30"
+            />
+          </div>
+          <div>
+            <h1 className="text-xl sm:text-2xl font-black tracking-wider text-white font-sans uppercase">
+              Wamma <span className="text-orange-500 font-extrabold">Sabores</span>
+            </h1>
+            <p className="text-xs text-orange-400/80 font-medium tracking-widest uppercase">
+              Sabor Callejero Premium
+            </p>
+          </div>
+        </div>
 
-      <div className="relative z-10 flex items-center gap-3">
-        {/* REEMPLAZO DEL LOGO AQUÍ */}
-        <img 
-          src="wamma.jpg" 
-          alt="Wamma Sabores Logo" 
-          className="h-[55px] w-[55px] flex-none rounded-xl object-cover shadow-lg border border-white/10" 
-        />
-
-        <div>
-          <h1 className="font-display text-[26px] uppercase leading-none text-cream">
-            WAMMA <span className="text-wamma-gold">SABORES</span>
-          </h1>
-          <p className="mt-1 text-[12.5px] font-semibold uppercase tracking-wide text-muted before:content-['📍_']">
-            Cocina Urbana &amp; Especialidades · La Candelaria
-          </p>
+        {/* Status Badge */}
+        <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-950/40 border border-orange-500/30 text-xs font-semibold text-orange-400">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Abierto para Pedidos
         </div>
       </div>
-
-      <div className="char-divider relative z-10 mt-4 h-2 rounded opacity-60" />
-
-      <div className="relative z-10 mt-4">
-        <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-base opacity-70">
-          🔍
-        </span>
-        <input
-          type="text"
-          inputMode="search"
-          value={query}
-          onChange={(e) => onQueryChange(e.target.value)}
-          placeholder="Buscar por plato o ingrediente (ej. tocineta, pepperoni...)"
-          className="w-full rounded-2xl border border-line bg-surface py-3 pl-11 pr-4 text-[15px] text-cream placeholder:text-[#82828a] outline-none transition focus:border-wamma-gold"
-        />
-      </div>
     </header>
-  )
+  );
 }
