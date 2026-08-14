@@ -10,15 +10,18 @@ import { PRODUCTS } from './data/products';
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('todas');
   const [searchTerm, setSearchTerm] = useState('');
+  
+  // Estados para Observaciones y Delivery (¡Mantenidos intactos!)
   const [orderNotes, setOrderNotes] = useState('');
+  const [deliveryOption, setDeliveryOption] = useState('delivery'); // 'delivery' o 'pickup'
+  const [address, setAddress] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const { addToCart, cart = [], tasaBcv, updateQuantity } = useCart();
 
-  // Total de items en el carrito
+  // Total de productos en el carrito
   const totalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
 
-  // Función para agregar al carrito y abrir la vista si es necesario
   const handleAddToCart = (product) => {
     addToCart(product);
   };
@@ -39,7 +42,7 @@ export default function App() {
     return matchesCategory && matchesSearch;
   });
 
-  // Envío a WhatsApp
+  // Envío a WhatsApp con Delivery + Observaciones + Totales
   const handleWhatsAppClick = () => {
     const subtotalUSD = cart.reduce((sum, item) => {
       const price = Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
@@ -48,14 +51,23 @@ export default function App() {
 
     let message = `🛒 *NUEVO PEDIDO - WAMMA SABORES*\n\n`;
 
+    // Lista de productos
     cart.forEach((item) => {
       message += `• ${item.quantity}x ${item.name} - $${(item.price * item.quantity).toFixed(2)}\n`;
     });
 
+    // Información de Delivery / Pick-up
+    message += `\n🛵 *Tipo de Entrega:* ${deliveryOption === 'delivery' ? 'Delivery' : 'Retiro en Local (Pick-up)'}\n`;
+    if (deliveryOption === 'delivery' && address.trim() !== '') {
+      message += `📍 *Dirección:* ${address.trim()}\n`;
+    }
+
+    // Observaciones / Quitar ingredientes
     if (orderNotes && orderNotes.trim() !== '') {
       message += `\n📌 *Observaciones / Sin ingredientes:* \n_${orderNotes.trim()}_\n`;
     }
 
+    // Totales
     message += `\n💰 *Total USD:* $${subtotalUSD.toFixed(2)}`;
     if (tasaBcv) {
       message += `\n🇻🇪 *Total VES:* Bs. ${(subtotalUSD * tasaBcv).toFixed(2)} (Tasa BCV: ${tasaBcv})`;
@@ -70,7 +82,7 @@ export default function App() {
       <Header />
 
       <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-4 space-y-4">
-        {/* Barra de Búsqueda */}
+        {/* Barra de Búsqueda / Lupa */}
         <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
         {/* Categorías */}
@@ -86,10 +98,8 @@ export default function App() {
         />
       </main>
 
-      {/* --- BOTONES FLOTANTES DE NAVEGACIÓN Y WHATSAPP ABAJO --- */}
+      {/* --- BOTONES FLOTANTES DE NAVEGACIÓN Y WHATSAPP --- */}
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black/90 to-transparent z-40 flex flex-col gap-2 max-w-2xl mx-auto">
-        
-        {/* Botón Ver Pedido (Aparece sólo si hay cosas en el carrito) */}
         {totalItems > 0 && (
           <div className="flex justify-end">
             <button
@@ -104,7 +114,6 @@ export default function App() {
           </div>
         )}
 
-        {/* Botón directo WhatsApp */}
         <button
           onClick={handleWhatsAppClick}
           className="w-full py-3.5 bg-red-600 hover:bg-red-500 text-white font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-xl"
@@ -113,7 +122,7 @@ export default function App() {
         </button>
       </div>
 
-      {/* Drawer del Carrito */}
+      {/* Drawer del Carrito completo con Delivery y Observaciones */}
       <CartDrawer
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
@@ -121,6 +130,10 @@ export default function App() {
         onUpdateQuantity={updateQuantity}
         orderNotes={orderNotes}
         setOrderNotes={setOrderNotes}
+        deliveryOption={deliveryOption}
+        setDeliveryOption={setDeliveryOption}
+        address={address}
+        setAddress={setAddress}
         onSendWhatsApp={handleWhatsAppClick}
         tasaBcv={tasaBcv}
       />
