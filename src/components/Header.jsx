@@ -9,7 +9,7 @@ export default function Header() {
           <div className="relative group">
             <div className="absolute -inset-1 bg-gradient-to-r from-orange-600 to-amber-500 rounded-2xl blur opacity-30 group-hover:opacity-75 transition duration-300"></div>
             <img 
-              src="ISOTIPO A.pdf" 
+              src="wamma.jpg" 
               alt="Wamma Sabores Logo" 
               className="relative h-14 w-14 rounded-xl object-cover shadow-2xl border border-orange-500/30"
             />
