@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 
-// Coordenadas fijas de Wamma Sabores
+// Coordenadas fijas de Wamma Sabores (Caracas)
 const WAMMA_LOCATION = { lat: 10.4983, lng: -66.8983 };
-const PHONE_NUMBER = '584142608180'; //REEMPLAZAR CON NUMERO REAL BTW
+const PHONE_NUMBER = '584242608180'; //Numero real btw
 
 export default function CartDrawer({ isOpen, onClose }) {
-  const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
+  const { cart, removeFromCart, updateQuantity } = useCart();
   const [address, setAddress] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [distanceKm, setDistanceKm] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Fórmula Haversine para calcular distancia
+  // Fórmula Haversine para calcular distancia en km
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371;
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -27,7 +27,7 @@ export default function CartDrawer({ isOpen, onClose }) {
     return R * c;
   };
 
-  // Debounce para la búsqueda de direcciones (evita el error 429)
+  // Buscador de dirección mediante API Photon (Sin CORS ni bloqueo 429)
   useEffect(() => {
     if (address.trim().length < 3) {
       setSuggestions([]);
@@ -38,42 +38,41 @@ export default function CartDrawer({ isOpen, onClose }) {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-            address + ', Caracas, Venezuela'
-          )}&limit=5`,
-          {
-            headers: {
-              'Accept-Language': 'es',
-            },
-          }
+          `https://photon.komoot.io/api/?q=${encodeURIComponent(
+            address + ' Caracas Venezuela'
+          )}&limit=5`
         );
+
         if (response.ok) {
           const data = await response.json();
-          setSuggestions(data);
+          setSuggestions(data.features || []);
         }
       } catch (error) {
         console.error('Error al buscar dirección:', error);
       } finally {
         setIsLoading(false);
       }
-    }, 500); // Espera 500ms después de que el usuario deja de escribir
+    }, 400);
 
     return () => clearTimeout(timer);
   }, [address]);
 
-  const handleSelectSuggestion = (item) => {
-    setAddress(item.display_name);
+  const handleSelectSuggestion = (feature) => {
+    const name = feature.properties.name || feature.properties.street || address;
+    const city = feature.properties.city || feature.properties.state || '';
+    const fullAddress = `${name}${city ? ', ' + city : ''}`;
+
+    setAddress(fullAddress);
     setSuggestions([]);
 
-    const userLat = parseFloat(item.lat);
-    const userLng = parseFloat(item.lon);
+    const [lon, lat] = feature.geometry.coordinates;
 
-    if (!isNaN(userLat) && !isNaN(userLng)) {
+    if (lat && lon) {
       const km = calculateDistance(
         WAMMA_LOCATION.lat,
         WAMMA_LOCATION.lng,
-        userLat,
-        userLng
+        lat,
+        lon
       );
       setDistanceKm(km.toFixed(1));
     }
@@ -141,34 +140,42 @@ export default function CartDrawer({ isOpen, onClose }) {
               type="text"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              placeholder="Ej: Parque Central, Av. Lecuna..."
+              placeholder="Ej: Carapita, Parque Central, Sabana Grande..."
               className="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-xl text-white text-sm focus:border-wamma-gold outline-none"
             />
 
             {isLoading && (
               <span className="text-[10px] text-gray-400 mt-1 block">
-                Buscando ubicación...
+                Buscando dirección...
               </span>
             )}
 
-            {/* Sugerencias */}
+            {/* Menú desplegable de sugerencias */}
             {suggestions.length > 0 && (
               <ul className="absolute z-20 w-full bg-neutral-800 border border-neutral-700 rounded-xl mt-1 max-h-48 overflow-y-auto shadow-2xl">
-                {suggestions.map((item, idx) => (
-                  <li
-                    key={idx}
-                    onClick={() => handleSelectSuggestion(item)}
-                    className="p-3 text-xs text-gray-200 hover:bg-neutral-700 cursor-pointer border-b border-neutral-700/50 last:border-0"
-                  >
-                    {item.display_name}
-                  </li>
-                ))}
+                {suggestions.map((item, idx) => {
+                  const prop = item.properties;
+                  const label = `${prop.name || ''} ${
+                    prop.street ? prop.street : ''
+                  } ${prop.city ? ' - ' + prop.city : ''}`;
+
+                  return (
+                    <li
+                      key={idx}
+                      onClick={() => handleSelectSuggestion(item)}
+                      className="p-3 text-xs text-gray-200 hover:bg-neutral-700 cursor-pointer border-b border-neutral-700/50 last:border-0"
+                    >
+                      📍 {label}
+                    </li>
+                  );
+                })}
               </ul>
             )}
 
             {distanceKm !== null && (
-              <div className="mt-2 p-2 bg-wamma-gold/10 border border-wamma-gold/30 rounded-lg text-xs text-wamma-gold font-bold">
-                📍 Distancia estimada: {distanceKm} km
+              <div className="mt-2 p-2 bg-wamma-gold/10 border border-wamma-gold/30 rounded-lg text-xs text-wamma-gold font-bold flex items-center justify-between">
+                <span>📍 Distancia estimada:</span>
+                <span className="text-sm font-black">{distanceKm} km</span>
               </div>
             )}
           </div>
@@ -204,7 +211,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                       onClick={() =>
                         updateQuantity(item.id, Math.max(1, item.quantity - 1))
                       }
-                      className="w-7 h-7 rounded-lg bg-neutral-700 text-white font-bold flex items-center justify-center text-sm"
+                      className="w-7 h-7 rounded-lg bg-neutral-700 text-white font-bold flex items-center justify-center text-sm active:scale-95"
                     >
                       -
                     </button>
@@ -213,7 +220,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                     </span>
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      className="w-7 h-7 rounded-lg bg-neutral-700 text-white font-bold flex items-center justify-center text-sm"
+                      className="w-7 h-7 rounded-lg bg-neutral-700 text-white font-bold flex items-center justify-center text-sm active:scale-95"
                     >
                       +
                     </button>
@@ -245,7 +252,7 @@ export default function CartDrawer({ isOpen, onClose }) {
             disabled={cart.length === 0}
             className={`w-full py-3.5 px-4 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all shadow-lg ${
               cart.length > 0
-                ? 'bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white cursor-pointer'
+                ? 'bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white cursor-pointer active:scale-98'
                 : 'bg-neutral-800 text-gray-500 cursor-not-allowed'
             }`}
           >
