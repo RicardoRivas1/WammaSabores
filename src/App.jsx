@@ -11,7 +11,7 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('todos');
   const [isCartOpen, setIsCartOpen] = useState(false);
   
-  const { addToCart } = useCart();
+  const { addToCart, cart } = useCart();
 
   const filteredProducts = selectedCategory === 'todos' 
     ? initialProducts 
