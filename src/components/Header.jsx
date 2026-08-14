@@ -6,9 +6,9 @@ export default function Header() {
       <div className="flex items-center gap-3">
         {/* Logo del local */}
         <img 
-          src="wamma.jpg.png" 
+          src="wamma.png" 
           alt="Wamma Sabores Logo" 
-          className="w-10 h-10 rounded-full border border-wamma-gold/40 object-cover"
+          className="w-20 h-20 rounded-full border border-wamma-gold/40 object-cover"
         />
         <div>
           <h1 className="font-black text-base leading-none text-white tracking-wide">

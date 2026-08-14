@@ -128,7 +128,7 @@ export default function CartDrawer({
         {/* Cabecera */}
         <div className="flex items-center justify-between pb-4 border-b border-zinc-800">
           <h2 className="text-lg font-bold flex items-center gap-2">
-            🛒 Tu Pedido
+             Tu Pedido
           </h2>
           <button
             onClick={onClose}
