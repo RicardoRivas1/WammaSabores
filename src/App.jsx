@@ -43,7 +43,18 @@ export default function App() {
         isOpen={isCartOpen} 
         onClose={() => setIsCartOpen(false)} 
       />
-
+      {/* Botón flotante del carrito en la esquina o barra inferior */}
+{cart.length > 0 && (
+  <button
+    onClick={() => setIsCartOpen(true)}
+    className="fixed bottom-20 right-4 z-40 bg-wamma-gold text-black font-black px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2 text-sm hover:scale-105 transition-transform"
+  >
+    <span>🛒 Ver Pedido</span>
+    <span className="bg-black text-wamma-gold text-xs px-2 py-0.5 rounded-full">
+      {cart.reduce((acc, item) => acc + item.quantity, 0)}
+    </span>
+  </button>
+)}
       <WhatsAppFab />
     </div>
   );
