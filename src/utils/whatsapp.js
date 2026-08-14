@@ -1,33 +1,49 @@
-// ⚠️ Número de teléfono oficial de Wamma Sabores
+// Número oficial de Wamma Sabores
 export const PHONE_NUMBER = '584242608180'; 
 
 export const GENERIC_MESSAGE = "¡Hola Wamma Sabores! Quisiera consultar el menú o realizar un pedido.";
 
-// Generador de URL oficial de WhatsApp a prueba de bloqueos
+// Lógica de cálculo de tarifa de delivery por rangos exactos de kilómetros
+export function calculateDeliveryFee(distanceKm) {
+  const km = Number(distanceKm);
+  if (isNaN(km) || km <= 0) return 0;
+
+  if (km <= 1.00) return 1.00;
+  if (km <= 2.90) return 2.00;
+  if (km <= 8.90) return 3.00;
+  if (km <= 14.90) return 4.00;
+  if (km <= 16.91) return 5.00;
+  if (km <= 18.00) return 6.00;
+  return 7.00; // 18.01km en adelante
+}
+
+// Generador de URL oficial
 export function waLink(text = GENERIC_MESSAGE, phone = PHONE_NUMBER) {
   const cleanPhone = phone.replace(/\D/g, '');
   const encoded = encodeURIComponent(text);
   return `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encoded}`;
 }
 
-// Función principal para formatear y enviar el pedido
+// Función principal de envío de pedido por WhatsApp
 export function sendOrderToWhatsApp({
   cart = [],
   totalUSD = 0,
-  totalVES = 0,
+  deliveryFeeUSD = 0,
   tasaBcv = null,
   address = '',
   distanceKm = null,
   notes = ''
 }) {
-  // 1. Si el carrito está vacío, se envía el mensaje de consulta estándar
   if (!cart || cart.length === 0) {
     const url = waLink(GENERIC_MESSAGE);
     window.open(url, '_blank') || (window.location.href = url);
     return;
   }
 
-  // 2. Si hay productos, se construye la estructura completa del mensaje
+  const subtotalUSD = Number(totalUSD) || 0;
+  const deliveryUSD = Number(deliveryFeeUSD) || 0;
+  const finalTotalUSD = subtotalUSD + deliveryUSD;
+
   let message = `🛒 *¡NUEVO PEDIDO EN WAMMA SABORES!* 🍔🔥\n\n`;
   message += `📝 *DETALLE DEL PEDIDO:*\n`;
 
@@ -40,22 +56,27 @@ export function sendOrderToWhatsApp({
     message += `• ${qty}x ${item.name} - $${itemTotalUSD}\n`;
   });
 
-  // Totales
-  const safeUSD = Number(totalUSD) || 0;
-  message += `\n💵 *TOTAL USD:* $${safeUSD.toFixed(2)}\n`;
+  // Desglose Financiero
+  message += `\n💵 *Subtotal:* $${subtotalUSD.toFixed(2)}`;
+  
+  if (deliveryUSD > 0) {
+    message += `\n🛵 *Delivery (${distanceKm} km):* $${deliveryUSD.toFixed(2)}`;
+  } else {
+    message += `\n🛵 *Delivery:* Por acordar / Ubicación no ingresada`;
+  }
+
+  message += `\n🔥 *TOTAL A PAGAR (USD):* $${finalTotalUSD.toFixed(2)}\n`;
 
   if (tasaBcv) {
     const safeBCV = Number(tasaBcv) || 0;
-    message += `🇻🇪 *Tasa BCV:* Bs. ${safeBCV.toFixed(2)}\n`;
-  }
-
-  if (totalVES) {
-    const safeVES = Number(totalVES) || 0;
-    const formattedVES = safeVES.toLocaleString('es-VE', {
+    const totalVES = finalTotalUSD * safeBCV;
+    const formattedVES = totalVES.toLocaleString('es-VE', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
-    message += `🇻🇪 *Total a Pagar (VES):* Bs. ${formattedVES}\n`;
+
+    message += `🇻🇪 *Tasa BCV:* Bs. ${safeBCV.toFixed(2)}\n`;
+    message += `🇻🇪 *TOTAL A PAGAR (VES):* Bs. ${formattedVES}\n`;
   }
 
   // Dirección y Distancia
@@ -69,14 +90,12 @@ export function sendOrderToWhatsApp({
     message += `(Ubicación no especificada / Por acordar en el chat)\n`;
   }
 
-  // Observaciones del cliente
   if (notes && notes.trim() !== '') {
     message += `\n📝 *Observaciones:* ${notes}\n`;
   }
 
   message += `\n❓ *¿Deseas confirmar el pedido?*`;
 
-  // Apertura de WhatsApp
   const url = waLink(message);
   window.open(url, '_blank') || (window.location.href = url);
 }

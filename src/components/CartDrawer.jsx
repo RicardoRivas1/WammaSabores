@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
-import { sendOrderToWhatsApp } from '../utils/whatsapp';
+import { sendOrderToWhatsApp, calculateDeliveryFee } from '../utils/whatsapp';
 
 // Coordenadas fijas de Wamma Sabores (Caracas)
 const WAMMA_LOCATION = { lat: 10.4983, lng: -66.8983 };
@@ -12,7 +12,7 @@ export default function CartDrawer({ isOpen, onClose }) {
   const [distanceKm, setDistanceKm] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Calcular distancia
+  // Fórmula Haversine para calcular distancia en kilómetros
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371;
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -27,7 +27,7 @@ export default function CartDrawer({ isOpen, onClose }) {
     return R * c;
   };
 
-  // Autocompletar dirección
+  // Autocompletado de direcciones con Photon API
   useEffect(() => {
     if (address.trim().length < 3) {
       setSuggestions([]);
@@ -68,29 +68,30 @@ export default function CartDrawer({ isOpen, onClose }) {
     const [lon, lat] = feature.geometry.coordinates;
     if (lat && lon) {
       const km = calculateDistance(WAMMA_LOCATION.lat, WAMMA_LOCATION.lng, lat, lon);
-      setDistanceKm(km.toFixed(1));
+      setDistanceKm(km.toFixed(2));
     }
   };
 
-  // Cálculo del total
+  // Cálculos Financieros
   const subtotalUSD = cart.reduce((sum, item) => {
     if (!item) return sum;
     const price = Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
     const qty = Number(item.quantity) || 1;
-    return sum + (price * qty);
+    return sum + price * qty;
   }, 0);
 
-  const totalVES = tasaBcv ? subtotalUSD * tasaBcv : 0;
+  const deliveryFeeUSD = distanceKm ? calculateDeliveryFee(distanceKm) : 0;
+  const finalTotalUSD = subtotalUSD + deliveryFeeUSD;
+  const finalTotalVES = tasaBcv ? finalTotalUSD * tasaBcv : 0;
 
-  // Llama a la función global centralizada
   const handleCheckout = () => {
     sendOrderToWhatsApp({
       cart,
       totalUSD: subtotalUSD,
-      totalVES,
+      deliveryFeeUSD,
       tasaBcv,
       address,
-      distanceKm
+      distanceKm,
     });
   };
 
@@ -110,7 +111,7 @@ export default function CartDrawer({ isOpen, onClose }) {
             </button>
           </div>
 
-          {/* Dirección */}
+          {/* Buscador de Dirección */}
           <div className="mb-6 relative">
             <label className="block text-xs font-bold text-wamma-gold uppercase mb-2">
               Dirección de Entrega (Caracas)
@@ -133,7 +134,9 @@ export default function CartDrawer({ isOpen, onClose }) {
               <ul className="absolute z-20 w-full bg-neutral-800 border border-neutral-700 rounded-xl mt-1 max-h-48 overflow-y-auto shadow-2xl">
                 {suggestions.map((item, idx) => {
                   const prop = item.properties;
-                  const label = `${prop.name || ''} ${prop.street ? prop.street : ''} ${prop.city ? ' - ' + prop.city : ''}`;
+                  const label = `${prop.name || ''} ${prop.street ? prop.street : ''} ${
+                    prop.city ? ' - ' + prop.city : ''
+                  }`;
                   return (
                     <li
                       key={idx}
@@ -148,14 +151,14 @@ export default function CartDrawer({ isOpen, onClose }) {
             )}
 
             {distanceKm !== null && (
-              <div className="mt-2 p-2 bg-wamma-gold/10 border border-wamma-gold/30 rounded-lg text-xs text-wamma-gold font-bold flex items-center justify-between">
-                <span>📍 Distancia estimada:</span>
-                <span className="text-sm font-black">{distanceKm} km</span>
+              <div className="mt-2 p-2.5 bg-wamma-gold/10 border border-wamma-gold/30 rounded-lg text-xs text-wamma-gold flex items-center justify-between">
+                <span>📍 Distancia estimada: <b>{distanceKm} km</b></span>
+                <span>🛵 Delivery: <b>${deliveryFeeUSD.toFixed(2)}</b></span>
               </div>
             )}
           </div>
 
-          {/* Productos */}
+          {/* Lista de Productos */}
           <div className="space-y-3 mb-6">
             <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
               Productos Seleccionados
@@ -214,17 +217,29 @@ export default function CartDrawer({ isOpen, onClose }) {
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="border-t border-neutral-800 pt-4 mt-auto">
-          <div className="flex justify-between items-center mb-4">
-            <span className="text-sm text-gray-400">Total a Pagar:</span>
+        {/* Pie de Pedido con Desglose */}
+        <div className="border-t border-neutral-800 pt-4 mt-auto space-y-2">
+          <div className="flex justify-between items-center text-xs text-gray-400">
+            <span>Subtotal:</span>
+            <span className="font-bold text-white">${subtotalUSD.toFixed(2)}</span>
+          </div>
+
+          <div className="flex justify-between items-center text-xs text-gray-400">
+            <span>Delivery:</span>
+            <span className="font-bold text-wamma-gold">
+              {deliveryFeeUSD > 0 ? `$${deliveryFeeUSD.toFixed(2)}` : 'Por acordar'}
+            </span>
+          </div>
+
+          <div className="flex justify-between items-center border-t border-neutral-800/80 pt-2">
+            <span className="text-sm font-bold text-white">Total Final:</span>
             <div className="text-right">
               <span className="text-xl font-black text-wamma-gold block">
-                ${subtotalUSD.toFixed(2)}
+                ${finalTotalUSD.toFixed(2)}
               </span>
               {tasaBcv && (
                 <span className="text-xs text-gray-400 block font-semibold">
-                  Bs. {totalVES.toFixed(2)}
+                  Bs. {finalTotalVES.toFixed(2)}
                 </span>
               )}
             </div>
