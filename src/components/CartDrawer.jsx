@@ -300,7 +300,7 @@ export default function CartDrawer({
               <textarea
                 value={orderNotes}
                 onChange={(e) => setOrderNotes(e.target.value)}
-                placeholder="Ej: Sin cebolla, refresco frío..."
+                placeholder="Ej: Sin cebolla..."
                 rows="2"
                 className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500 resize-none"
               />
