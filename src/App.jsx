@@ -1,43 +1,48 @@
 import React, { useState } from 'react';
-import Header from './components/Header';
-import CategoryNav from './components/CategoryNav';
-import ProductGrid from './components/ProductGrid';
-import CartDrawer from './components/CartDrawer';
-import WhatsAppFab from './components/WhatsAppFab';
-import { PRODUCTS as initialProducts } from './data/products.js';
-import { useCart } from './context/CartContext';
-import ProductCard from './components/ProductCard';
-import { sendOrderToWhatsApp } from './utils/whatsapp';
+import SearchBar from './components/SearchBar'; // Importamos la lupa
 
 export default function App() {
-
   const [selectedCategory, setSelectedCategory] = useState('todas');
+  const [searchTerm, setSearchTerm] = useState(''); // Estado para la lupa
+  const [orderNotes, setOrderNotes] = useState(''); // Notas para quitar ingredientes
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const { addToCart, cart, tasaBcv } = useCart();
 
   const totalItems = cart ? cart.reduce((acc, item) => acc + item.quantity, 0) : 0;
 
-  const filteredProducts =
-    selectedCategory === 'todas'
-      ? initialProducts
-      : initialProducts.filter(
-          (product) =>
-            product.cat === selectedCategory ||
-            product.category === selectedCategory
-        );
-  // Lógica para enviar el pedido al hacer clic en el botón flotante de abajo
+  // Filtrado combinado: Categoría + Buscador por texto
+  const filteredProducts = initialProducts.filter((product) => {
+    const matchesCategory =
+      selectedCategory === 'todas' ||
+      product.cat === selectedCategory ||
+      product.category === selectedCategory;
+
+    const matchesSearch =
+      !searchTerm ||
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (product.description &&
+        product.description.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    return matchesCategory && matchesSearch;
+  });
+
+  // Envío a WhatsApp ajustado para incluir las notas de los clientes
   const handleWhatsAppClick = () => {
-    const subtotalUSD = cart ? cart.reduce((sum, item) => {
-      const price = Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
-      return sum + (price * (item.quantity || 1));
-    }, 0) : 0;
+    const subtotalUSD = cart
+      ? cart.reduce((sum, item) => {
+          const price =
+            Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
+          return sum + price * (item.quantity || 1);
+        }, 0)
+      : 0;
 
     sendOrderToWhatsApp({
       cart,
       totalUSD: subtotalUSD,
       totalVES: tasaBcv ? subtotalUSD * tasaBcv : 0,
       tasaBcv,
+      notes: orderNotes // Pasamos los ingredientes a quitar
     });
   };
 
@@ -45,38 +50,31 @@ export default function App() {
     <div className="min-h-screen bg-neutral-950 text-white flex flex-col font-sans pb-20">
       <Header />
 
-      <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-4 space-y-6">
+      <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-4 space-y-4">
+        {/* Barra de Búsqueda con Lupa */}
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+
+        {/* Navegación por Categorías */}
         <CategoryNav
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
         />
 
+        {/* Grilla de Productos */}
         <ProductGrid
           products={filteredProducts}
           onAddToCart={(product) => addToCart(product)}
         />
       </main>
 
+      {/* Carrito con el apartado de observaciones */}
       <CartDrawer
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
+        orderNotes={orderNotes}
+        setOrderNotes={setOrderNotes}
+        onSendWhatsApp={handleWhatsAppClick}
       />
-
-      {/* Botón flotante "Ver Pedido" */}
-      {totalItems > 0 && (
-        <button
-          onClick={() => setIsCartOpen(true)}
-          className="fixed bottom-20 right-4 z-40 bg-wamma-gold text-black font-black px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2 text-sm hover:scale-105 transition-transform"
-        >
-          <span>🛒 Ver Pedido</span>
-          <span className="bg-black text-wamma-gold text-xs px-2 py-0.5 rounded-full font-bold">
-            {totalItems}
-          </span>
-        </button>
-      )}
-
-      {/* Botón Naranja Inferior conectado al Carrito */}
-      <WhatsAppFab onClick={handleWhatsAppClick} />
     </div>
   );
 }
