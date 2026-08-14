@@ -49,9 +49,10 @@ export function CartProvider({ children }) {
           }
           return item;
         })
-        .filter(Boolean)
+        .filter(Boolean) 
     );
   };
+        filter(Boolean)
 
   const clearCart = () => setCart([]);
 

@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 
-// Coordenadas fijas de Wamma Sabores (Caracas)
+// Coordenadas de Wamma Sabores (Caracas)
 const WAMMA_LOCATION = { lat: 10.4983, lng: -66.8983 };
 
-//poner numero real btw
-const PHONE_NUMBER = '584242608180'; 
+// ⚠️ Pon tu número de WhatsApp real con código de país (Ej: 584121234567)
+const PHONE_NUMBER = '584120000000'; 
 
 export default function CartDrawer({ isOpen, onClose }) {
-  const { cart, removeFromCart, updateQuantity } = useCart();
+  const { cart, removeFromCart, updateQuantity, tasaBcv } = useCart();
   const [address, setAddress] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [distanceKm, setDistanceKm] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Fórmula Haversine para calcular distancia en km
+  // Fórmula Haversine para calcular distancia
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371;
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -29,7 +29,7 @@ export default function CartDrawer({ isOpen, onClose }) {
     return R * c;
   };
 
-  // Buscador de dirección usando la API de Photon
+  // Buscador de dirección con la API de Photon
   useEffect(() => {
     if (address.trim().length < 3) {
       setSuggestions([]);
@@ -75,56 +75,55 @@ export default function CartDrawer({ isOpen, onClose }) {
     }
   };
 
-  // Cálculo del Total Seguro (Limpia los símbolos de $ si vienen en el precio)
-  const subtotal = cart.reduce((sum, item) => {
-    const safePrice = Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
-    const safeQty = Number(item.quantity) || 1;
-    return sum + (safePrice * safeQty);
+  // Subtotal en USD (Limpia cualquier texto si el precio viene formateado)
+  const subtotalUSD = cart.reduce((sum, item) => {
+    if (!item) return sum;
+    const price = Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
+    const qty = Number(item.quantity) || 1;
+    return sum + (price * qty);
   }, 0);
 
-  // Armado del mensaje estructurado para WhatsApp
+  // Subtotal en BS (Si usas tasa BCV)
+  const subtotalBS = tasaBcv ? (subtotalUSD * tasaBcv).toFixed(2) : null;
+
+  // ENVIAR A WHATSAPP
   const handleSendWhatsApp = () => {
-    try {
-      if (cart.length === 0) return;
+    if (!cart || cart.length === 0) return;
 
-      let message = `🛒 *¡NUEVO PEDIDO EN WAMMA SABORES!* 🍔🔥\n\n`;
+    let message = `🛒 *¡NUEVO PEDIDO EN WAMMA SABORES!* 🍔🔥\n\n`;
+    
+    message += `📝 *DETALLE DEL PEDIDO:*\n`;
+    cart.forEach((item) => {
+      if (!item) return;
+      const price = Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
+      const qty = Number(item.quantity) || 1;
+      const itemSubtotal = (price * qty).toFixed(2);
       
-      message += `📝 *DETALLE DEL PEDIDO:*\n`;
-      cart.forEach((item) => {
-        const safePrice = Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
-        const safeQty = Number(item.quantity) || 1;
-        const itemSubtotal = (safePrice * safeQty).toFixed(2);
-        
-        message += `• ${safeQty}x ${item.name} - $${itemSubtotal}\n`;
-      });
+      message += `• ${qty}x ${item.name} - $${itemSubtotal}\n`;
+    });
 
-      message += `\n💵 *TOTAL A PAGAR:* $${subtotal.toFixed(2)}\n`;
-
-      message += `\n📍 *DIRECCIÓN DE ENTREGA:*\n`;
-      if (address && address.trim() !== '') {
-        message += `${address}\n`;
-        if (distanceKm) {
-          message += `📏 *Distancia estimada:* ${distanceKm} km\n`;
-        }
-      } else {
-        message += `(Ubicación no especificada / Por acordar en el chat)\n`;
-      }
-
-      message += `\n❓ *¿Deseas confirmar el pedido?*`;
-
-      // API universal de WhatsApp (más segura que wa.me)
-      const cleanPhone = PHONE_NUMBER.replace(/\D/g, ''); 
-      const whatsappUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(message)}`;
-      
-      // Intentar abrir en nueva pestaña, si el navegador lo bloquea, redirigir en la misma
-      const newWindow = window.open(whatsappUrl, '_blank');
-      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-        window.location.href = whatsappUrl;
-      }
-    } catch (error) {
-      console.error("Error crítico al armar el pedido:", error);
-      alert("Hubo un error armando el pedido. Por favor revisa el carrito.");
+    message += `\n💵 *TOTAL A PAGAR:* $${subtotalUSD.toFixed(2)}`;
+    if (subtotalBS) {
+      message += ` (Bs. ${subtotalBS})`;
     }
+    message += `\n`;
+
+    message += `\n📍 *DIRECCIÓN DE ENTREGA:*\n`;
+    if (address && address.trim() !== '') {
+      message += `${address}\n`;
+      if (distanceKm) {
+        message += `📏 *Distancia estimada:* ${distanceKm} km\n`;
+      }
+    } else {
+      message += `(Ubicación no especificada / Por acordar en el chat)\n`;
+    }
+
+    message += `\n❓ *¿Deseas confirmar el pedido?*`;
+
+    const cleanPhone = PHONE_NUMBER.replace(/\D/g, '');
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(message)}`;
+    
+    window.open(whatsappUrl, '_blank') || (window.location.href = whatsappUrl);
   };
 
   if (!isOpen) return null;
@@ -189,7 +188,7 @@ export default function CartDrawer({ isOpen, onClose }) {
             )}
           </div>
 
-          {/* LISTA DE PRODUCTOS AGREGADOS */}
+          {/* LISTA DE PRODUCTOS */}
           <div className="space-y-3 mb-6">
             <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
               Productos Seleccionados
@@ -201,7 +200,8 @@ export default function CartDrawer({ isOpen, onClose }) {
               </p>
             ) : (
               cart.map((item) => {
-                const safePrice = Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
+                if (!item) return null;
+                const price = Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
                 return (
                   <div
                     key={item.id}
@@ -212,20 +212,14 @@ export default function CartDrawer({ isOpen, onClose }) {
                         {item.name}
                       </h4>
                       <p className="text-xs text-wamma-gold font-semibold">
-                        ${(safePrice * item.quantity).toFixed(2)}
+                        ${(price * item.quantity).toFixed(2)}
                       </p>
                     </div>
 
-                    {/* Botones de cantidad (CORREGIDOS: envían -1 y 1) */}
+                    {/* Botones de incremento (+1) y decremento (-1) */}
                     <div className="flex items-center gap-2">
                       <button
-                        onClick={() => {
-                          if (item.quantity > 1) {
-                            updateQuantity(item.id, -1);
-                          } else {
-                            removeFromCart(item.id);
-                          }
-                        }}
+                        onClick={() => updateQuantity(item.id, -1)}
                         className="w-7 h-7 rounded-lg bg-neutral-700 text-white font-bold flex items-center justify-center text-sm active:scale-95"
                       >
                         -
@@ -254,13 +248,20 @@ export default function CartDrawer({ isOpen, onClose }) {
           </div>
         </div>
 
-        {/* PIE DEL CARRITO (TOTAL Y BOTÓN WHATSAPP) */}
+        {/* PIE DEL CARRITO */}
         <div className="border-t border-neutral-800 pt-4 mt-auto">
           <div className="flex justify-between items-center mb-4">
             <span className="text-sm text-gray-400">Total a Pagar:</span>
-            <span className="text-xl font-black text-wamma-gold">
-              ${subtotal.toFixed(2)}
-            </span>
+            <div className="text-right">
+              <span className="text-xl font-black text-wamma-gold block">
+                ${subtotalUSD.toFixed(2)}
+              </span>
+              {subtotalBS && (
+                <span className="text-xs text-gray-400 block font-semibold">
+                  Bs. {subtotalBS}
+                </span>
+              )}
+            </div>
           </div>
 
           <button
