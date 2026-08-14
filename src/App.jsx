@@ -4,7 +4,7 @@ import CategoryNav from './components/CategoryNav';
 import ProductGrid from './components/ProductGrid';
 import CartDrawer from './components/CartDrawer';
 import WhatsAppFab from './components/WhatsAppFab';
-import { products as initialProducts } from './data/products';
+import { PRODUCTS as initialProducts } from './data/products.js';
 import { useCart } from './context/CartContext'; 
 
 export default function App() {
