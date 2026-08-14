@@ -8,7 +8,7 @@ export default function Header() {
         <img 
           src="wamma.png" 
           alt="Wamma Sabores Logo" 
-          className="w-12 h-12 rounded-full border border-wamma-gold/40 object-cover"
+          className="w-15 h-15 rounded-full border border-wamma-gold/40 object-cover"
         />
         <div>
           <h1 className="font-black text-base leading-none text-white tracking-wide">
