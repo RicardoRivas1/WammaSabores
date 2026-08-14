@@ -3,7 +3,9 @@ import { useCart } from '../context/CartContext';
 
 // Coordenadas fijas de Wamma Sabores (Caracas)
 const WAMMA_LOCATION = { lat: 10.4983, lng: -66.8983 };
-const PHONE_NUMBER = '584242608180'; //Numero real btw
+
+//REEMPLAZA CON EL NÚMERO DE WHATSAPP REAL BTW
+const PHONE_NUMBER = '584242608180'; 
 
 export default function CartDrawer({ isOpen, onClose }) {
   const { cart, removeFromCart, updateQuantity } = useCart();
@@ -27,7 +29,7 @@ export default function CartDrawer({ isOpen, onClose }) {
     return R * c;
   };
 
-  // Buscador de dirección mediante API Photon (Sin CORS ni bloqueo 429)
+  // Buscador de dirección usando la API de Photon (Sin problemas de CORS ni límite 429)
   useEffect(() => {
     if (address.trim().length < 3) {
       setSuggestions([]);
@@ -78,7 +80,7 @@ export default function CartDrawer({ isOpen, onClose }) {
     }
   };
 
-  // Totales
+  // Cálculo del Total
   const subtotal = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
@@ -88,29 +90,36 @@ export default function CartDrawer({ isOpen, onClose }) {
   const handleSendWhatsApp = () => {
     if (cart.length === 0) return;
 
-    let message = `*¡Hola Wamma Sabores! Quiero realizar un pedido:* 🍔🔥\n\n`;
-    message += `*--- DETALLE DEL PEDIDO ---*\n`;
-
+    let message = `🛒 *¡NUEVO PEDIDO EN WAMMA SABORES!* 🍔🔥\n\n`;
+    
+    // 1. Detalle del pedido
+    message += `📝 *DETALLE DEL PEDIDO:*\n`;
     cart.forEach((item) => {
-      message += `• ${item.quantity}x ${item.name} - $${(
-        item.price * item.quantity
-      ).toFixed(2)}\n`;
+      const itemSubtotal = (item.price * item.quantity).toFixed(2);
+      message += `• ${item.quantity}x ${item.name} - $${itemSubtotal}\n`;
     });
 
-    message += `\n*Total a Pagar:* $${subtotal.toFixed(2)}\n`;
+    // 2. Precio Total
+    message += `\n💵 *TOTAL A PAGAR:* $${subtotal.toFixed(2)}\n`;
 
-    if (address) {
-      message += `\n*--- DIRECCIÓN DE ENTREGA ---*\n📍 ${address}`;
+    // 3. Dirección y Distancia
+    message += `\n📍 *DIRECCIÓN DE ENTREGA:*\n`;
+    if (address && address.trim() !== '') {
+      message += `${address}\n`;
       if (distanceKm) {
-        message += `\n📏 Distancia aprox: ${distanceKm} km`;
+        message += `📏 *Distancia estimada:* ${distanceKm} km\n`;
       }
     } else {
-      message += `\n📍 *Ubicación:* Por acordar en el chat`;
+      message += `(Ubicación no especificada / Por acordar en el chat)\n`;
     }
 
+    message += `\n❓ *¿Deseas confirmar el pedido?*`;
+
+    // Enlace a WhatsApp con el mensaje codificado
     const whatsappUrl = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(
       message
     )}`;
+    
     window.open(whatsappUrl, '_blank');
   };
 
@@ -150,7 +159,7 @@ export default function CartDrawer({ isOpen, onClose }) {
               </span>
             )}
 
-            {/* Menú desplegable de sugerencias */}
+            {/* Sugerencias de dirección */}
             {suggestions.length > 0 && (
               <ul className="absolute z-20 w-full bg-neutral-800 border border-neutral-700 rounded-xl mt-1 max-h-48 overflow-y-auto shadow-2xl">
                 {suggestions.map((item, idx) => {
@@ -205,7 +214,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                     </p>
                   </div>
 
-                  {/* Botones + / - / Eliminar */}
+                  {/* Botones de cantidad */}
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() =>
