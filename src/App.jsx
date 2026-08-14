@@ -26,7 +26,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white flex flex-col font-sans pb-20">
-      <Header onOpenCart={() => setIsCartOpen(true)} />
+      <Header />
 
       <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-4 space-y-6">
         <CategoryNav
