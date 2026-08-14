@@ -52,7 +52,6 @@ export function CartProvider({ children }) {
         .filter(Boolean) 
     );
   };
-        filter(Boolean)
 
   const clearCart = () => setCart([]);
 
