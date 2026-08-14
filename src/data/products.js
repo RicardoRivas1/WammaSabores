@@ -592,3 +592,17 @@ export const PRODUCTS = [
   { id: 'pos-9', name: 'Brownie con Helado', price: 7.00, category: 'postres', description: 'Brownie caliente servido con bola de helado.' },
   { id: 'pos-10', name: 'Bola de Helado', price: 4.00, category: 'postres', description: 'Sabor a elección.' }
 ];
+
+export const CATEGORIES = [
+  { id: 'todas', name: 'Todas' },
+  { id: 'entradas', name: 'Entradas' },
+  { id: 'hamburguesas', name: 'Hamburguesas' },
+  { id: 'carnes', name: 'Carnes y Cerdo' },
+  { id: 'pollo', name: 'Pollo' },
+  { id: 'pescados', name: 'Pescados y Mariscos' },
+  { id: 'pizzas', name: 'Pizzas' },
+  { id: 'sushi', name: 'Sushi' },
+  { id: 'ensaladas', name: 'Ensaladas' },
+  { id: 'bebidas', name: 'Bebidas' },
+  { id: 'postres', name: 'Postres' }
+];
