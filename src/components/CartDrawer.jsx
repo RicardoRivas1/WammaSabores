@@ -2,6 +2,17 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { calculateDeliveryFee } from '../utils/deliveryUtils.js';
+import AddressSearch from './AddressSearch';
+
+     <AddressSearch 
+     onAddressSelect={({ address, distance }) => {
+    // Guarda la dirección seleccionada
+    setDeliveryAddress(address); 
+    
+    // Guarda la distancia calculada para actualizar la tarifa de delivery
+    setDeliveryKm(distance); 
+     }} 
+     />
 
 export default function CartDrawer({ isOpen, onClose }) {
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
