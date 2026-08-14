@@ -10,7 +10,7 @@ import ProductCard from './components/ProductCard';
 import { sendOrderToWhatsApp } from './utils/whatsapp';
 
 export default function App() {
-  // 1. Cambiamos 'todos' a 'todas'
+
   const [selectedCategory, setSelectedCategory] = useState('todas');
   const [isCartOpen, setIsCartOpen] = useState(false);
 
@@ -18,7 +18,6 @@ export default function App() {
 
   const totalItems = cart ? cart.reduce((acc, item) => acc + item.quantity, 0) : 0;
 
-  // 2. Aquí también cambiamos 'todos' a 'todas'
   const filteredProducts =
     selectedCategory === 'todas'
       ? initialProducts
