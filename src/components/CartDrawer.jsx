@@ -4,7 +4,7 @@ import { useCart } from '../context/CartContext';
 // Coordenadas fijas de Wamma Sabores (Caracas)
 const WAMMA_LOCATION = { lat: 10.4983, lng: -66.8983 };
 
-//REEMPLAZA CON EL NÚMERO DE WHATSAPP REAL BTW
+//poner numero real btw
 const PHONE_NUMBER = '584242608180'; 
 
 export default function CartDrawer({ isOpen, onClose }) {
@@ -29,7 +29,7 @@ export default function CartDrawer({ isOpen, onClose }) {
     return R * c;
   };
 
-  // Buscador de dirección usando la API de Photon (Sin problemas de CORS ni límite 429)
+  // Buscador de dirección usando la API de Photon
   useEffect(() => {
     if (address.trim().length < 3) {
       setSuggestions([]);
@@ -70,57 +70,61 @@ export default function CartDrawer({ isOpen, onClose }) {
     const [lon, lat] = feature.geometry.coordinates;
 
     if (lat && lon) {
-      const km = calculateDistance(
-        WAMMA_LOCATION.lat,
-        WAMMA_LOCATION.lng,
-        lat,
-        lon
-      );
+      const km = calculateDistance(WAMMA_LOCATION.lat, WAMMA_LOCATION.lng, lat, lon);
       setDistanceKm(km.toFixed(1));
     }
   };
 
-  // Cálculo del Total
-  const subtotal = cart.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  // Cálculo del Total Seguro (Limpia los símbolos de $ si vienen en el precio)
+  const subtotal = cart.reduce((sum, item) => {
+    const safePrice = Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
+    const safeQty = Number(item.quantity) || 1;
+    return sum + (safePrice * safeQty);
+  }, 0);
 
   // Armado del mensaje estructurado para WhatsApp
   const handleSendWhatsApp = () => {
-    if (cart.length === 0) return;
+    try {
+      if (cart.length === 0) return;
 
-    let message = `🛒 *¡NUEVO PEDIDO EN WAMMA SABORES!* 🍔🔥\n\n`;
-    
-    // 1. Detalle del pedido
-    message += `📝 *DETALLE DEL PEDIDO:*\n`;
-    cart.forEach((item) => {
-      const itemSubtotal = (item.price * item.quantity).toFixed(2);
-      message += `• ${item.quantity}x ${item.name} - $${itemSubtotal}\n`;
-    });
+      let message = `🛒 *¡NUEVO PEDIDO EN WAMMA SABORES!* 🍔🔥\n\n`;
+      
+      message += `📝 *DETALLE DEL PEDIDO:*\n`;
+      cart.forEach((item) => {
+        const safePrice = Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
+        const safeQty = Number(item.quantity) || 1;
+        const itemSubtotal = (safePrice * safeQty).toFixed(2);
+        
+        message += `• ${safeQty}x ${item.name} - $${itemSubtotal}\n`;
+      });
 
-    // 2. Precio Total
-    message += `\n💵 *TOTAL A PAGAR:* $${subtotal.toFixed(2)}\n`;
+      message += `\n💵 *TOTAL A PAGAR:* $${subtotal.toFixed(2)}\n`;
 
-    // 3. Dirección y Distancia
-    message += `\n📍 *DIRECCIÓN DE ENTREGA:*\n`;
-    if (address && address.trim() !== '') {
-      message += `${address}\n`;
-      if (distanceKm) {
-        message += `📏 *Distancia estimada:* ${distanceKm} km\n`;
+      message += `\n📍 *DIRECCIÓN DE ENTREGA:*\n`;
+      if (address && address.trim() !== '') {
+        message += `${address}\n`;
+        if (distanceKm) {
+          message += `📏 *Distancia estimada:* ${distanceKm} km\n`;
+        }
+      } else {
+        message += `(Ubicación no especificada / Por acordar en el chat)\n`;
       }
-    } else {
-      message += `(Ubicación no especificada / Por acordar en el chat)\n`;
+
+      message += `\n❓ *¿Deseas confirmar el pedido?*`;
+
+      // API universal de WhatsApp (más segura que wa.me)
+      const cleanPhone = PHONE_NUMBER.replace(/\D/g, ''); 
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(message)}`;
+      
+      // Intentar abrir en nueva pestaña, si el navegador lo bloquea, redirigir en la misma
+      const newWindow = window.open(whatsappUrl, '_blank');
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+        window.location.href = whatsappUrl;
+      }
+    } catch (error) {
+      console.error("Error crítico al armar el pedido:", error);
+      alert("Hubo un error armando el pedido. Por favor revisa el carrito.");
     }
-
-    message += `\n❓ *¿Deseas confirmar el pedido?*`;
-
-    // Enlace a WhatsApp con el mensaje codificado
-    const whatsappUrl = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(
-      message
-    )}`;
-    
-    window.open(whatsappUrl, '_blank');
   };
 
   if (!isOpen) return null;
@@ -159,15 +163,11 @@ export default function CartDrawer({ isOpen, onClose }) {
               </span>
             )}
 
-            {/* Sugerencias de dirección */}
             {suggestions.length > 0 && (
               <ul className="absolute z-20 w-full bg-neutral-800 border border-neutral-700 rounded-xl mt-1 max-h-48 overflow-y-auto shadow-2xl">
                 {suggestions.map((item, idx) => {
                   const prop = item.properties;
-                  const label = `${prop.name || ''} ${
-                    prop.street ? prop.street : ''
-                  } ${prop.city ? ' - ' + prop.city : ''}`;
-
+                  const label = `${prop.name || ''} ${prop.street ? prop.street : ''} ${prop.city ? ' - ' + prop.city : ''}`;
                   return (
                     <li
                       key={idx}
@@ -200,49 +200,56 @@ export default function CartDrawer({ isOpen, onClose }) {
                 El carrito está vacío.
               </p>
             ) : (
-              cart.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-center justify-between p-3 bg-neutral-800/60 rounded-xl border border-neutral-800"
-                >
-                  <div className="flex-1 pr-2">
-                    <h4 className="text-sm font-bold text-white leading-snug">
-                      {item.name}
-                    </h4>
-                    <p className="text-xs text-wamma-gold font-semibold">
-                      ${(item.price * item.quantity).toFixed(2)}
-                    </p>
-                  </div>
+              cart.map((item) => {
+                const safePrice = Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
+                return (
+                  <div
+                    key={item.id}
+                    className="flex items-center justify-between p-3 bg-neutral-800/60 rounded-xl border border-neutral-800"
+                  >
+                    <div className="flex-1 pr-2">
+                      <h4 className="text-sm font-bold text-white leading-snug">
+                        {item.name}
+                      </h4>
+                      <p className="text-xs text-wamma-gold font-semibold">
+                        ${(safePrice * item.quantity).toFixed(2)}
+                      </p>
+                    </div>
 
-                  {/* Botones de cantidad */}
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() =>
-                        updateQuantity(item.id, Math.max(1, item.quantity - 1))
-                      }
-                      className="w-7 h-7 rounded-lg bg-neutral-700 text-white font-bold flex items-center justify-center text-sm active:scale-95"
-                    >
-                      -
-                    </button>
-                    <span className="text-xs font-bold text-white w-4 text-center">
-                      {item.quantity}
-                    </span>
-                    <button
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      className="w-7 h-7 rounded-lg bg-neutral-700 text-white font-bold flex items-center justify-center text-sm active:scale-95"
-                    >
-                      +
-                    </button>
-                    <button
-                      onClick={() => removeFromCart(item.id)}
-                      className="text-red-500 hover:text-red-400 ml-1 text-sm p-1"
-                      title="Eliminar"
-                    >
-                      🗑️
-                    </button>
+                    {/* Botones de cantidad (CORREGIDOS: envían -1 y 1) */}
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => {
+                          if (item.quantity > 1) {
+                            updateQuantity(item.id, -1);
+                          } else {
+                            removeFromCart(item.id);
+                          }
+                        }}
+                        className="w-7 h-7 rounded-lg bg-neutral-700 text-white font-bold flex items-center justify-center text-sm active:scale-95"
+                      >
+                        -
+                      </button>
+                      <span className="text-xs font-bold text-white w-4 text-center">
+                        {item.quantity}
+                      </span>
+                      <button
+                        onClick={() => updateQuantity(item.id, 1)}
+                        className="w-7 h-7 rounded-lg bg-neutral-700 text-white font-bold flex items-center justify-center text-sm active:scale-95"
+                      >
+                        +
+                      </button>
+                      <button
+                        onClick={() => removeFromCart(item.id)}
+                        className="text-red-500 hover:text-red-400 ml-1 text-sm p-1"
+                        title="Eliminar"
+                      >
+                        🗑️
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
         </div>
