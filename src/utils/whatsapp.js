@@ -1,13 +1,16 @@
+// ⚠️ Número de teléfono oficial de Wamma Sabores
 export const PHONE_NUMBER = '584242608180'; 
 
 export const GENERIC_MESSAGE = "¡Hola Wamma Sabores! Quisiera consultar el menú o realizar un pedido.";
 
+// Generador de URL oficial de WhatsApp a prueba de bloqueos
 export function waLink(text = GENERIC_MESSAGE, phone = PHONE_NUMBER) {
   const cleanPhone = phone.replace(/\D/g, '');
   const encoded = encodeURIComponent(text);
   return `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encoded}`;
 }
 
+// Función principal para formatear y enviar el pedido
 export function sendOrderToWhatsApp({
   cart = [],
   totalUSD = 0,
@@ -17,18 +20,19 @@ export function sendOrderToWhatsApp({
   distanceKm = null,
   notes = ''
 }) {
-  // 1. Si no hay ítems en el carrito, enviar mensaje genérico
+  // 1. Si el carrito está vacío, se envía el mensaje de consulta estándar
   if (!cart || cart.length === 0) {
     const url = waLink(GENERIC_MESSAGE);
     window.open(url, '_blank') || (window.location.href = url);
     return;
   }
 
-  // 2. Si HAY pedido, armar el mensaje estructurado
+  // 2. Si hay productos, se construye la estructura completa del mensaje
   let message = `🛒 *¡NUEVO PEDIDO EN WAMMA SABORES!* 🍔🔥\n\n`;
   message += `📝 *DETALLE DEL PEDIDO:*\n`;
 
-  cart.forEach((item, index) => {
+  cart.forEach((item) => {
+    if (!item) return;
     const price = Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
     const qty = Number(item.quantity) || 1;
     const itemTotalUSD = (price * qty).toFixed(2);
@@ -65,14 +69,14 @@ export function sendOrderToWhatsApp({
     message += `(Ubicación no especificada / Por acordar en el chat)\n`;
   }
 
-  // Observaciones
+  // Observaciones del cliente
   if (notes && notes.trim() !== '') {
     message += `\n📝 *Observaciones:* ${notes}\n`;
   }
 
   message += `\n❓ *¿Deseas confirmar el pedido?*`;
 
-  // Abrir WhatsApp con la API oficial
+  // Apertura de WhatsApp
   const url = waLink(message);
   window.open(url, '_blank') || (window.location.href = url);
 }

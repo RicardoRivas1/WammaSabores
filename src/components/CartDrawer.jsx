@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
+import { sendOrderToWhatsApp } from '../utils/whatsapp';
 
-// Coordenadas de Wamma Sabores (Caracas)
+// Coordenadas fijas de Wamma Sabores (Caracas)
 const WAMMA_LOCATION = { lat: 10.4983, lng: -66.8983 };
-
-// ⚠️ Pon tu número de WhatsApp real con código de país (Ej: 584121234567)
-const PHONE_NUMBER = '584120000000'; 
 
 export default function CartDrawer({ isOpen, onClose }) {
   const { cart, removeFromCart, updateQuantity, tasaBcv } = useCart();
@@ -14,7 +12,7 @@ export default function CartDrawer({ isOpen, onClose }) {
   const [distanceKm, setDistanceKm] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Fórmula Haversine para calcular distancia
+  // Calcular distancia
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371;
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -29,7 +27,7 @@ export default function CartDrawer({ isOpen, onClose }) {
     return R * c;
   };
 
-  // Buscador de dirección con la API de Photon
+  // Autocompletar dirección
   useEffect(() => {
     if (address.trim().length < 3) {
       setSuggestions([]);
@@ -50,7 +48,7 @@ export default function CartDrawer({ isOpen, onClose }) {
           setSuggestions(data.features || []);
         }
       } catch (error) {
-        console.error('Error al buscar dirección:', error);
+        console.error('Error buscando dirección:', error);
       } finally {
         setIsLoading(false);
       }
@@ -68,14 +66,13 @@ export default function CartDrawer({ isOpen, onClose }) {
     setSuggestions([]);
 
     const [lon, lat] = feature.geometry.coordinates;
-
     if (lat && lon) {
       const km = calculateDistance(WAMMA_LOCATION.lat, WAMMA_LOCATION.lng, lat, lon);
       setDistanceKm(km.toFixed(1));
     }
   };
 
-  // Subtotal en USD (Limpia cualquier texto si el precio viene formateado)
+  // Cálculo del total
   const subtotalUSD = cart.reduce((sum, item) => {
     if (!item) return sum;
     const price = Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
@@ -83,47 +80,18 @@ export default function CartDrawer({ isOpen, onClose }) {
     return sum + (price * qty);
   }, 0);
 
-  // Subtotal en BS (Si usas tasa BCV)
-  const subtotalBS = tasaBcv ? (subtotalUSD * tasaBcv).toFixed(2) : null;
+  const totalVES = tasaBcv ? subtotalUSD * tasaBcv : 0;
 
-  // ENVIAR A WHATSAPP
-  const handleSendWhatsApp = () => {
-    if (!cart || cart.length === 0) return;
-
-    let message = `🛒 *¡NUEVO PEDIDO EN WAMMA SABORES!* 🍔🔥\n\n`;
-    
-    message += `📝 *DETALLE DEL PEDIDO:*\n`;
-    cart.forEach((item) => {
-      if (!item) return;
-      const price = Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
-      const qty = Number(item.quantity) || 1;
-      const itemSubtotal = (price * qty).toFixed(2);
-      
-      message += `• ${qty}x ${item.name} - $${itemSubtotal}\n`;
+  // Llama a la función global centralizada
+  const handleCheckout = () => {
+    sendOrderToWhatsApp({
+      cart,
+      totalUSD: subtotalUSD,
+      totalVES,
+      tasaBcv,
+      address,
+      distanceKm
     });
-
-    message += `\n💵 *TOTAL A PAGAR:* $${subtotalUSD.toFixed(2)}`;
-    if (subtotalBS) {
-      message += ` (Bs. ${subtotalBS})`;
-    }
-    message += `\n`;
-
-    message += `\n📍 *DIRECCIÓN DE ENTREGA:*\n`;
-    if (address && address.trim() !== '') {
-      message += `${address}\n`;
-      if (distanceKm) {
-        message += `📏 *Distancia estimada:* ${distanceKm} km\n`;
-      }
-    } else {
-      message += `(Ubicación no especificada / Por acordar en el chat)\n`;
-    }
-
-    message += `\n❓ *¿Deseas confirmar el pedido?*`;
-
-    const cleanPhone = PHONE_NUMBER.replace(/\D/g, '');
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(message)}`;
-    
-    window.open(whatsappUrl, '_blank') || (window.location.href = whatsappUrl);
   };
 
   if (!isOpen) return null;
@@ -131,7 +99,6 @@ export default function CartDrawer({ isOpen, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-black/70 backdrop-blur-sm">
       <div className="w-full max-w-md bg-neutral-900 h-full p-6 flex flex-col justify-between overflow-y-auto">
-        {/* Cabecera */}
         <div>
           <div className="flex justify-between items-center mb-4 border-b border-neutral-800 pb-3">
             <h2 className="text-xl font-black text-white">Tu Pedido</h2>
@@ -143,7 +110,7 @@ export default function CartDrawer({ isOpen, onClose }) {
             </button>
           </div>
 
-          {/* Buscador de dirección */}
+          {/* Dirección */}
           <div className="mb-6 relative">
             <label className="block text-xs font-bold text-wamma-gold uppercase mb-2">
               Dirección de Entrega (Caracas)
@@ -188,7 +155,7 @@ export default function CartDrawer({ isOpen, onClose }) {
             )}
           </div>
 
-          {/* LISTA DE PRODUCTOS */}
+          {/* Productos */}
           <div className="space-y-3 mb-6">
             <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
               Productos Seleccionados
@@ -216,7 +183,6 @@ export default function CartDrawer({ isOpen, onClose }) {
                       </p>
                     </div>
 
-                    {/* Botones de incremento (+1) y decremento (-1) */}
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => updateQuantity(item.id, -1)}
@@ -248,7 +214,7 @@ export default function CartDrawer({ isOpen, onClose }) {
           </div>
         </div>
 
-        {/* PIE DEL CARRITO */}
+        {/* Footer */}
         <div className="border-t border-neutral-800 pt-4 mt-auto">
           <div className="flex justify-between items-center mb-4">
             <span className="text-sm text-gray-400">Total a Pagar:</span>
@@ -256,16 +222,16 @@ export default function CartDrawer({ isOpen, onClose }) {
               <span className="text-xl font-black text-wamma-gold block">
                 ${subtotalUSD.toFixed(2)}
               </span>
-              {subtotalBS && (
+              {tasaBcv && (
                 <span className="text-xs text-gray-400 block font-semibold">
-                  Bs. {subtotalBS}
+                  Bs. {totalVES.toFixed(2)}
                 </span>
               )}
             </div>
           </div>
 
           <button
-            onClick={handleSendWhatsApp}
+            onClick={handleCheckout}
             disabled={cart.length === 0}
             className={`w-full py-3.5 px-4 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all shadow-lg ${
               cart.length > 0
