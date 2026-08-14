@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
-import { calculateDeliveryFee } from '../utils/deliveryUtils';
+import { calculateDeliveryFee } from '../utils/deliveryUtils.js';
 
 export default function CartDrawer({ isOpen, onClose }) {
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
