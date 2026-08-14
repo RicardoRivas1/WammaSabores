@@ -1,35 +1,47 @@
 import React from 'react';
+import { useCart } from '../context/CartContext';
 
-export default function Header() {
+export default function Header({ onOpenCart }) {
+  const { cart } = useCart();
+  
+  // Cuenta cuántos productos hay en total
+  const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+
   return (
-    <header className="sticky top-0 z-50 bg-neutral-900/90 backdrop-blur-md border-b border-orange-500/20 shadow-xl">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        {/* Marca y Logo */}
-        <div className="flex items-center gap-4">
-          <div className="relative group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-orange-600 to-amber-500 rounded-2xl blur opacity-30 group-hover:opacity-75 transition duration-300"></div>
-            <img 
-              src="wamma.jpg.png" 
-              alt="Wamma Sabores Logo" 
-              className="relative h-14 w-14 rounded-xl object-cover shadow-2xl border border-orange-500/30"
-            />
-          </div>
-          <div>
-            <h1 className="text-xl sm:text-2xl font-black tracking-wider text-white font-sans uppercase">
-              Wamma <span className="text-orange-500 font-extrabold">Sabores</span>
-            </h1>
-            <p className="text-xs text-orange-400/80 font-medium tracking-widest uppercase">
-              Sabor Callejero Premium
-            </p>
-          </div>
-        </div>
-
-        {/* Status Badge */}
-        <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-950/40 border border-orange-500/30 text-xs font-semibold text-orange-400">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          Abierto para Pedidos
-        </div>
+    <header className="sticky top-0 z-30 bg-neutral-900/90 backdrop-blur-md border-b border-wamma-gold/20 px-4 py-3 flex justify-between items-center">
+      <div className="flex items-center gap-2">
+        <h1 className="font-black text-lg text-white">WAMMA SABORES</h1>
       </div>
+
+      {/* BOTÓN DEL CARRITO */}
+      <button
+        onClick={onOpenCart}
+        className="relative p-2.5 bg-wamma-gold/10 border border-wamma-gold/40 rounded-xl text-wamma-gold hover:bg-wamma-gold hover:text-black transition-all flex items-center justify-center"
+        aria-label="Ver carrito"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+          <path d="M3 6h18" />
+          <path d="M16 10a4 4 0 0 1-8 0" />
+        </svg>
+
+        {/* Contador de items en rojo */}
+        {totalItems > 0 && (
+          <span className="absolute -top-1.5 -right-1.5 bg-red-600 text-white font-bold text-[10px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-neutral-900 shadow-md">
+            {totalItems}
+          </span>
+        )}
+      </button>
     </header>
   );
 }
