@@ -40,24 +40,16 @@ export function CartProvider({ children }) {
     setCart((prev) => prev.filter((item) => item.id !== id));
   };
 
-  // Función de actualizar cantidad corregida
-  const updateQuantity = (id, delta) => {
-    setCart((prev) => {
-      const newCart = [];
-      for (const item of prev) {
-        if (item.id === id) {
-          const newQty = (item.quantity || 1) + delta;
-          if (newQty > 0) {
-            newCart.push({ ...item, quantity: newQty });
-          }
-          // Si newQty <= 0, no lo empujamos al array (se elimina)
-        } else {
-          newCart.push(item);
-        }
-      }
-      return newCart;
-    });
-  };
+  const updateQuantity = (id, newQuantity) => {
+  setCart((prevCart) => {
+    if (newQuantity <= 0) {
+      return prevCart.filter((item) => item.id !== id);
+    }
+    return prevCart.map((item) =>
+      item.id === id ? { ...item, quantity: newQuantity } : item
+    );
+  });
+};
 
   return (
     <CartContext.Provider

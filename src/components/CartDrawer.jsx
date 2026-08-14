@@ -1,6 +1,4 @@
 import React from 'react';
-// Si tenías un componente custom para buscar direcciones, asegúrate de importarlo aquí. 
-// Ejemplo: import AddressAutocomplete from './AddressAutocomplete';
 
 export default function CartDrawer({
   isOpen,
@@ -18,6 +16,16 @@ export default function CartDrawer({
 }) {
   if (!isOpen) return null;
 
+  // Manejo seguro del botón restar
+  const handleDecrement = (item) => {
+    if (item.quantity > 1) {
+      onUpdateQuantity(item.id, item.quantity - 1);
+    } else {
+      // Si llega a 0, lo elimina limpiamente
+      onUpdateQuantity(item.id, 0);
+    }
+  };
+
   const subtotalUSD = cart.reduce((sum, item) => {
     const price = Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
     return sum + price * (item.quantity || 1);
@@ -27,9 +35,9 @@ export default function CartDrawer({
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-black/70 backdrop-blur-sm">
-      <div className="w-full max-w-md bg-zinc-950 h-full flex flex-col justify-between p-5 border-l border-zinc-800 text-white shadow-2xl overflow-y-auto">
+      <div className="w-full max-w-md bg-zinc-950 h-full flex flex-col justify-between p-5 border-l border-zinc-800 text-white shadow-2xl relative overflow-y-auto">
         
-        {/* Header */}
+        {/* Cabecera */}
         <div className="flex items-center justify-between pb-4 border-b border-zinc-800">
           <h2 className="text-lg font-bold flex items-center gap-2">🛒 Tu Pedido</h2>
           <button onClick={onClose} className="text-zinc-400 hover:text-white p-1 text-xl font-bold">✕</button>
@@ -47,23 +55,39 @@ export default function CartDrawer({
                 <div className="flex-1 pr-2">
                   <h4 className="text-sm font-semibold text-white">{item.name}</h4>
                   <p className="text-xs text-amber-400 font-bold">
-                    ${(Number(String(item.price).replace(/[^0-9.-]+/g, '')) * item.quantity).toFixed(2)}
+                    ${(Number(String(item.price).replace(/[^0-9.-]+/g, '')) * (item.quantity || 1)).toFixed(2)}
                   </p>
                 </div>
+
+                {/* Controles de cantidad corregidos */}
                 <div className="flex items-center gap-2 bg-zinc-800 px-2 py-1 rounded-md border border-zinc-700">
-                  <button onClick={() => onUpdateQuantity(item.id, item.quantity - 1)} className="text-zinc-400 hover:text-white font-bold text-sm px-1">-</button>
-                  <span className="text-xs font-bold text-white min-w-[16px] text-center">{item.quantity}</span>
-                  <button onClick={() => onUpdateQuantity(item.id, item.quantity + 1)} className="text-zinc-400 hover:text-white font-bold text-sm px-1">+</button>
+                  <button 
+                    onClick={() => handleDecrement(item)} 
+                    className="text-zinc-300 hover:text-white font-bold text-base px-2 py-0.5 rounded active:scale-95 transition-transform"
+                    title="Restar o eliminar"
+                  >
+                    -
+                  </button>
+                  <span className="text-xs font-bold text-white min-w-[20px] text-center select-none">
+                    {item.quantity}
+                  </span>
+                  <button 
+                    onClick={() => onUpdateQuantity(item.id, item.quantity + 1)} 
+                    className="text-zinc-300 hover:text-white font-bold text-base px-2 py-0.5 rounded active:scale-95 transition-transform"
+                    title="Añadir uno más"
+                  >
+                    +
+                  </button>
                 </div>
               </div>
             ))
           )}
         </div>
 
+        {/* Opciones de Delivery y Dirección */}
         {cart.length > 0 && (
           <div className="space-y-4 border-t border-zinc-800 pt-4">
             
-            {/* Tipo de Entrega */}
             <div>
               <label className="block text-xs font-semibold text-zinc-300 mb-2">🛵 Opciones de Entrega:</label>
               <div className="grid grid-cols-2 gap-2">
@@ -92,20 +116,21 @@ export default function CartDrawer({
               </div>
             </div>
 
-            {/* Dirección con Búsqueda Activa */}
+            {/* Campo Dirección */}
             {deliveryOption === 'delivery' && (
-              <div className="relative">
-                <label className="block text-xs font-semibold text-zinc-300 mb-1">📍 Dirección de entrega:</label>
+              <div className="space-y-1">
+                <label className="block text-xs font-semibold text-zinc-300">📍 Dirección de entrega:</label>
                 <div className="relative">
                   <input
                     type="text"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    placeholder="Escribe para buscar tu zona o dirección..."
+                    placeholder="Escribe tu zona, edificio, casa..."
                     className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2.5 pr-8 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
                   />
                   {address && (
-                    <button 
+                    <button
+                      type="button"
                       onClick={() => setAddress('')}
                       className="absolute right-2.5 top-2.5 text-zinc-500 hover:text-white text-xs font-bold"
                     >
@@ -118,7 +143,7 @@ export default function CartDrawer({
 
             {/* Observaciones */}
             <div>
-              <label className="block text-xs font-semibold text-zinc-300 mb-1">📝 Observaciones (Quitar ingredientes, etc.):</label>
+              <label className="block text-xs font-semibold text-zinc-300 mb-1">📝 Observaciones (Sin ingredientes, etc.):</label>
               <textarea
                 value={orderNotes}
                 onChange={(e) => setOrderNotes(e.target.value)}
@@ -130,7 +155,7 @@ export default function CartDrawer({
           </div>
         )}
 
-        {/* Totales y Botón */}
+        {/* Totales y Envío */}
         <div className="border-t border-zinc-800 pt-4 mt-4 space-y-3">
           <div className="flex justify-between items-center text-sm">
             <span className="text-zinc-400">Total USD:</span>
