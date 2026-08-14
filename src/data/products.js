@@ -1,264 +1,594 @@
-export const CATEGORIES = [
-  { id: 'todos', label: 'Todos', icon: '🍽️' },
-  { id: 'hamburguesas', label: 'Hamburguesas', icon: '🍔' },
-  { id: 'parrillas', label: 'Parrillas & Pasticho', icon: '🔥' },
-  { id: 'pizzas', label: 'Pizzas', icon: '🍕' },
-  { id: 'entradas', label: 'Entradas & Fajitas', icon: '🌮' },
-  { id: 'bebidas', label: 'Bebidas', icon: '🍹' },
-]
-
 export const PRODUCTS = [
+  // --- ENTRADAS ---
   {
-    id: 'burger-ahumada',
-    cat: 'hamburguesas',
-    name: 'Hamburguesa Ahumada',
-    desc: 'Carne 100% vacuno, queso cheddar fundido, tocineta crocante, cebolla caramelizada y salsa ahumada de la casa.',
-    price: 8.5,
-    badge: '🔥 Favorito de la Casa',
-    img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍔',
+    id: 'ent-1',
+    name: 'Sopa del día',
+    price: 6.50,
+    category: 'entradas',
+    description: 'Sopa reconfortante del día.'
   },
   {
-    id: 'triple-smash',
-    cat: 'hamburguesas',
-    name: 'Triple Smash Burger',
-    desc: 'Tres medallas de carne smash, triple cheddar, pepinillos y salsa especial.',
-    price: 9.0,
-    badge: '⭐ Recomendado',
-    img: 'https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍔',
+    id: 'ent-2',
+    name: 'Carpaccio de Lomito',
+    price: 11.50,
+    category: 'entradas',
+    description: 'Finas láminas de lomito sazonadas.'
   },
   {
-    id: 'burger-champinones',
-    cat: 'hamburguesas',
-    name: 'Hamburguesa Gourmet con Champiñones',
-    desc: 'Carne a la parrilla, champiñones salteados, queso suizo y aderezo especial.',
-    price: 8.0,
-    badge: null,
-    img: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍔',
+    id: 'ent-3',
+    name: 'Nachos Mexicanos',
+    price: 10.50,
+    category: 'entradas',
+    description: 'Crujientes totopos acompañados con toppings al estilo mexicano.'
   },
   {
-  id: 'guarapo',
-    cat: 'hamburguesas',
-    name: 'Guarapo',
-    desc: 'Carne jugosa de la casa, queso fundido, vegetales frescos y la especial reducción dulce estilo Guarapo.',
-    price: 9.0,
-    badge: '🔥 Favorito',
-    img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍔',
+    id: 'ent-4',
+    name: 'Camarones al Ajillo',
+    price: 10.50,
+    category: 'entradas',
+    description: 'Camarones salteados en ajo y especias.'
   },
   {
-    id: 'gourmet',
-    cat: 'hamburguesas',
-    name: 'Gourmet',
-    desc: 'Carne a la parrilla, champiñones salteados al ajo, queso suizo derretido y aderezo especial.',
-    price: 10.0,
-    badge: '⭐ Recomendado',
-    img: 'https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍔',
+    id: 'ent-5',
+    name: 'Ceviche Mixto',
+    price: 17.50,
+    category: 'entradas',
+    description: 'Mezcla fresca de mariscos y pescado marinados en cítricos.'
   },
   {
-    id: 'american',
-    cat: 'hamburguesas',
-    name: 'American',
-    desc: 'Doble cheddar, doble tocineta crocante, cebolla, pepinillos y salsa BBQ ahumada tradicional.',
-    price: 10.0,
-    badge: '🔥 Favorito',
-    img: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍔',
+    id: 'ent-6',
+    name: 'Ración de Pork Belly',
+    price: 9.50,
+    category: 'entradas',
+    description: 'Crocantes trozos de barriga de cerdo.'
   },
   {
-    id: 'criolla',
-    cat: 'hamburguesas',
-    name: 'Criolla',
-    desc: 'Carne de res, queso mano o telita, huevo frito, tajadas de plátano maduro y guasacaca de la casa.',
-    price: 10.0,
-    badge: '⭐ Especialidad',
-    img: 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f6?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍔',
+    id: 'ent-7',
+    name: 'Ración de Ensalada César',
+    price: 6.50,
+    category: 'entradas',
+    description: 'Clásica ensalada César individual.'
   },
   {
-    id: 'ahumada',
-    cat: 'hamburguesas',
-    name: 'Ahumada',
-    desc: 'Carne 100% vacuno, queso cheddar fundido, tocineta crocante, cebolla caramelizada y salsa ahumada Wamma.',
-    price: 9.5,
-    badge: '🔥 Favorito',
-    img: 'https://images.unsplash.com/photo-1583778176476-4a8b02a64c01?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍔',
+    id: 'ent-8',
+    name: 'Tequeños con Queso y Papelón (6 unds)',
+    price: 7.50,
+    category: 'entradas',
+    description: '6 tequeños rellenos de queso con aderezo de papelón.'
   },
   {
-    id: 'mexicana',
-    cat: 'hamburguesas',
-    name: 'Mexicana',
-    desc: 'Carne sazonada con especias, queso fundido, guacamole fresco, jalapeños picantes y totopos crocantes.',
-    price: 9.5,
-    badge: '🌶️ Picante',
-    img: 'https://images.unsplash.com/photo-1521305916504-4a1121188589?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍔',
+    id: 'ent-9',
+    name: 'Casabe Gratinado',
+    price: 5.50,
+    category: 'entradas',
+    description: 'Ración de casabe crujiente con queso gratinado.'
   },
   {
-    id: 'parri-burger',
-    cat: 'hamburguesas',
-    name: 'Parri Burger',
-    desc: 'Corte de carne a la parrilla con aroma a leña, chorizo ahumado, queso telita gratinado y guasacaca.',
-    price: 10.0,
-    badge: '🔥 Favorito',
-    img: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍔',
+    id: 'ent-10',
+    name: 'Croquetas de Pescado',
+    price: 6.50,
+    category: 'entradas',
+    description: 'Acompañadas con salsa tártara.'
   },
   {
-    id: 'kids',
-    cat: 'hamburguesas',
-    name: 'Kids',
-    desc: 'Tamaño ideal para niños con medallón de carne jugoso, queso cheddar y salsa suave en pan artesanal.',
-    price: 9.0,
-    badge: '👶 Para Niños',
-    img: 'https://images.unsplash.com/photo-1520072959219-c595dc870360?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍔',
+    id: 'ent-11',
+    name: 'Ración de Papas Fritas',
+    price: 5.50,
+    category: 'entradas',
+    description: 'Papas fritas crujientes doradas.'
   },
   {
-    id: 'chicken-crispy',
-    cat: 'hamburguesas',
-    name: 'Chicken Crispy',
-    desc: 'Pechuga de pollo empanizada súper crujiente, ensalada coleslaw, queso cheddar y mayonesa de ajo.',
-    price: 9.0,
-    badge: '⭐ Recomendado',
-    img: 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍗',
+    id: 'ent-12',
+    name: 'Ceviche Sencillo',
+    price: 13.00,
+    category: 'entradas',
+    description: 'Pescado fresco marinado en limón.'
   },
   {
-    id: 'chicken-plancha',
-    cat: 'hamburguesas',
-    name: 'Chicken Plancha',
-    desc: 'Filete de pechuga de pollo a la plancha marinada con hierbas, queso fresco, lechuga, tomate y aderezo verde.',
-    price: 8.5,
-    badge: null,
-    img: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍗',
+    id: 'ent-13',
+    name: 'Pan con Ajo',
+    price: 3.50,
+    category: 'entradas',
+    description: 'Ración de pan tostado con mantequilla de ajo.'
   },
   {
-    id: 'berenjena',
-    cat: 'hamburguesas',
-    name: 'Berenjena',
-    desc: 'Opción vegetariana con milanesa o medallón de berenjena asada, queso fundido, pimentón y vegetales frescos.',
-    price: 7.0,
-    badge: '🌱 Veggie',
-    img: 'https://images.unsplash.com/photo-1525059696034-4967a8e1dca2?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍆',
+    id: 'ent-14',
+    name: 'Fosforera',
+    price: 14.50,
+    category: 'entradas',
+    description: 'Sopa concentrada de mariscos tradicionales.'
   },
-  {
-    id: 'tender',
-    cat: 'hamburguesas',
-    name: 'Tender',
-    desc: 'Jugosos strips de pollo crispy bañados en salsa agridulce, queso cheddar derretido y pepinillos.',
-    price: 8.0,
-    badge: null,
-    img: 'https://images.unsplash.com/photo-1562967914-608f82629710?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍗',
-  },
-  {
-    id: 'manhattan',
-    cat: 'hamburguesas',
-    name: 'Manhattan',
-    desc: 'Carne estilo New York, doble queso suizo, cebolla frita en aros crocantes y salsa cremosa de la casa.',
-    price: 10.0,
-    badge: '⭐ Recomendado',
-    img: 'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍔',
-  },
-  {
-    id: 'cheese-burguer',
-    cat: 'hamburguesas',
-    name: 'Cheese Burguer',
-    desc: 'La clásica e infaltable: medallón de carne, abundante queso cheddar derretido, salsa ketchup y mostaza.',
-    price: 5.0,
-    badge: '💡 Económica',
-    img: 'https://images.unsplash.com/photo-1534790566855-4cb788d389ec?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍔',
-  },
-  {
-    id: 'parrilla-mixta',
-    cat: 'parrillas',
-    name: 'Parrilla Mixta Wamma',
-    desc: 'Carne de res, pollo, chorizo, yuca frita, guasacaca y queso telita.',
-    price: 12.0,
-    badge: '🔥 Favorito de la Casa',
-    img: 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop',
-    emoji: '🔥',
-  },
-  {
-    id: 'pasticho',
-    cat: 'parrillas',
-    name: 'Pasticho Tradicional de Carne',
-    desc: 'Elaborado en capas con queso parmesano gratinado y servido con pan con ajo.',
-    price: 7.5,
-    badge: '⭐ Recomendado',
-    img: 'https://images.unsplash.com/photo-1619895092538-128341789043?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍝',
-  },
-  {
-    id: 'tequenos',
-    cat: 'entradas',
-    name: 'Tequeños Crujientes (6 uds)',
-    desc: 'Rellenos de abundante queso blanco, dorados y crocantes, con salsa tártara.',
-    price: 5.0,
-    badge: '⭐ Recomendado',
-    img: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=800&auto=format&fit=crop',
-    emoji: '🧀',
-  },
-  {
-    id: 'fajitas',
-    cat: 'entradas',
-    name: 'Fajitas Mexicanas Mixtas',
-    desc: 'Tiras de carne y pollo salteadas con pimentón y cebolla, guacamole y tortillas.',
-    price: 8.5,
-    badge: null,
-    img: 'https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?q=80&w=800&auto=format&fit=crop',
-    emoji: '🌮',
-  },
-  {
-    id: 'pizza-pepperoni',
-    cat: 'pizzas',
-    name: 'Pizza Pepperoni & Queso',
-    desc: 'Masa artesanal, salsa napolitana, doble mozzarella y pepperoni.',
-    price: 10.0,
-    badge: '🔥 Favorito de la Casa',
-    img: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍕',
-  },
-  {
-    id: 'malta',
-    cat: 'bebidas',
-    name: 'Malta Wamma Bien Fría',
-    desc: 'Refresco de malta nacional servido helado, el acompañante perfecto para la parrilla.',
-    price: 2.0,
-    badge: null,
-    img: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=800&auto=format&fit=crop',
-    emoji: '🥤',
-  },
-  {
-    id: 'limonada-coco',
-    cat: 'bebidas',
-    name: 'Limonada de Coco Frozen',
-    desc: 'Limonada cremosa batida con coco natural y un toque de menta.',
-    price: 3.5,
-    badge: '⭐ Recomendado',
-    img: 'https://images.unsplash.com/photo-1523371683702-bd8a5834ba71?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍹',
-  },
-  {
-    id: 'cerveza',
-    cat: 'bebidas',
-    name: 'Cerveza Nacional Bien Helada',
-    desc: 'Presentación individual, ideal para acompañar hamburguesas y parrillas.',
-    price: 2.5,
-    badge: null,
-    img: 'https://images.unsplash.com/photo-1608270586620-248524c67de9?q=80&w=800&auto=format&fit=crop',
-    emoji: '🍺',
-  },
-]
 
-// reemplazar por numero btw
-export const WHATSAPP_NUMBER = '58 212-5716521'
+  // --- HAMBURGUESAS Y SANDWICHES ---
+  {
+    id: 'burg-1',
+    name: 'Guarapo Burger',
+    price: 11.00,
+    category: 'hamburguesas',
+    description: '170g carne de solomo, queso cheddar, aderezo de papelón (picante), lechuga, tomate y cebolla morada.'
+  },
+  {
+    id: 'burg-2',
+    name: 'Chicken Crispy Burger',
+    price: 11.00,
+    category: 'hamburguesas',
+    description: 'Pechuga de pollo empanizada, queso cheddar fundido, tomate rostizado, lechuga y aros de cebolla.'
+  },
+  {
+    id: 'burg-3',
+    name: 'Chicken Burger Plancha',
+    price: 10.50,
+    category: 'hamburguesas',
+    description: 'Pechuga a la plancha, queso cheddar fundido, tomate rostizado, lechuga y aros de cebolla.'
+  },
+  {
+    id: 'burg-4',
+    name: 'Gourmet Burger',
+    price: 12.00,
+    category: 'hamburguesas',
+    description: '170g carne de solomo, queso cheddar, champiñones salteados, cebolla caramelizada, rúgula y tomates secos.'
+  },
+  {
+    id: 'burg-5',
+    name: 'American Burger',
+    price: 12.00,
+    category: 'hamburguesas',
+    description: '170g carne de solomo, queso cheddar, tocineta, lechuga, tomate, cebolla morada y pepinillos.'
+  },
+  {
+    id: 'burg-6',
+    name: 'Criolla Burger',
+    price: 12.00,
+    category: 'hamburguesas',
+    description: '170g carne de solomo, queso cheddar, jamón, huevo, lechuga, tomate, cebolla morada y aguacate.'
+  },
+  {
+    id: 'burg-7',
+    name: 'Ahumada Burger',
+    price: 11.00,
+    category: 'hamburguesas',
+    description: '170g carne de solomo ahumada, queso cheddar fundido, salsa BBQ, pimentón ahumado y rúgula.'
+  },
+  {
+    id: 'burg-8',
+    name: 'Combo Cheese (2 Hamburguesas)',
+    price: 9.50,
+    category: 'hamburguesas',
+    description: '2 hamburguesas cheese (pollo, carne o mixtas) acompañadas con papas fritas.'
+  },
+  {
+    id: 'burg-9',
+    name: 'Cheese Burger',
+    price: 7.00,
+    category: 'hamburguesas',
+    description: '110g de carne o pollo, queso Kraft, cebolla en cuadritos y pepinillo.'
+  },
+  {
+    id: 'burg-10',
+    name: 'Club House',
+    price: 10.00,
+    category: 'hamburguesas',
+    description: 'Sándwiches con pollo a la plancha, tomate, lechuga, jamón y papas fritas.'
+  },
+  {
+    id: 'burg-11',
+    name: 'Manhattan Burger',
+    price: 13.00,
+    category: 'hamburguesas',
+    description: 'Doble carne de solomo 110g o 2 paty de pollo crispy, queso cheddar, tocineta, cebolla crujiente, lechuga, tomate y pepinillos.'
+  },
+  {
+    id: 'burg-12',
+    name: 'Mexicana Burger',
+    price: 11.00,
+    category: 'hamburguesas',
+    description: '170g carne de solomo ahumada, queso cheddar, confitura ají, lechuga, tomate, cebolla morada y guacamole.'
+  },
+  {
+    id: 'burg-13',
+    name: 'Berenjena Crispy Burger',
+    price: 9.00,
+    category: 'hamburguesas',
+    description: 'Ruedas de berenjena empanizadas, queso cheddar fundido, lechuga, tomate y cebolla morada.'
+  },
+  {
+    id: 'burg-14',
+    name: 'Parriburger',
+    price: 12.00,
+    category: 'hamburguesas',
+    description: '170g carne de solomo, chistorra, lechuga, tomate, queso cheddar y chimichurri.'
+  },
+  {
+    id: 'burg-15',
+    name: 'Burger Fish',
+    price: 13.50,
+    category: 'hamburguesas',
+    description: 'Pescado blanco con topping de kani y camarón, acompañado con papas fritas.'
+  },
+  {
+    id: 'burg-16',
+    name: 'Smash Burger - Simple',
+    price: 9.00,
+    category: 'hamburguesas',
+    description: '1 carne smash, queso Kraft, tocineta, pepinillo, pan de papa y salsa especial.'
+  },
+  {
+    id: 'burg-17',
+    name: 'Smash Burger - Doble',
+    price: 11.00,
+    category: 'hamburguesas',
+    description: '2 carnes smash, queso Kraft, tocineta, pepinillo, pan de papa y salsa especial.'
+  },
+  {
+    id: 'burg-18',
+    name: 'Smash Burger - Triple',
+    price: 14.00,
+    category: 'hamburguesas',
+    description: '3 carnes smash, queso Kraft, tocineta, pepinillo, pan de papa y salsa especial.'
+  },
+  {
+    id: 'burg-19',
+    name: 'Tenders de Pollo con Papas',
+    price: 9.50,
+    category: 'hamburguesas',
+    description: 'Jugosas tiras de pechuga de pollo empanizadas acompañadas con papas fritas.'
+  },
+
+  // --- CARNES Y CERDO ---
+  {
+    id: 'carne-1',
+    name: 'Pasticho de Carne Pequeño',
+    price: 8.50,
+    category: 'carnes',
+    description: 'Pasta artesanal de la casa, acompañado de pan con ajo.'
+  },
+  {
+    id: 'carne-2',
+    name: 'Pasticho de Carne Mediano',
+    price: 10.50,
+    category: 'carnes',
+    description: 'Pasta artesanal de la casa, acompañado de pan con ajo.'
+  },
+  {
+    id: 'carne-3',
+    name: 'Asado Negro',
+    price: 12.00,
+    category: 'carnes',
+    description: 'Servido con 2 contornos a elección.'
+  },
+  {
+    id: 'carne-4',
+    name: 'Tiras Costilla en Salsa BBQ',
+    price: 13.00,
+    category: 'carnes',
+    description: 'Servidas con 2 contornos a elección.'
+  },
+  {
+    id: 'carne-5',
+    name: 'Parrilla Criolla',
+    price: 20.50,
+    category: 'carnes',
+    description: '200g punta importada con tiras de costilla y chistorra. Incluye 2 contornos.'
+  },
+  {
+    id: 'carne-6',
+    name: 'Cartocho de Lomito',
+    price: 17.00,
+    category: 'carnes',
+    description: 'Servido con 2 contornos a elección.'
+  },
+  {
+    id: 'carne-7',
+    name: 'Fajitas Mexicanas (Para 2 pers)',
+    price: 19.50,
+    category: 'carnes',
+    description: 'Pollo y lomito a la parrilla, tortillas caseras, pico de gallo, crema agria, guacamole y queso.'
+  },
+  {
+    id: 'carne-8',
+    name: 'Rack de Costillas',
+    price: 22.50,
+    category: 'carnes',
+    description: 'Acompañado con papas fritas y ensalada (César, rallada o mixta).'
+  },
+  {
+    id: 'carne-9',
+    name: 'Parrilla Mar y Tierra',
+    price: 18.00,
+    category: 'carnes',
+    description: 'Churrasco de pollo, lomito, chistorra y salteado de mariscos. Incluye 2 contornos.'
+  },
+  {
+    id: 'carne-10',
+    name: 'Pork Belly Plated',
+    price: 13.50,
+    category: 'carnes',
+    description: 'Barriga de cerdo crujiente servida con 2 contornos a elección.'
+  },
+
+  // --- POLLO ---
+  {
+    id: 'pollo-1',
+    name: 'Pechuga de Pollo al Grill',
+    price: 10.50,
+    category: 'pollo',
+    description: 'Incluye 2 contornos a elección.'
+  },
+  {
+    id: 'pollo-2',
+    name: 'Churrasco de Pollo con Guasacaca',
+    price: 11.50,
+    category: 'pollo',
+    description: 'Incluye 2 contornos a elección.'
+  },
+  {
+    id: 'pollo-3',
+    name: 'Tender Menú',
+    price: 12.00,
+    category: 'pollo',
+    description: 'Tiras de pollo empanizadas con 2 contornos a elección.'
+  },
+  {
+    id: 'pollo-4',
+    name: 'Strogonoff de Pollo',
+    price: 13.00,
+    category: 'pollo',
+    description: 'Incluye 2 contornos a elección.'
+  },
+  {
+    id: 'pollo-5',
+    name: 'Milanesa de Pollo a la Parmesana',
+    price: 13.00,
+    category: 'pollo',
+    description: 'Incluye 2 contornos a elección.'
+  },
+  {
+    id: 'pollo-6',
+    name: 'Milanesa de Pollo al Graten',
+    price: 14.00,
+    category: 'pollo',
+    description: 'Con champiñones y queso gratinado. Incluye 2 contornos.'
+  },
+  {
+    id: 'pollo-7',
+    name: 'Arroz con Pollo (1 Persona)',
+    price: 10.50,
+    category: 'pollo',
+    description: 'Clásico arroz con pollo sazonado de la casa.'
+  },
+  {
+    id: 'pollo-8',
+    name: 'Arroz con Pollo (2 Personas)',
+    price: 19.50,
+    category: 'pollo',
+    description: 'Porción para compartir.'
+  },
+  {
+    id: 'pollo-9',
+    name: 'Alitas BBQ con Papas y Ensalada',
+    price: 11.00,
+    category: 'pollo',
+    description: 'Alitas bañadas en salsa BBQ con papas fritas y ensalada rallada.'
+  },
+
+  // --- PESCADOS Y MARISCOS ---
+  {
+    id: 'pesc-1',
+    name: 'Dedos de Pescado con Tártara',
+    price: 13.00,
+    category: 'pescados',
+    description: 'Incluye 2 contornos a elección.'
+  },
+  {
+    id: 'pesc-2',
+    name: 'Filet de Pescado Blanco',
+    price: 14.00,
+    category: 'pescados',
+    description: 'Al Ajillo o Al Menier. Incluye 2 contornos a elección.'
+  },
+  {
+    id: 'pesc-3',
+    name: 'Cartocho de Pescado y Mariscos',
+    price: 17.00,
+    category: 'pescados',
+    description: 'Pesca del día coronada con mariscos al graten. Incluye 2 contornos.'
+  },
+  {
+    id: 'pesc-4',
+    name: 'Linguini Carbonara con Camarón',
+    price: 16.00,
+    category: 'pescados',
+    description: 'Pasta linguini en crema carbonara con camarones.'
+  },
+  {
+    id: 'pesc-5',
+    name: 'Linguini con Camarones al Ajillo',
+    price: 16.00,
+    category: 'pescados',
+    description: 'Pasta linguini salteada con camarones al ajillo.'
+  },
+  {
+    id: 'pesc-6',
+    name: 'Linguini Frutos del Mar',
+    price: 18.00,
+    category: 'pescados',
+    description: 'Pasta con selección de mariscos frescos.'
+  },
+  {
+    id: 'pesc-7',
+    name: 'Cazuela de Mariscos',
+    price: 18.00,
+    category: 'pescados',
+    description: 'Variedad de mariscos en salsa especial de la casa.'
+  },
+  {
+    id: 'pesc-8',
+    name: 'Atún en Salsa Ponzu',
+    price: 14.00,
+    category: 'pescados',
+    description: 'A la parrilla en salsa ponzu, coronado con wakame. Incluye 2 contornos.'
+  },
+
+  // --- PIZZAS ---
+  {
+    id: 'piz-1',
+    name: 'Pizza Primavera',
+    price: 12.50,
+    category: 'pizzas',
+    description: 'Salsa nápoli, queso mozzarella, jamón, tocineta y maíz.'
+  },
+  {
+    id: 'piz-2',
+    name: 'Pizza Chistorra',
+    price: 12.50,
+    category: 'pizzas',
+    description: 'Salsa nápoli, queso mozzarella, jamón, chistorra, pimentón y cebolla.'
+  },
+  {
+    id: 'piz-3',
+    name: 'Pizza Tradicional',
+    price: 12.50,
+    category: 'pizzas',
+    description: 'Salsa nápoli, queso mozzarella, jamón y champiñones.'
+  },
+  {
+    id: 'piz-4',
+    name: 'Pizza Pepperoni',
+    price: 12.50,
+    category: 'pizzas',
+    description: 'Salsa nápoli, queso mozzarella y abundante pepperoni.'
+  },
+  {
+    id: 'piz-5',
+    name: 'Pizza Napolitana',
+    price: 12.50,
+    category: 'pizzas',
+    description: 'Salsa nápoli, mozzarella, jamón, anchoas, aceitunas negras y chorizo español.'
+  },
+  {
+    id: 'piz-6',
+    name: 'Pizza Margarita',
+    price: 11.50,
+    category: 'pizzas',
+    description: 'Salsa nápoli, queso mozzarella y jamón.'
+  },
+  {
+    id: 'piz-7',
+    name: 'Pizza Vegetariana',
+    price: 12.50,
+    category: 'pizzas',
+    description: 'Salsa nápoli, mozzarella, cebolla, aceitunas negras, champiñones, pimentón y calabacín.'
+  },
+
+  // --- SUSHI ROLLS ---
+  {
+    id: 'sush-1',
+    name: 'Dinamita Rolls',
+    price: 14.50,
+    category: 'sushi',
+    description: 'Ensalada Neptuno, aguacate y queso crema con topping de salsa dinamita y wakame.'
+  },
+  {
+    id: 'sush-2',
+    name: 'American Rolls',
+    price: 14.50,
+    category: 'sushi',
+    description: 'Atún, salmón, aguacate, queso crema y topping de langostino.'
+  },
+  {
+    id: 'sush-3',
+    name: 'Plátano Rolls',
+    price: 14.50,
+    category: 'sushi',
+    description: 'Plátano, camarones tempura, queso crema y aguacate con topping de salsa dinamita.'
+  },
+  {
+    id: 'sush-4',
+    name: 'Alaska Especial Rolls',
+    price: 14.50,
+    category: 'sushi',
+    description: 'Salmón, queso crema, aguacate, kani y topping de wakame.'
+  },
+  {
+    id: 'sush-5',
+    name: 'Inari Rolls',
+    price: 14.50,
+    category: 'sushi',
+    description: 'Atún, salmón y aguacate con topping de tartar de atún.'
+  },
+  {
+    id: 'sush-6',
+    name: 'Kamikaze Rolls',
+    price: 14.50,
+    category: 'sushi',
+    description: 'Atún, salmón, kani y aguacate con topping de ensalada Neptuno y salsa dragón.'
+  },
+  {
+    id: 'sush-7',
+    name: 'Vegetariano Rolls',
+    price: 14.50,
+    category: 'sushi',
+    description: 'Zanahoria, pepino, cebollín, aguacate y wakame con vegetales tempurizados.'
+  },
+
+  // --- ENSALADAS ---
+  {
+    id: 'ens-1',
+    name: 'Ensalada Pollo Crispy',
+    price: 10.50,
+    category: 'ensaladas',
+    description: 'Mezclum de lechuga, tiras de pollo crispy, cebolla morada, tomate, queso emmental y miel mostaza.'
+  },
+  {
+    id: 'ens-2',
+    name: 'Ensalada César con Pollo',
+    price: 10.50,
+    category: 'ensaladas',
+    description: 'Lechugas, tiras de pollo, crutones, queso parmesano y aderezo césar.'
+  },
+  {
+    id: 'ens-3',
+    name: 'Ensalada Tropical',
+    price: 10.50,
+    category: 'ensaladas',
+    description: 'Lechugas, pollo, queso emmental, frutos secos, piña y aderezo miel mostaza.'
+  },
+  {
+    id: 'ens-4',
+    name: 'Ensalada Wamma',
+    price: 10.50,
+    category: 'ensaladas',
+    description: 'Lechugas, pollo al grill, pimentón ahumado y queso emmental.'
+  },
+
+  // --- BEBIDAS ---
+  { id: 'beb-1', name: 'Papelón con Limón', price: 2.50, category: 'bebidas', description: 'Vaso de papelón frío con limón.' },
+  { id: 'beb-2', name: 'Malta', price: 1.50, category: 'bebidas', description: 'Malta bien fría.' },
+  { id: 'beb-3', name: 'Refresco en Lata', price: 2.50, category: 'bebidas', description: 'Coca-Cola, Pepsi, 7Up, Colita, etc.' },
+  { id: 'beb-4', name: 'Té Lipton / Té Verde', price: 2.50, category: 'bebidas', description: 'Té frío.' },
+  { id: 'beb-5', name: 'Jugo Yukery', price: 2.50, category: 'bebidas', description: 'Jugo de botella.' },
+  { id: 'beb-6', name: 'Gatorade', price: 3.00, category: 'bebidas', description: 'Bebida hidratante.' },
+  { id: 'beb-7', name: 'Refresco 1 Litro', price: 1.30, category: 'bebidas', description: 'Variedad de sabores.' },
+  { id: 'beb-8', name: 'Refresco 1.5 Litros', price: 2.30, category: 'bebidas', description: 'Variedad de sabores.' },
+  { id: 'beb-9', name: 'Refresco 2 Litros', price: 3.00, category: 'bebidas', description: 'Coca-Cola, Pepsi, Chinotto.' },
+  { id: 'beb-10', name: 'Jugo Natural de Fresa', price: 4.00, category: 'bebidas', description: 'Jugo de fresas naturales.' },
+  { id: 'beb-11', name: 'Jugo Natural de Melocotón', price: 4.50, category: 'bebidas', description: 'Jugo concentrado de melocotón.' },
+  { id: 'beb-12', name: 'Jugos Naturales (Variados)', price: 3.50, category: 'bebidas', description: 'Sabores del día.' },
+  { id: 'beb-13', name: 'Cerveza Lata', price: 1.20, category: 'bebidas', description: 'Cerveza nacional en lata.' },
+  { id: 'beb-14', name: 'Cerveza Tercio', price: 1.80, category: 'bebidas', description: 'Cerveza en botella de tercio.' },
+  { id: 'beb-15', name: 'Café Expresso / Pequeño', price: 1.50, category: 'bebidas', description: 'Café concentrado.' },
+  { id: 'beb-16', name: 'Café Grande', price: 2.50, category: 'bebidas', description: 'Café grande estilo negro o con leche.' },
+  { id: 'beb-17', name: 'Café Bombón', price: 3.00, category: 'bebidas', description: 'Café con leche condensada.' },
+
+  // --- POSTRES ---
+  { id: 'pos-1', name: 'Galletas de la Casa', price: 2.00, category: 'postres', description: 'Galletas horneadas.' },
+  { id: 'pos-2', name: 'Torta de Zanahoria', price: 4.00, category: 'postres', description: 'Porción de torta casera de zanahoria.' },
+  { id: 'pos-3', name: 'Pie de Limón / Parchita', price: 4.00, category: 'postres', description: 'Pie cítrico y cremoso.' },
+  { id: 'pos-4', name: 'Cheesecake', price: 4.00, category: 'postres', description: 'Porción de cheesecake clásico.' },
+  { id: 'pos-5', name: 'Torta de Chocolate', price: 4.00, category: 'postres', description: 'Húmeda y chocolatosa.' },
+  { id: 'pos-6', name: 'Tres Leches', price: 4.00, category: 'postres', description: 'Torta tradicional tres leches.' },
+  { id: 'pos-7', name: 'Quesillo Casero', price: 5.00, category: 'postres', description: 'Quesillo tradicional venezolano.' },
+  { id: 'pos-8', name: 'Torta de Pistacho', price: 7.00, category: 'postres', description: 'Especialidad de la casa con pistacho.' },
+  { id: 'pos-9', name: 'Brownie con Helado', price: 7.00, category: 'postres', description: 'Brownie caliente servido con bola de helado.' },
+  { id: 'pos-10', name: 'Bola de Helado', price: 4.00, category: 'postres', description: 'Sabor a elección.' }
+];
