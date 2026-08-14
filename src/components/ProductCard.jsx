@@ -1,84 +1,47 @@
-import React, { useState } from "react";
+import React from 'react';
 
-export default function ProductCard({ product, index, onAddToCart }) {
-  const [isAdded, setIsAdded] = useState(false);
-
-  const handleClick = () => {
-    onAddToCart(product);
-    setIsAdded(true);
-    setTimeout(() => {
-      setIsAdded(false);
-    }, 1200); // Vuelve al estado normal tras 1.2 segundos
-  };
+export default function ProductCard({ product, onAddToCart }) {
   return (
-    <article className="bg-wamma-card rounded-2xl overflow-hidden border border-wamma-gold/10 shadow-lg flex flex-col justify-between">
-      <div>
-        {/* Imagen & Badge */}
-        <div className="relative h-44 w-full overflow-hidden bg-wamma-bg">
+    <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden flex flex-col justify-between p-4 relative shadow-md">
+      {/* Imagen con fallback (se oculta si no existe o falla al cargar) */}
+      {product.image && (
+        <div className="w-full h-40 overflow-hidden rounded-lg mb-3 bg-zinc-800">
           <img
-            src={product.img}
+            src={product.image}
             alt={product.name}
             className="w-full h-full object-cover"
-            loading="lazy"
+            onError={(e) => {
+              e.target.parentElement.style.display = 'none';
+            }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-wamma-card via-transparent to-black/40"></div>
+        </div>
+      )}
 
-          {product.badge && (
-            <span className="absolute top-3 left-3 bg-wamma-fire/90 backdrop-blur-md text-white text-[10px] font-black px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-md">
-              {product.badge}
-            </span>
-          )}
-
-          <span className="absolute bottom-3 right-3 bg-wamma-bg/90 backdrop-blur-md text-wamma-gold text-base font-black px-3 py-1 rounded-xl border border-wamma-gold/30">
+      {/* Contenido principal del producto */}
+      <div className="flex-1">
+        <div className="flex justify-between items-start gap-2 mb-2">
+          <h3 className="text-white font-bold text-lg leading-snug">
+            {product.name}
+          </h3>
+          <span className="bg-amber-500/10 text-amber-400 font-extrabold px-2.5 py-1 rounded-md text-sm whitespace-nowrap">
             ${product.price.toFixed(2)}
           </span>
         </div>
 
-        {/* Info */}
-        <div className="p-4">
-          <h2 className="text-base font-black text-white mb-1 flex items-center gap-2">
-            <span>{product.name}</span>
-            <span className="text-xs">{product.emoji}</span>
-          </h2>
-          <p className="text-xs text-wamma-muted leading-relaxed">
-            {product.desc}
+        {product.description && (
+          <p className="text-zinc-400 text-xs line-clamp-2 mb-4">
+            {product.description}
           </p>
-        </div>
+        )}
       </div>
 
-      {/* Botón con SVG nativo (sin lucide-react) */}
-      <div className="px-4 pb-4 pt-1">
-        <button
-  onClick={handleClick}
-  className={`w-full transition-colors duration-200 font-black text-xs py-2.5 rounded-xl flex items-center justify-center gap-2 border ${
-  isAdded
-    ? "bg-green-500/20 text-green-400 border-green-500/40"
-    : "bg-wamma-gold/10 hover:bg-wamma-gold text-wamma-gold hover:text-black border-wamma-gold/30"
-}`}
->
-  {isAdded ? (
-    <span>✓ ¡Agregado al carrito!</span>
-  ) : (
-    <>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+      {/* Botón para agregar al carrito */}
+      <button
+        onClick={() => onAddToCart(product)}
+        className="w-full mt-2 py-2.5 px-4 bg-zinc-800 hover:bg-amber-500 hover:text-black text-amber-400 font-semibold text-sm rounded-lg transition-colors duration-200 flex items-center justify-center gap-1.5 border border-zinc-700/50"
       >
-        <line x1="12" y1="5" x2="12" y2="19"></line>
-        <line x1="5" y1="12" x2="19" y2="12"></line>
-      </svg>
-      <span>Agregar al Carrito</span>
-    </>
-  )}
-</button>
-      </div>
-    </article>
+        <span>+</span> Agregar al Carrito
+      </button>
+    </div>
   );
 }
