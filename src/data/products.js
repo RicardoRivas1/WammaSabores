@@ -260,5 +260,5 @@ export const PRODUCTS = [
   },
 ]
 
-// TODO: reemplazar con el número real de WhatsApp del restaurante (formato internacional, sin "+")
+// reemplazar por numero btw
 export const WHATSAPP_NUMBER = '58 212-5716521'

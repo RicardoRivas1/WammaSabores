@@ -3,15 +3,15 @@ import Header from './components/Header'
 import CategoryNav from './components/CategoryNav'
 import ProductGrid from './components/ProductGrid'
 import WhatsAppFab from './components/WhatsAppFab'
-import CartDrawer from './components/CartDrawer' // 1. Importamos el CartDrawer
+import CartDrawer from './components/CartDrawer' 
 import { CATEGORIES, PRODUCTS } from './data/products'
-import { useCart } from './context/CartContext' // 2. Importamos el hook del carrito
+import { useCart } from './context/CartContext' 
 
 export default function App() {
   const [activeCat, setActiveCat] = useState('todos')
   const [query, setQuery] = useState('')
 
-  // Extraemos funciones y datos del carrito
+  // Extraer funciones y datos del carrito
   const { addToCart, itemCount, setIsCartOpen } = useCart()
 
   const filtered = useMemo(() => {

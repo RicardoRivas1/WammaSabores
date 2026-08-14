@@ -1,4 +1,4 @@
-// src/context/CartContext.jsx
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getTasaBCV } from '../utils/bcv';
 
@@ -13,12 +13,12 @@ export function CartProvider({ children }) {
   const [tasaBcv, setTasaBcv] = useState(36.50);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // Guardar en localStorage cuando cambie el carrito
+  // guardar en localStorage cuando cambie el carrito
   useEffect(() => {
     localStorage.setItem('wamma_cart', JSON.stringify(cart));
   }, [cart]);
 
-  // Cargar tasa BCV al iniciar
+  // tasa BCV
   useEffect(() => {
     getTasaBCV().then((tasa) => setTasaBcv(tasa));
   }, []);

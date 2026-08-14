@@ -1,4 +1,4 @@
-// src/components/CartDrawer.jsx
+
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { sendOrderToWhatsApp } from '../utils/whatsapp';
