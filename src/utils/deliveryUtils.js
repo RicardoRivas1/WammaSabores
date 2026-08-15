@@ -1,4 +1,4 @@
-// Coordenadas fijas de tu local en Caracas (Lat, Lon)
+// Coordenadas fijas del local (Lat, Lon)
 const RESTAURANT_COORDS = {
   lat: 10.498625, // Cambiar por la latitud exacta del local btw
   lon: -66.898875, // Cambiar por la longitud exacta del local btw
@@ -9,7 +9,7 @@ const TARIFA_BASE = 2.0;    // Precio base (hasta 2 km)
 const PRECIO_POR_KM = 0.50; // Costo por km adicional
 const KM_BASE = 2;          // Km incluidos en tarifa base
 
-// 1. Calcula la tarifa en $
+// Calcula la tarifa en $
 export function calculateDeliveryFee(distanceInKm) {
   if (!distanceInKm || distanceInKm <= 0) return 0;
   if (distanceInKm <= KM_BASE) return TARIFA_BASE;
@@ -19,7 +19,7 @@ export function calculateDeliveryFee(distanceInKm) {
   return Number(total.toFixed(2));
 }
 
-// 2. Calcula la distancia lineal en KM entre dos coordenadas (Fórmula Haversine)
+// Calcula la distancia lineal en KM entre dos coordenadas (Fórmula Haversine)
 function getKilometers(lat1, lon1, lat2, lon2) {
   const R = 6371;
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -34,7 +34,7 @@ function getKilometers(lat1, lon1, lat2, lon2) {
   return R * c;
 }
 
-// 3. Busca direcciones en Venezuela directamente en OpenStreetMap (GRATIS y SIN API KEY)
+// Busca direcciones directamente en OpenStreetMap
 export async function searchAddressFree(query) {
   if (!query || query.length < 3) return [];
 
@@ -57,7 +57,7 @@ export async function searchAddressFree(query) {
   }
 }
 
-// 4. Calcula KM desde el local hasta la ubicación seleccionada
+// Calcula KM desde el local hasta la ubicación seleccionada
 export function calculateKmFromCoords(targetLat, targetLon) {
   const distanceKm = getKilometers(
     RESTAURANT_COORDS.lat,

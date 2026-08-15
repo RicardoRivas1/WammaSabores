@@ -6,7 +6,7 @@ const RESTAURANT_LOCATION = {
   lon: -66.8983,
 };
 
-// 💵 FUNCIÓN SEGÚN TU TABLA DE PRECIOS POR KILÓMETROS
+// FUNCIÓN SEGÚN TABLA DE PRECIOS POR KILÓMETROS
 const calculateDeliveryFee = (km) => {
   if (km <= 1.0) return 1.0;
   if (km <= 2.9) return 2.0;

@@ -8,10 +8,8 @@ digital del restaurante Wamma Sabores (La Candelaria, Caracas).
 Edita `src/data/products.js` y reemplaza el número de WhatsApp:
 
 ```js
-export const WHATSAPP_NUMBER = '584120000000' // <-- tu número real, formato internacional sin "+"
+export const WHATSAPP_NUMBER = '584120000000' // <--número real, formato internacional sin "+"
 ```
-
-También puedes editar ahí mismo los productos, precios, descripciones e imágenes del menú.
 
 ## Cómo correr el proyecto
 
