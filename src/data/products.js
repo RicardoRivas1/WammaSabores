@@ -14,7 +14,7 @@ export const PRODUCTS = [
     price: 11.50,
     category: 'entradas',
     description: 'Finas láminas de lomito sazonadas.',
-    image: 'https://images.unsplash.com/photo-1514944288352-fffac99f0bdf?auto=format&fit=crop&w=600&q=80'
+    image: 'https://www.lanacion.com.ar/resizer/v2/carpaccio-de-4MYUQDNS5REHJB4NT4BXYTDGXA.jpg?auth=29a4cc2ed307d181d2a44ef910fcbf583b5e17d24ee2c9abd5c3992ee30c8c3b&width=1200&height=900&quality=70&smart=true'
   },
   {
     id: 'ent-3',
@@ -30,7 +30,7 @@ export const PRODUCTS = [
     price: 10.50,
     category: 'entradas',
     description: 'Camarones salteados en ajo y especias.',
-    image: 'https://images.unsplash.com/photo-1559742811-822863646df0?auto=format&fit=crop&w=600&q=80'
+    image: 'https://www.goya.com/wp-content/uploads/2023/10/spanish-garlic-shrimp-new.jpg'
   },
   {
     id: 'ent-5',
@@ -38,7 +38,7 @@ export const PRODUCTS = [
     price: 17.50,
     category: 'entradas',
     description: 'Mezcla fresca de mariscos y pescado marinados en cítricos.',
-    image: 'https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?auto=format&fit=crop&w=600&q=80'
+    image: 'https://cdn0.recetasgratis.net/es/posts/8/7/2/ceviche_mixto_peruano_77278_1200.jpg'
   },
   {
     id: 'ent-6',
@@ -46,7 +46,7 @@ export const PRODUCTS = [
     price: 9.50,
     category: 'entradas',
     description: 'Crocantes trozos de barriga de cerdo.',
-    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80'
+    image: 'https://www.cocinadelirante.com/sites/default/files/images/2021/06/como-cocinar-pork-belly-en-casa-facil.jpg'
   },
   {
     id: 'ent-7',
@@ -62,7 +62,7 @@ export const PRODUCTS = [
     price: 7.50,
     category: 'entradas',
     description: '6 tequeños rellenos de queso con aderezo de papelón.',
-    image: 'https://images.unsplash.com/photo-1541529086526-db283c563270?auto=format&fit=crop&w=600&q=80'
+    image: 'https://pbs.twimg.com/media/EEH0umrVAAMzKUV.jpg'
   },
   {
     id: 'ent-9',
@@ -70,7 +70,7 @@ export const PRODUCTS = [
     price: 5.50,
     category: 'entradas',
     description: 'Ración de casabe crujiente con queso gratinado.',
-    image: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=600&q=80'
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWZV1t0Bc8mCqd8V2EVelW2eDHv2VaBx9NVY9PZL3RtuYTnQB2WPvU8Co&s=10'
   },
   {
     id: 'ent-10',
@@ -94,7 +94,7 @@ export const PRODUCTS = [
     price: 13.00,
     category: 'entradas',
     description: 'Pescado fresco marinado en limón.',
-    image: 'https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?auto=format&fit=crop&w=600&q=80'
+    image: 'https://www.pequerecetas.com/wp-content/uploads/2019/02/ceviche-receta.jpg'
   },
   {
     id: 'ent-13',
@@ -102,7 +102,7 @@ export const PRODUCTS = [
     price: 3.50,
     category: 'entradas',
     description: 'Ración de pan tostado con mantequilla de ajo.',
-    image: 'https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?auto=format&fit=crop&w=600&q=80'
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMN3tiM4n8QRW-upULbG8ygWvjBPXf3giSY6VdkxMFU7G_6E1bb51gR-k&s=10'
   },
   {
     id: 'ent-14',
@@ -110,7 +110,7 @@ export const PRODUCTS = [
     price: 14.50,
     category: 'entradas',
     description: 'Sopa concentrada de mariscos tradicionales.',
-    image: 'https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=600&q=80'
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRM_UVtJcVHteTwIgubx8kQlVRvF0dv1pYpNOfNn7jlRo2FB5cDCsEeuoA&s=10'
   },
 
   // --- HAMBURGUESAS Y SANDWICHES ---
@@ -128,7 +128,7 @@ export const PRODUCTS = [
     price: 11.00,
     category: 'hamburguesas',
     description: 'Pechuga de pollo empanizada, queso cheddar fundido, tomate rostizado, lechuga y aros de cebolla.',
-    image: 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=600&q=80'
+    image: 'https://thescranline.com/wp-content/uploads/2022/02/crispy-chicken-burger-WEB-01.jpg'
   },
   {
     id: 'burg-3',
@@ -136,7 +136,7 @@ export const PRODUCTS = [
     price: 10.50,
     category: 'hamburguesas',
     description: 'Pechuga a la plancha, queso cheddar fundido, tomate rostizado, lechuga y aros de cebolla.',
-    image: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?auto=format&fit=crop&w=600&q=80'
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYGLyLj1WaYoX697JDxETWiXeZQahIwJ-glWhW6yN-ckDuUQhXMNeBJp2g&s=10'
   },
   {
     id: 'burg-4',
@@ -152,7 +152,7 @@ export const PRODUCTS = [
     price: 12.00,
     category: 'hamburguesas',
     description: '170g carne de solomo, queso cheddar, tocineta, lechuga, tomate, cebolla morada y pepinillos.',
-    image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80'
+    image: 'https://vikalinka.com/wp-content/uploads/2020/08/Best-Homemade-Burger-3-Edit.jpg'
   },
   {
     id: 'burg-6',
@@ -160,7 +160,7 @@ export const PRODUCTS = [
     price: 12.00,
     category: 'hamburguesas',
     description: '170g carne de solomo, queso cheddar, jamón, huevo, lechuga, tomate, cebolla morada y aguacate.',
-    image: 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f6?auto=format&fit=crop&w=600&q=80'
+    image: 'https://cdn.inoutdelivery.com/sandwichgourmet.inoutdelivery.com/sm/1744384951161-hamburguesa-criolla.jpg'
   },
   {
     id: 'burg-7',
@@ -168,7 +168,7 @@ export const PRODUCTS = [
     price: 11.00,
     category: 'hamburguesas',
     description: '170g carne de solomo ahumada, queso cheddar fundido, salsa BBQ, pimentón ahumado y rúgula.',
-    image: 'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?auto=format&fit=crop&w=600&q=80'
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMvsE36eVRdme7nXEqzYR7ji_QnKs1rzslkhx7NWIgUJCeebpzLhFCR8Zy&s=10'
   },
   {
     id: 'burg-8',
@@ -184,7 +184,7 @@ export const PRODUCTS = [
     price: 7.00,
     category: 'hamburguesas',
     description: '110g de carne o pollo, queso Kraft, cebolla en cuadritos y pepinillo.',
-    image: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=600&q=80'
+    image: 'https://assets.epicurious.com/photos/5c745a108918ee7ab68daf79/1:1/w_2560%2Cc_limit/Smashburger-recipe-120219.jpg'
   },
   {
     id: 'burg-10',
@@ -192,7 +192,7 @@ export const PRODUCTS = [
     price: 10.00,
     category: 'hamburguesas',
     description: 'Sándwiches con pollo a la plancha, tomate, lechuga, jamón y papas fritas.',
-    image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80'
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVoCY5CEqluiso8i97BJscWED9u7pzOXEQVEgAI510QfLnSP-KzTvLNAA&s=10'
   },
   {
     id: 'burg-11',
@@ -200,7 +200,7 @@ export const PRODUCTS = [
     price: 13.00,
     category: 'hamburguesas',
     description: 'Doble carne de solomo 110g o 2 paty de pollo crispy, queso cheddar, tocineta, cebolla crujiente, lechuga, tomate y pepinillos.',
-    image: 'https://images.unsplash.com/photo-1583778176476-4a8b02a64c01?auto=format&fit=crop&w=600&q=80'
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuxajgY2arctQ8hjIpLunYydbUOxHlrt2-cq4JtEmq0L8TbPhOLnwq-EWV&s=10'
   },
   {
     id: 'burg-12',
@@ -208,7 +208,7 @@ export const PRODUCTS = [
     price: 11.00,
     category: 'hamburguesas',
     description: '170g carne de solomo ahumada, queso cheddar, confitura ají, lechuga, tomate, cebolla morada y guacamole.',
-    image: 'https://images.unsplash.com/photo-1582196016295-f8c8bd4b3a99?auto=format&fit=crop&w=600&q=80'
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXKtP6Mqtmcr7WSnUcK16P0RH0Qk1jJXO8i1rOoNU--ZT-g4G_zvHoD4RX&s=10'
   },
   {
     id: 'burg-13',
@@ -240,7 +240,7 @@ export const PRODUCTS = [
     price: 9.00,
     category: 'hamburguesas',
     description: '1 carne smash, queso Kraft, tocineta, pepinillo, pan de papa y salsa especial.',
-    image: 'https://images.unsplash.com/photo-1512152272829-e3139592d56f?auto=format&fit=crop&w=600&q=80'
+    image: 'https://images.unsplash.com/photo-1512152272829-e3139592d56f?auto=format&fit=crop&w=600&q=80https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmZegYYzfCB-HJiVPJgdKzlRIs2H40aV3jiQ6TRYPcsfOcZGuucqwbits8&s=10'
   },
   {
     id: 'burg-17',
@@ -248,7 +248,7 @@ export const PRODUCTS = [
     price: 11.00,
     category: 'hamburguesas',
     description: '2 carnes smash, queso Kraft, tocineta, pepinillo, pan de papa y salsa especial.',
-    image: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80'
+    image: 'https://preview.redd.it/homemade-double-smashburger-v0-phthk0fd00ac1.jpeg?auto=webp&s=70acbe036f9de93f8a0ffec29441bb94006e81f0'
   },
   {
     id: 'burg-18',
@@ -256,7 +256,7 @@ export const PRODUCTS = [
     price: 14.00,
     category: 'hamburguesas',
     description: '3 carnes smash, queso Kraft, tocineta, pepinillo, pan de papa y salsa especial.',
-    image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80'
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ275fR_rSm54CW0w7H68JqTINFHAUKuW6O9uhPOeoZ9W-VyS2534cU95E&s=10'
   },
   {
     id: 'burg-19',
@@ -264,7 +264,7 @@ export const PRODUCTS = [
     price: 9.50,
     category: 'hamburguesas',
     description: 'Jugosas tiras de pechuga de pollo empanizadas acompañadas con papas fritas.',
-    image: 'https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=600&q=80'
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9_5SIq08NWN9VDaabYlPJ10znoslJvoGDjzVb4ALePLBl8CF5sp4ayaA&s=10'
   },
 
   // --- CARNES Y CERDO ---
@@ -290,7 +290,7 @@ export const PRODUCTS = [
     price: 12.00,
     category: 'carnes',
     description: 'Servido con 2 contornos a elección.',
-    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80'
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyn_jHDwkh5aFXVvhtUZ41C8LEPlWDNe8HDQgl34SqhYmrXj8LbhIaRr8p&s=10'
   },
   {
     id: 'carne-4',
@@ -298,7 +298,7 @@ export const PRODUCTS = [
     price: 13.00,
     category: 'carnes',
     description: 'Servidas con 2 contornos a elección.',
-    image: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80'
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwHXnspNIQm43GBilOxL1KkoC8mpVC3yNOqZGq7KB93khS7VcUhLPvL-AN&s=10'
   },
   {
     id: 'carne-5',
@@ -318,7 +318,7 @@ export const PRODUCTS = [
   },
   {
     id: 'carne-7',
-    name: 'Fajitas Mexicanas (Para 2 pers)',
+    name: 'Fajitas Mexicanas (Para 2 personas)',
     price: 19.50,
     category: 'carnes',
     description: 'Pollo y lomito a la parrilla, tortillas caseras, pico de gallo, crema agria, guacamole y queso.',
@@ -330,7 +330,7 @@ export const PRODUCTS = [
     price: 22.50,
     category: 'carnes',
     description: 'Acompañado con papas fritas y ensalada (César, rallada o mixta).',
-    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80'
+    image: 'https://www.univision.com/_next/image?url=https%3A%2F%2Fst1.uvnimg.com%2F15%2F2a%2F8ffc2a45499cbf7052d20f15511d%2F29971905_M.jpg&w=1280&q=75'
   },
   {
     id: 'carne-9',
@@ -338,7 +338,7 @@ export const PRODUCTS = [
     price: 18.00,
     category: 'carnes',
     description: 'Churrasco de pollo, lomito, chistorra y salteado de mariscos. Incluye 2 contornos.',
-    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80'
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9y3pPHTVhYGHTKlOdWFDnmR6jUaR-obxOOplO4PG9-mLF1CADT7Y_wmg&s=10'
   },
   {
     id: 'carne-10',
@@ -346,7 +346,7 @@ export const PRODUCTS = [
     price: 13.50,
     category: 'carnes',
     description: 'Barriga de cerdo crujiente servida con 2 contornos a elección.',
-    image: 'https://images.unsplash.com/photo-1603048588665-791ca8aea617?auto=format&fit=crop&w=600&q=80'
+    image: 'https://www.seriouseats.com/thmb/orl1xkPajYxzsOZwkooPtdYvM-M=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/20210508-lechon-kawali-melissa-hom-2-inchChunks-seriouseats-1d53c12cee234305b921362e2106bf29.jpg'
   },
 
   // --- POLLO ---
@@ -364,7 +364,7 @@ export const PRODUCTS = [
     price: 11.50,
     category: 'pollo',
     description: 'Incluye 2 contornos a elección.',
-    image: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=600&q=80'
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiY7_GqULQh-20U7qOw6HP9hfZKdsHUh8jSUbPwePwZytIOGIkjeY1sw8l&s=10'
   },
   {
     id: 'pollo-3',
@@ -372,7 +372,7 @@ export const PRODUCTS = [
     price: 12.00,
     category: 'pollo',
     description: 'Tiras de pollo empanizadas con 2 contornos a elección.',
-    image: 'https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=600&q=80'
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbksdt1dNtrnBNUdK_I0tbxWI4IGyeauUAG_asTLHQoA&s=10'
   },
   {
     id: 'pollo-4',
