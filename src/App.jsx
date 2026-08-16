@@ -6,6 +6,7 @@ import ProductGrid from './components/ProductGrid';
 import CartDrawer from './components/CartDrawer';
 import Header from './components/Header';
 import { PRODUCTS } from './data/products';
+import Footer from './components/Footer';
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('todas');
@@ -137,6 +138,9 @@ export default function App() {
         onSendWhatsApp={handleWhatsAppClick}
         tasaBcv={tasaBcv}
       />
-    </div>
+    
+     <Footer />
+  </div>
+
   );
 }
