@@ -190,7 +190,7 @@ export default function CartDrawer({
           <div className="space-y-4 border-t border-zinc-800 pt-4">
             <div>
               <label className="block text-xs font-semibold text-zinc-300 mb-2">
-                🛵 Opciones de Entrega:
+                 Opciones de Entrega:
               </label>
               <div className="grid grid-cols-2 gap-2">
                 <button
@@ -217,7 +217,7 @@ export default function CartDrawer({
                       : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700'
                   }`}
                 >
-                  Pick-up (Retiro)
+                  Retiro en Local
                 </button>
               </div>
             </div>

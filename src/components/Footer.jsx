@@ -11,7 +11,7 @@ export default function Footer() {
           <strong className="text-gray-700">Envíos y Pedidos:</strong> Los productos añadidos al carrito se confirman y coordinan directamente vía WhatsApp.
         </p>
         <p>
-          <strong className="text-gray-700">Métodos de Pago:</strong> Aceptamos Pago Móvil y efectivo al momento de la entrega/coordinación.
+          <strong className="text-gray-700">Métodos de Pago:</strong> Aceptamos Pago Móvil y efectivo al momento deL retiro.
         </p>
       </div>
     </footer>

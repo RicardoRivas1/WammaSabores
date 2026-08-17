@@ -1,5 +1,5 @@
 // Número oficial de Wamma Sabores
-export const PHONE_NUMBER = '584242608180'; 
+export const PHONE_NUMBER = '584123376629'; 
 
 export const GENERIC_MESSAGE = "¡Hola Wamma Sabores! Quisiera consultar el menú o realizar un pedido.";
 
