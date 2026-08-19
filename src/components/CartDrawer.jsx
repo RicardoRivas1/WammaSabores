@@ -6,6 +6,18 @@ const RESTAURANT_LOCATION = {
   lon: -66.8983,
 };
 
+// ZONAS CON RECARGO AUTOMÁTICO DE +$1.00
+const ZONAS_ALTAS = [
+  "catia",
+  "23 de enero",
+  "petare",
+  "yaguara",
+  "bandera",
+  "propatria",
+  "algodonal",
+  "el valle",
+];
+
 // OPCIONES DE CONTORNOS DISPONIBLES
 const OPCIONES_CONTORNOS = [
   "ARROZ",
@@ -56,8 +68,9 @@ export default function CartDrawer({
   const [isLoadingAddress, setIsLoadingAddress] = useState(false);
   const [deliveryDistance, setDeliveryDistance] = useState(0);
   const [deliveryCostUSD, setDeliveryCostUSD] = useState(0);
+  const [isZonaAltaDetected, setIsZonaAltaDetected] = useState(false);
 
-  // Requerimiento 1: Estado con los datos del cliente
+  // Estado con los datos del cliente
   const [customerData, setCustomerData] = useState({
     nombre: "",
     direccion: address || "",
@@ -133,9 +146,11 @@ export default function CartDrawer({
 
   if (!isOpen) return null;
 
+  // Seleccionar dirección del buscador GPS
   const handleSelectAddress = (item) => {
-    setAddress(item.display_name);
-    setCustomerData((prev) => ({ ...prev, direccion: item.display_name }));
+    const selectedText = item.display_name;
+    setAddress(selectedText);
+    setCustomerData((prev) => ({ ...prev, direccion: selectedText }));
     setSuggestions([]);
 
     const clientLat = parseFloat(item.lat);
@@ -149,7 +164,22 @@ export default function CartDrawer({
         clientLon,
       );
       setDeliveryDistance(km);
-      const fee = calculateDeliveryFee(km);
+
+      // Tarifa base por kilómetros
+      let fee = calculateDeliveryFee(km);
+
+      // Verificación de zona alta por palabras clave
+      const textToSearch = (selectedText + " " + address).toLowerCase();
+      const esZonaAlta = ZONAS_ALTAS.some((zona) =>
+        textToSearch.includes(zona),
+      );
+
+      setIsZonaAltaDetected(esZonaAlta);
+
+      if (esZonaAlta) {
+        fee += 1.0; // Suma automática de $1.00
+      }
+
       setDeliveryCostUSD(fee);
     }
   };
@@ -173,7 +203,7 @@ export default function CartDrawer({
   const totalUSD = subtotalUSD + currentDeliveryFee;
   const totalVES = tasaBcv ? totalUSD * tasaBcv : 0;
 
-  // Validación de datos y contornos antes de enviar
+  // Validación de datos y contornos
   const isFormValid = () => {
     const contornosValidos = cart.every(
       (item) =>
@@ -207,6 +237,7 @@ export default function CartDrawer({
         customerData,
         deliveryDistance,
         deliveryCostUSD: currentDeliveryFee,
+        isZonaAlta: isZonaAltaDetected,
       });
     }
   };
@@ -274,7 +305,7 @@ export default function CartDrawer({
                   </div>
                 </div>
 
-                {/* Requerimiento 2: Seleccionar 2 contornos si el producto lo requiere */}
+                {/* Seleccionar 2 contornos */}
                 {item.hasContornos && (
                   <div className="bg-zinc-950 p-2.5 rounded-lg border border-amber-500/30 text-xs space-y-2">
                     <p className="font-semibold text-amber-400 flex items-center gap-1">
@@ -347,6 +378,7 @@ export default function CartDrawer({
                     setDeliveryOption("pickup");
                     setDeliveryDistance(0);
                     setDeliveryCostUSD(0);
+                    setIsZonaAltaDetected(false);
                   }}
                   className={`py-2 px-3 rounded-lg text-xs font-bold border transition-colors ${
                     deliveryOption === "pickup"
@@ -364,6 +396,7 @@ export default function CartDrawer({
                 <label className="block text-xs font-semibold text-zinc-300">
                   📍 Buscar dirección (GPS / Búsqueda):
                 </label>
+
                 <div className="relative">
                   <input
                     type="text"
@@ -385,6 +418,7 @@ export default function CartDrawer({
                         setSuggestions([]);
                         setDeliveryDistance(0);
                         setDeliveryCostUSD(0);
+                        setIsZonaAltaDetected(false);
                       }}
                       className="absolute right-2.5 top-2.5 text-zinc-500 hover:text-white text-xs font-bold"
                     >
@@ -424,15 +458,26 @@ export default function CartDrawer({
                     <div className="flex justify-between text-zinc-300">
                       <span>🛵 Tarifa de delivery:</span>
                       <span className="font-bold text-amber-400">
-                        ${deliveryCostUSD.toFixed(2)}
+                        ${deliveryCostUSD.toFixed(2)}{" "}
                       </span>
                     </div>
                   </div>
                 )}
+
+                {/* AVISO DE TARIFA ESTIMADA */}
+                <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-2.5 text-[11px] text-amber-200/90 leading-relaxed flex items-start gap-2">
+                  <span className="text-amber-400 text-sm">⚠️</span>
+                  <p>
+                    <strong className="text-amber-400">Nota:</strong> El costo
+                    del delivery es estimado. Si la dirección se encuentra en
+                    una parte alta o zona de difícil acceso, la tarifa final
+                    puede variar al confirmar por WhatsApp.
+                  </p>
+                </div>
               </div>
             )}
 
-            {/* Requerimiento 1: Formulario con Datos del Cliente */}
+            {/* Formulario con Datos del Cliente */}
             <div className="bg-zinc-900 border border-zinc-800 p-3 rounded-lg space-y-2.5">
               <p className="text-xs font-bold text-amber-400 text-center">
                 Complete los siguientes datos
@@ -447,7 +492,6 @@ export default function CartDrawer({
                 className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
               />
 
-              {/* Solo se muestra si el usuario elige Delivery */}
               {deliveryOption === "delivery" && (
                 <input
                   type="text"
@@ -545,7 +589,7 @@ export default function CartDrawer({
           <button
             disabled={cart.length === 0}
             onClick={handleSendOrder}
-            className="w-full py-3.5 bg-red-600 hover:bg-red-500 disabled:bg-zinc-800 text-white font-bold rounded-xl text-sm transition-all shadow-lg flex items-center justify-center gap-2 mt-2"
+            className="w-full py-3.5 bg-red-600 hover:bg-red-500 disabled:bg-zinc-800 text-white font-bold rounded-xl text-sm transition-all shadow-lg flex items-center justify-center gap-2 mt-2 cursor-pointer"
           >
             <span>💬</span> Pedir o Consultar por WhatsApp
           </button>
