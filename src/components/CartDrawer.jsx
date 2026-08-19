@@ -486,6 +486,7 @@ export default function CartDrawer({
               >
                 <option value="">Forma de pago *</option>
                 <option value="Pago Móvil">Pago Móvil</option>
+                <option value="Transferencia">Transferencia</option>
                 <option value="Efectivo (Bs)">Efectivo (Bs)</option>
                 <option value="Zelle">Zelle</option>
                 <option value="Efectivo ($)">Efectivo ($)</option>
