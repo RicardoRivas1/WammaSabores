@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 // 📍 UBICACIÓN DE TU LOCAL
 const RESTAURANT_LOCATION = {
@@ -23,7 +23,7 @@ const OPCIONES_CONTORNOS = [
   "ENSALADA RALLADA",
   "ENSALADA DE AGUACATE Y TOMATE CHERRY",
   "ENSALADA GALLINA",
-  "PLÁTANO DULCE AL HORNO"
+  "PLÁTANO DULCE AL HORNO",
 ];
 
 // TABLA DE PRECIOS POR KILÓMETROS
@@ -42,7 +42,7 @@ export default function CartDrawer({
   onClose,
   cart = [],
   onUpdateQuantity,
-  onUpdateContornos, 
+  onUpdateContornos,
   orderNotes,
   setOrderNotes,
   deliveryOption,
@@ -59,34 +59,34 @@ export default function CartDrawer({
 
   // Requerimiento 1: Estado con los datos del cliente
   const [customerData, setCustomerData] = useState({
-    nombre: '',
-    direccion: address || '',
-    referencia: '',
-    telefono1: '',
-    telefono2: '',
-    pago: ''
+    nombre: "",
+    direccion: address || "",
+    referencia: "",
+    telefono1: "",
+    telefono2: "",
+    pago: "",
   });
 
   // Sincronizar dirección prop con customerData.direccion
   useEffect(() => {
-    setCustomerData(prev => ({ ...prev, direccion: address }));
+    setCustomerData((prev) => ({ ...prev, direccion: address }));
   }, [address]);
 
   // Manejar cambios en el formulario del cliente
   const handleCustomerChange = (e) => {
     const { name, value } = e.target;
-    setCustomerData(prev => ({ ...prev, [name]: value }));
-    if (name === 'direccion') {
+    setCustomerData((prev) => ({ ...prev, [name]: value }));
+    if (name === "direccion") {
       setAddress(value);
     }
   };
 
   // Manejar selección de contornos por producto
-const handleContornoSelect = (itemId, index, value) => {
-  if (onUpdateContornos) {
-    onUpdateContornos(itemId, index, value);
-  }
-};
+  const handleContornoSelect = (itemId, index, value) => {
+    if (onUpdateContornos) {
+      onUpdateContornos(itemId, index, value);
+    }
+  };
 
   // Cálculo de distancia (Haversine)
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -106,7 +106,7 @@ const handleContornoSelect = (itemId, index, value) => {
 
   // Buscador de dirección
   useEffect(() => {
-    if (!address || address.length < 3 || deliveryOption !== 'delivery') {
+    if (!address || address.length < 3 || deliveryOption !== "delivery") {
       setSuggestions([]);
       return;
     }
@@ -116,13 +116,13 @@ const handleContornoSelect = (itemId, index, value) => {
       try {
         const response = await fetch(
           `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-            address
-          )}&countrycodes=ve&limit=5`
+            address,
+          )}&countrycodes=ve&limit=5`,
         );
         const data = await response.json();
         setSuggestions(data || []);
       } catch (error) {
-        console.error('Error al buscar dirección:', error);
+        console.error("Error al buscar dirección:", error);
       } finally {
         setIsLoadingAddress(false);
       }
@@ -135,7 +135,7 @@ const handleContornoSelect = (itemId, index, value) => {
 
   const handleSelectAddress = (item) => {
     setAddress(item.display_name);
-    setCustomerData(prev => ({ ...prev, direccion: item.display_name }));
+    setCustomerData((prev) => ({ ...prev, direccion: item.display_name }));
     setSuggestions([]);
 
     const clientLat = parseFloat(item.lat);
@@ -146,7 +146,7 @@ const handleContornoSelect = (itemId, index, value) => {
         RESTAURANT_LOCATION.lat,
         RESTAURANT_LOCATION.lon,
         clientLat,
-        clientLon
+        clientLon,
       );
       setDeliveryDistance(km);
       const fee = calculateDeliveryFee(km);
@@ -164,34 +164,41 @@ const handleContornoSelect = (itemId, index, value) => {
 
   // Totales
   const subtotalUSD = cart.reduce((sum, item) => {
-    const price = Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
+    const price = Number(String(item.price).replace(/[^0-9.-]+/g, "")) || 0;
     return sum + price * (item.quantity || 1);
   }, 0);
 
-  const currentDeliveryFee = deliveryOption === 'delivery' ? deliveryCostUSD : 0;
+  const currentDeliveryFee =
+    deliveryOption === "delivery" ? deliveryCostUSD : 0;
   const totalUSD = subtotalUSD + currentDeliveryFee;
   const totalVES = tasaBcv ? totalUSD * tasaBcv : 0;
 
   // Validación de datos y contornos antes de enviar
   const isFormValid = () => {
-    const contornosValidos = cart.every(item => 
-      !item.hasContornos || 
-      (item.selectedContornos && item.selectedContornos[0] && item.selectedContornos[1])
+    const contornosValidos = cart.every(
+      (item) =>
+        !item.hasContornos ||
+        (item.selectedContornos &&
+          item.selectedContornos[0] &&
+          item.selectedContornos[1]),
     );
 
-    const camposObligatorios = 
-      customerData.nombre.trim() !== '' &&
-      customerData.referencia.trim() !== '' &&
-      customerData.telefono1.trim() !== '' &&
-      customerData.pago !== '' &&
-      (deliveryOption === 'pickup' || customerData.direccion.trim() !== '');
+    const camposObligatorios =
+      customerData.nombre.trim() !== "" &&
+      customerData.telefono1.trim() !== "" &&
+      customerData.pago !== "" &&
+      (deliveryOption === "pickup" ||
+        (customerData.direccion.trim() !== "" &&
+          customerData.referencia.trim() !== ""));
 
     return contornosValidos && camposObligatorios;
   };
 
   const handleSendOrder = () => {
     if (!isFormValid()) {
-      alert("Por favor completa todos los campos obligatorios (*) y la selección de contornos en los platos que aplique.");
+      alert(
+        "Por favor completa todos los campos obligatorios (*) y la selección de contornos en los platos que aplique.",
+      );
       return;
     }
 
@@ -199,7 +206,7 @@ const handleContornoSelect = (itemId, index, value) => {
       onSendWhatsApp({
         customerData,
         deliveryDistance,
-        deliveryCostUSD: currentDeliveryFee
+        deliveryCostUSD: currentDeliveryFee,
       });
     }
   };
@@ -240,7 +247,7 @@ const handleContornoSelect = (itemId, index, value) => {
                     <p className="text-xs text-amber-400 font-bold">
                       $
                       {(
-                        Number(String(item.price).replace(/[^0-9.-]+/g, '')) *
+                        Number(String(item.price).replace(/[^0-9.-]+/g, "")) *
                         (item.quantity || 1)
                       ).toFixed(2)}
                     </p>
@@ -257,7 +264,9 @@ const handleContornoSelect = (itemId, index, value) => {
                       {item.quantity}
                     </span>
                     <button
-                      onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+                      onClick={() =>
+                        onUpdateQuantity(item.id, item.quantity + 1)
+                      }
                       className="text-zinc-300 hover:text-white font-bold text-base px-2 py-0.5 rounded active:scale-95 transition-transform"
                     >
                       +
@@ -269,12 +278,14 @@ const handleContornoSelect = (itemId, index, value) => {
                 {item.hasContornos && (
                   <div className="bg-zinc-950 p-2.5 rounded-lg border border-amber-500/30 text-xs space-y-2">
                     <p className="font-semibold text-amber-400 flex items-center gap-1">
-                       Elige tus 2 contornos :
+                      Elige tus 2 contornos :
                     </p>
                     <div className="grid grid-cols-1 gap-2">
                       <select
-                        value={item.selectedContornos?.[0] || ''}
-                        onChange={(e) => handleContornoSelect(item.id, 0, e.target.value)}
+                        value={item.selectedContornos?.[0] || ""}
+                        onChange={(e) =>
+                          handleContornoSelect(item.id, 0, e.target.value)
+                        }
                         className="w-full bg-zinc-900 border border-zinc-700 rounded p-2 text-white text-xs focus:outline-none focus:border-amber-500"
                       >
                         <option value="">-- Contorno 1 * --</option>
@@ -286,8 +297,10 @@ const handleContornoSelect = (itemId, index, value) => {
                       </select>
 
                       <select
-                        value={item.selectedContornos?.[1] || ''}
-                        onChange={(e) => handleContornoSelect(item.id, 1, e.target.value)}
+                        value={item.selectedContornos?.[1] || ""}
+                        onChange={(e) =>
+                          handleContornoSelect(item.id, 1, e.target.value)
+                        }
                         className="w-full bg-zinc-900 border border-zinc-700 rounded p-2 text-white text-xs focus:outline-none focus:border-amber-500"
                       >
                         <option value="">-- Contorno 2 * --</option>
@@ -319,11 +332,11 @@ const handleContornoSelect = (itemId, index, value) => {
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
-                  onClick={() => setDeliveryOption('delivery')}
+                  onClick={() => setDeliveryOption("delivery")}
                   className={`py-2 px-3 rounded-lg text-xs font-bold border transition-colors ${
-                    deliveryOption === 'delivery'
-                      ? 'bg-amber-500 text-black border-amber-500'
-                      : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700'
+                    deliveryOption === "delivery"
+                      ? "bg-amber-500 text-black border-amber-500"
+                      : "bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700"
                   }`}
                 >
                   Delivery
@@ -331,14 +344,14 @@ const handleContornoSelect = (itemId, index, value) => {
                 <button
                   type="button"
                   onClick={() => {
-                    setDeliveryOption('pickup');
+                    setDeliveryOption("pickup");
                     setDeliveryDistance(0);
                     setDeliveryCostUSD(0);
                   }}
                   className={`py-2 px-3 rounded-lg text-xs font-bold border transition-colors ${
-                    deliveryOption === 'pickup'
-                      ? 'bg-amber-500 text-black border-amber-500'
-                      : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700'
+                    deliveryOption === "pickup"
+                      ? "bg-amber-500 text-black border-amber-500"
+                      : "bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700"
                   }`}
                 >
                   Retiro en Local
@@ -346,7 +359,7 @@ const handleContornoSelect = (itemId, index, value) => {
               </div>
             </div>
 
-            {deliveryOption === 'delivery' && (
+            {deliveryOption === "delivery" && (
               <div className="space-y-2 relative">
                 <label className="block text-xs font-semibold text-zinc-300">
                   📍 Buscar dirección (GPS / Búsqueda):
@@ -355,7 +368,11 @@ const handleContornoSelect = (itemId, index, value) => {
                   <input
                     type="text"
                     value={address}
-                    onChange={(e) => handleCustomerChange({ target: { name: 'direccion', value: e.target.value } })}
+                    onChange={(e) =>
+                      handleCustomerChange({
+                        target: { name: "direccion", value: e.target.value },
+                      })
+                    }
                     placeholder="Escribe tu zona, edf, calle o av..."
                     className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2.5 pr-8 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
                   />
@@ -363,8 +380,8 @@ const handleContornoSelect = (itemId, index, value) => {
                     <button
                       type="button"
                       onClick={() => {
-                        setAddress('');
-                        setCustomerData(prev => ({ ...prev, direccion: '' }));
+                        setAddress("");
+                        setCustomerData((prev) => ({ ...prev, direccion: "" }));
                         setSuggestions([]);
                         setDeliveryDistance(0);
                         setDeliveryCostUSD(0);
@@ -418,32 +435,35 @@ const handleContornoSelect = (itemId, index, value) => {
             {/* Requerimiento 1: Formulario con Datos del Cliente */}
             <div className="bg-zinc-900 border border-zinc-800 p-3 rounded-lg space-y-2.5">
               <p className="text-xs font-bold text-amber-400 text-center">
-                 Complete los siguientes datos
+                Complete los siguientes datos
               </p>
 
               <input
                 type="text"
                 name="nombre"
-                placeholder="Nombre y Apellido"
+                placeholder="Nombre y Apellido *"
                 value={customerData.nombre}
                 onChange={handleCustomerChange}
                 className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
               />
 
-              <input
-                type="text"
-                name="referencia"
-                placeholder="Punto de referencia"
-                value={customerData.referencia}
-                onChange={handleCustomerChange}
-                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
-              />
+              {/* Solo se muestra si el usuario elige Delivery */}
+              {deliveryOption === "delivery" && (
+                <input
+                  type="text"
+                  name="referencia"
+                  placeholder="Punto de referencia *"
+                  value={customerData.referencia}
+                  onChange={handleCustomerChange}
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
+                />
+              )}
 
               <div className="grid grid-cols-2 gap-2">
                 <input
                   type="tel"
                   name="telefono1"
-                  placeholder="Teléfono 1"
+                  placeholder="Teléfono 1 *"
                   value={customerData.telefono1}
                   onChange={handleCustomerChange}
                   className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
@@ -466,13 +486,9 @@ const handleContornoSelect = (itemId, index, value) => {
               >
                 <option value="">Forma de pago *</option>
                 <option value="Pago Móvil">Pago Móvil</option>
-                <option value="Efectivo (Bs)">Efectivo (Bs)</option>
-                <option value="Transferencia (Bs)">Transferencia (Bs)</option>
                 <option value="Zelle">Zelle</option>
                 <option value="Efectivo ($)">Efectivo ($)</option>
-                <option value="Binance">Binance</option>
-                <option value="Mercantil Panamá">Mercantil Panamá</option>
-                <option value="FaceBank">FaceBank</option>
+                <option value="Efectivo (Bs)">Efectivo (Bs)</option>
               </select>
             </div>
 
@@ -499,7 +515,7 @@ const handleContornoSelect = (itemId, index, value) => {
             <span>${subtotalUSD.toFixed(2)}</span>
           </div>
 
-          {deliveryOption === 'delivery' && (
+          {deliveryOption === "delivery" && (
             <div className="flex justify-between items-center text-xs text-zinc-400">
               <span>Envío ({deliveryDistance} km):</span>
               <span className="text-amber-400 font-semibold">
