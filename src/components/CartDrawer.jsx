@@ -486,9 +486,12 @@ export default function CartDrawer({
               >
                 <option value="">Forma de pago *</option>
                 <option value="Pago Móvil">Pago Móvil</option>
+                <option value="Efectivo (Bs)">Efectivo (Bs)</option>
                 <option value="Zelle">Zelle</option>
                 <option value="Efectivo ($)">Efectivo ($)</option>
-                <option value="Efectivo (Bs)">Efectivo (Bs)</option>
+                <option value="Paypal">Paypal</option>
+                <option value="Mercantil Panamá">Mercantil Panamá</option>
+                <option value="Facebank">FaceBank</option>
               </select>
             </div>
 
