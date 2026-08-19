@@ -32,7 +32,14 @@ export function CartProvider({ children }) {
             : item
         );
       }
-      return [...prev, { ...product, quantity: 1 }];
+      return [
+        ...prev,
+        {
+          ...product,
+          quantity: 1,
+          selectedContornos: product.hasContornos ? ['', ''] : undefined,
+        },
+      ];
     });
   };
 
@@ -41,15 +48,31 @@ export function CartProvider({ children }) {
   };
 
   const updateQuantity = (id, newQuantity) => {
-  setCart((prevCart) => {
-    if (newQuantity <= 0) {
-      return prevCart.filter((item) => item.id !== id);
-    }
-    return prevCart.map((item) =>
-      item.id === id ? { ...item, quantity: newQuantity } : item
+    setCart((prevCart) => {
+      if (newQuantity <= 0) {
+        return prevCart.filter((item) => item.id !== id);
+      }
+      return prevCart.map((item) =>
+        item.id === id ? { ...item, quantity: newQuantity } : item
+      );
+    });
+  };
+
+  // Función inmutable para guardar la selección de contornos
+  const updateContornos = (itemId, index, value) => {
+    setCart((prevCart) =>
+      prevCart.map((item) => {
+        if (item.id === itemId) {
+          const currentContornos = item.selectedContornos
+            ? [...item.selectedContornos]
+            : ['', ''];
+          currentContornos[index] = value;
+          return { ...item, selectedContornos: currentContornos };
+        }
+        return item;
+      })
     );
-  });
-};
+  };
 
   return (
     <CartContext.Provider
@@ -58,6 +81,7 @@ export function CartProvider({ children }) {
         addToCart,
         removeFromCart,
         updateQuantity,
+        updateContornos,
         tasaBcv,
         isCartOpen,
         setIsCartOpen,

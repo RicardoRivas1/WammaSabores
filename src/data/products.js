@@ -290,6 +290,7 @@ export const PRODUCTS = [
     price: 12.00,
     category: 'carnes',
     description: 'Servido con 2 contornos a elección.',
+    hasContornos: true,
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyn_jHDwkh5aFXVvhtUZ41C8LEPlWDNe8HDQgl34SqhYmrXj8LbhIaRr8p&s=10'
   },
   {
@@ -298,6 +299,7 @@ export const PRODUCTS = [
     price: 13.00,
     category: 'carnes',
     description: 'Servidas con 2 contornos a elección.',
+    hasContornos: true,
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwHXnspNIQm43GBilOxL1KkoC8mpVC3yNOqZGq7KB93khS7VcUhLPvL-AN&s=10'
   },
   {
@@ -306,6 +308,7 @@ export const PRODUCTS = [
     price: 20.50,
     category: 'carnes',
     description: '200g punta importada con tiras de costilla y chistorra. Incluye 2 contornos.',
+    hasContornos: true,
     image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80'
   },
   {
@@ -314,6 +317,7 @@ export const PRODUCTS = [
     price: 17.00,
     category: 'carnes',
     description: 'Servido con 2 contornos a elección.',
+    hasContornos: true,
     image: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=600&q=80'
   },
   {
@@ -338,6 +342,7 @@ export const PRODUCTS = [
     price: 18.00,
     category: 'carnes',
     description: 'Churrasco de pollo, lomito, chistorra y salteado de mariscos. Incluye 2 contornos.',
+    hasContornos: true,
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9y3pPHTVhYGHTKlOdWFDnmR6jUaR-obxOOplO4PG9-mLF1CADT7Y_wmg&s=10'
   },
   {
@@ -346,6 +351,7 @@ export const PRODUCTS = [
     price: 13.50,
     category: 'carnes',
     description: 'Barriga de cerdo crujiente servida con 2 contornos a elección.',
+    hasContornos: true,
     image: 'https://www.seriouseats.com/thmb/orl1xkPajYxzsOZwkooPtdYvM-M=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/20210508-lechon-kawali-melissa-hom-2-inchChunks-seriouseats-1d53c12cee234305b921362e2106bf29.jpg'
   },
 
@@ -356,6 +362,7 @@ export const PRODUCTS = [
     price: 10.50,
     category: 'pollo',
     description: 'Incluye 2 contornos a elección.',
+    hasContornos: true,
     image: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=600&q=80'
   },
   {
@@ -364,6 +371,7 @@ export const PRODUCTS = [
     price: 11.50,
     category: 'pollo',
     description: 'Incluye 2 contornos a elección.',
+    hasContornos: true,
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiY7_GqULQh-20U7qOw6HP9hfZKdsHUh8jSUbPwePwZytIOGIkjeY1sw8l&s=10'
   },
   {
@@ -372,6 +380,7 @@ export const PRODUCTS = [
     price: 12.00,
     category: 'pollo',
     description: 'Tiras de pollo empanizadas con 2 contornos a elección.',
+    hasContornos: true,
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbksdt1dNtrnBNUdK_I0tbxWI4IGyeauUAG_asTLHQoA&s=10'
   },
   {
@@ -380,6 +389,7 @@ export const PRODUCTS = [
     price: 13.00,
     category: 'pollo',
     description: 'Incluye 2 contornos a elección.',
+    hasContornos: true,
     image: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80'
   },
   {
@@ -388,6 +398,7 @@ export const PRODUCTS = [
     price: 13.00,
     category: 'pollo',
     description: 'Incluye 2 contornos a elección.',
+    hasContornos: true,
     image: 'https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?auto=format&fit=crop&w=600&q=80'
   },
   {
@@ -396,6 +407,7 @@ export const PRODUCTS = [
     price: 14.00,
     category: 'pollo',
     description: 'Con champiñones y queso gratinado. Incluye 2 contornos.',
+    hasContornos: true,
     image: 'https://images.unsplash.com/photo-1600891964092-4316c288032e?auto=format&fit=crop&w=600&q=80'
   },
   {
@@ -430,6 +442,7 @@ export const PRODUCTS = [
     price: 13.00,
     category: 'pescados',
     description: 'Incluye 2 contornos a elección.',
+    hasContornos: true,
     image: 'https://images.unsplash.com/photo-1535567465397-7523840f2ae9?auto=format&fit=crop&w=600&q=80'
   },
   {
@@ -438,6 +451,7 @@ export const PRODUCTS = [
     price: 14.00,
     category: 'pescados',
     description: 'Al Ajillo o Al Menier. Incluye 2 contornos a elección.',
+    hasContornos: true,
     image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80'
   },
   {
@@ -446,6 +460,7 @@ export const PRODUCTS = [
     price: 17.00,
     category: 'pescados',
     description: 'Pesca del día coronada con mariscos al graten. Incluye 2 contornos.',
+    hasContornos: true,
     image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80'
   },
   {
@@ -486,6 +501,7 @@ export const PRODUCTS = [
     price: 14.00,
     category: 'pescados',
     description: 'A la parrilla en salsa ponzu, coronado con wakame. Incluye 2 contornos.',
+    hasContornos: true,
     image: 'https://images.unsplash.com/photo-1501595091296-3aa970afb3ff?auto=format&fit=crop&w=600&q=80'
   },
 

@@ -11,7 +11,7 @@ export default function Footer() {
           <strong className="text-gray-700">Envíos y Pedidos:</strong> Los productos añadidos al carrito se confirman y coordinan directamente vía WhatsApp.
         </p>
         <p>
-          <strong className="text-gray-700">Métodos de Pago:</strong> Aceptamos Pago Móvil y efectivo al momento deL retiro.
+          <strong className="text-gray-700">Métodos de Pago:</strong> Aceptamos Pago Móvil, Efectivo (Bs), Transferencia (Bs), Zelle, Efectivo ($), Binance, Mercantil Panamá y Facebank.
         </p>
       </div>
     </footer>

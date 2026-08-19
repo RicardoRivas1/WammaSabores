@@ -32,7 +32,8 @@ export function sendOrderToWhatsApp({
   tasaBcv = null,
   address = '',
   distanceKm = null,
-  notes = ''
+  notes = '',
+  customerData = {} // 👈🏻 Requerimiento 1: Recibe los datos del cliente
 }) {
   if (!cart || cart.length === 0) {
     const url = waLink(GENERIC_MESSAGE);
@@ -47,20 +48,28 @@ export function sendOrderToWhatsApp({
   let message = `🛒 *¡NUEVO PEDIDO EN WAMMA SABORES!* 🍔🔥\n\n`;
   message += `📝 *DETALLE DEL PEDIDO:*\n`;
 
+  // Requerimiento 2 y 3: Renderizado de productos y sus contornos elegidos
   cart.forEach((item) => {
     if (!item) return;
     const price = Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
-    const qty = Number(item.quantity) || 1;
+    const qty = Number(item.quantity || item.qty) || 1;
     const itemTotalUSD = (price * qty).toFixed(2);
 
     message += `• ${qty}x ${item.name} - $${itemTotalUSD}\n`;
+
+    // Si el producto tiene contornos seleccionados, los agrega al mensaje
+    if (item.selectedContornos && Array.isArray(item.selectedContornos) && item.selectedContornos.length > 0) {
+      const c1 = item.selectedContornos[0] || 'Sin seleccionar';
+      const c2 = item.selectedContornos[1] || 'Sin seleccionar';
+      message += `   🥗 *Contornos:* ${c1} / ${c2}\n`;
+    }
   });
 
   // Desglose Financiero
   message += `\n💵 *Subtotal:* $${subtotalUSD.toFixed(2)}`;
   
   if (deliveryUSD > 0) {
-    message += `\n🛵 *Delivery (${distanceKm} km):* $${deliveryUSD.toFixed(2)}`;
+    message += `\n🛵 *Delivery (${distanceKm || 'N/A'} km):* $${deliveryUSD.toFixed(2)}`;
   } else {
     message += `\n🛵 *Delivery:* Por acordar / Ubicación no ingresada`;
   }
@@ -79,19 +88,22 @@ export function sendOrderToWhatsApp({
     message += `🇻🇪 *TOTAL A PAGAR (VES):* Bs. ${formattedVES}\n`;
   }
 
-  // Dirección y Distancia
-  message += `\n📍 *DIRECCIÓN DE ENTREGA:*\n`;
-  if (address && address.trim() !== '') {
-    message += `${address}\n`;
-    if (distanceKm) {
-      message += `📏 *Distancia estimada:* ${distanceKm} km\n`;
-    }
-  } else {
-    message += `(Ubicación no especificada / Por acordar en el chat)\n`;
-  }
-
+  // Observaciones generales
   if (notes && notes.trim() !== '') {
     message += `\n📝 *Observaciones:* ${notes}\n`;
+  }
+
+  // Requerimiento 1 y 3: Formato exacto de datos del cliente
+  message += `\n👉🏻 *Complete los siguientes datos* 👇🏻\n\n`;
+  message += `*Nombre y Apellido:* ${customerData.nombre || ''}\n`;
+  message += `*Dirección escrita y GPS:* ${customerData.direccion || address || ''}\n`;
+  message += `*Punto de referencia:* ${customerData.referencia || ''}\n`;
+  message += `*Teléfono 1:* ${customerData.telefono1 || ''}\n`;
+  message += `*Teléfono 2:* ${customerData.telefono2 || 'N/A'}\n`;
+  message += `*Forma de pago:* ${customerData.pago || ''}\n`;
+
+  if (distanceKm) {
+    message += `📏 *Distancia estimada:* ${distanceKm} km\n`;
   }
 
   message += `\n❓ *¿Deseas confirmar el pedido?*`;

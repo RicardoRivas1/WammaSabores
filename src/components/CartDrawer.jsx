@@ -1,12 +1,32 @@
 import React, { useState, useEffect } from 'react';
 
-// 📍 UBICACIÓN DE TU LOCAL (Ajusta lat/lon si requieres mayor precisión)
+// 📍 UBICACIÓN DE TU LOCAL
 const RESTAURANT_LOCATION = {
   lat: 10.4965,
   lon: -66.8983,
 };
 
-// FUNCIÓN SEGÚN TABLA DE PRECIOS POR KILÓMETROS
+// OPCIONES DE CONTORNOS DISPONIBLES
+const OPCIONES_CONTORNOS = [
+  "ARROZ",
+  "PLUMITA EN SALSA 4 QUESOS",
+  "PAPAS FRITAS",
+  "TOSTONES CON MOJITO VERDE",
+  "CROQUETAS DE PLÁTANO",
+  "YUCA CON MOJITO",
+  "PURÉ DE PAPAS",
+  "ENSALADA CÉSAR (SIN POLLO)",
+  "ENSALADA CAPRESA",
+  "VEGETALES A LA PARRILLA",
+  "ENSALADA KANI",
+  "ENSALADA MIXTA CON AGUACATE",
+  "ENSALADA RALLADA",
+  "ENSALADA DE AGUACATE Y TOMATE CHERRY",
+  "ENSALADA GALLINA",
+  "PLÁTANO DULCE AL HORNO"
+];
+
+// TABLA DE PRECIOS POR KILÓMETROS
 const calculateDeliveryFee = (km) => {
   if (km <= 1.0) return 1.0;
   if (km <= 2.9) return 2.0;
@@ -22,6 +42,7 @@ export default function CartDrawer({
   onClose,
   cart = [],
   onUpdateQuantity,
+  onUpdateContornos, 
   orderNotes,
   setOrderNotes,
   deliveryOption,
@@ -36,9 +57,40 @@ export default function CartDrawer({
   const [deliveryDistance, setDeliveryDistance] = useState(0);
   const [deliveryCostUSD, setDeliveryCostUSD] = useState(0);
 
-  // Cálculo de distancia en línea recta (Fórmula de Haversine)
+  // Requerimiento 1: Estado con los datos del cliente
+  const [customerData, setCustomerData] = useState({
+    nombre: '',
+    direccion: address || '',
+    referencia: '',
+    telefono1: '',
+    telefono2: '',
+    pago: ''
+  });
+
+  // Sincronizar dirección prop con customerData.direccion
+  useEffect(() => {
+    setCustomerData(prev => ({ ...prev, direccion: address }));
+  }, [address]);
+
+  // Manejar cambios en el formulario del cliente
+  const handleCustomerChange = (e) => {
+    const { name, value } = e.target;
+    setCustomerData(prev => ({ ...prev, [name]: value }));
+    if (name === 'direccion') {
+      setAddress(value);
+    }
+  };
+
+  // Manejar selección de contornos por producto
+const handleContornoSelect = (itemId, index, value) => {
+  if (onUpdateContornos) {
+    onUpdateContornos(itemId, index, value);
+  }
+};
+
+  // Cálculo de distancia (Haversine)
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    const R = 6371; // Radio de la Tierra en km
+    const R = 6371;
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
     const dLon = ((lon2 - lon1) * Math.PI) / 180;
     const a =
@@ -52,7 +104,7 @@ export default function CartDrawer({
     return parseFloat(distance.toFixed(2));
   };
 
-  // Buscador de dirección en tiempo real
+  // Buscador de dirección
   useEffect(() => {
     if (!address || address.length < 3 || deliveryOption !== 'delivery') {
       setSuggestions([]);
@@ -81,9 +133,9 @@ export default function CartDrawer({
 
   if (!isOpen) return null;
 
-  // Selección de dirección y aplicación del rango de precios
   const handleSelectAddress = (item) => {
     setAddress(item.display_name);
+    setCustomerData(prev => ({ ...prev, direccion: item.display_name }));
     setSuggestions([]);
 
     const clientLat = parseFloat(item.lat);
@@ -97,8 +149,6 @@ export default function CartDrawer({
         clientLon
       );
       setDeliveryDistance(km);
-
-      // Aplica la tarifa según la tabla introducida
       const fee = calculateDeliveryFee(km);
       setDeliveryCostUSD(fee);
     }
@@ -122,13 +172,45 @@ export default function CartDrawer({
   const totalUSD = subtotalUSD + currentDeliveryFee;
   const totalVES = tasaBcv ? totalUSD * tasaBcv : 0;
 
+  // Validación de datos y contornos antes de enviar
+  const isFormValid = () => {
+    const contornosValidos = cart.every(item => 
+      !item.hasContornos || 
+      (item.selectedContornos && item.selectedContornos[0] && item.selectedContornos[1])
+    );
+
+    const camposObligatorios = 
+      customerData.nombre.trim() !== '' &&
+      customerData.referencia.trim() !== '' &&
+      customerData.telefono1.trim() !== '' &&
+      customerData.pago !== '' &&
+      (deliveryOption === 'pickup' || customerData.direccion.trim() !== '');
+
+    return contornosValidos && camposObligatorios;
+  };
+
+  const handleSendOrder = () => {
+    if (!isFormValid()) {
+      alert("Por favor completa todos los campos obligatorios (*) y la selección de contornos en los platos que aplique.");
+      return;
+    }
+
+    if (onSendWhatsApp) {
+      onSendWhatsApp({
+        customerData,
+        deliveryDistance,
+        deliveryCostUSD: currentDeliveryFee
+      });
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-black/70 backdrop-blur-sm">
       <div className="w-full max-w-md bg-zinc-950 h-full flex flex-col justify-between p-5 border-l border-zinc-800 text-white shadow-2xl relative overflow-y-auto">
         {/* Cabecera */}
         <div className="flex items-center justify-between pb-4 border-b border-zinc-800">
           <h2 className="text-lg font-bold flex items-center gap-2">
-             Tu Pedido
+            Tu Pedido
           </h2>
           <button
             onClick={onClose}
@@ -148,38 +230,80 @@ export default function CartDrawer({
             cart.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center justify-between bg-zinc-900 border border-zinc-800 p-3 rounded-lg"
+                className="bg-zinc-900 border border-zinc-800 p-3 rounded-lg space-y-3"
               >
-                <div className="flex-1 pr-2">
-                  <h4 className="text-sm font-semibold text-white">
-                    {item.name}
-                  </h4>
-                  <p className="text-xs text-amber-400 font-bold">
-                    $
-                    {(
-                      Number(String(item.price).replace(/[^0-9.-]+/g, '')) *
-                      (item.quantity || 1)
-                    ).toFixed(2)}
-                  </p>
+                <div className="flex items-center justify-between">
+                  <div className="flex-1 pr-2">
+                    <h4 className="text-sm font-semibold text-white">
+                      {item.name}
+                    </h4>
+                    <p className="text-xs text-amber-400 font-bold">
+                      $
+                      {(
+                        Number(String(item.price).replace(/[^0-9.-]+/g, '')) *
+                        (item.quantity || 1)
+                      ).toFixed(2)}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 bg-zinc-800 px-2 py-1 rounded-md border border-zinc-700">
+                    <button
+                      onClick={() => handleDecrement(item)}
+                      className="text-zinc-300 hover:text-white font-bold text-base px-2 py-0.5 rounded active:scale-95 transition-transform"
+                    >
+                      -
+                    </button>
+                    <span className="text-xs font-bold text-white min-w-[20px] text-center select-none">
+                      {item.quantity}
+                    </span>
+                    <button
+                      onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+                      className="text-zinc-300 hover:text-white font-bold text-base px-2 py-0.5 rounded active:scale-95 transition-transform"
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-2 bg-zinc-800 px-2 py-1 rounded-md border border-zinc-700">
-                  <button
-                    onClick={() => handleDecrement(item)}
-                    className="text-zinc-300 hover:text-white font-bold text-base px-2 py-0.5 rounded active:scale-95 transition-transform"
-                  >
-                    -
-                  </button>
-                  <span className="text-xs font-bold text-white min-w-[20px] text-center select-none">
-                    {item.quantity}
-                  </span>
-                  <button
-                    onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
-                    className="text-zinc-300 hover:text-white font-bold text-base px-2 py-0.5 rounded active:scale-95 transition-transform"
-                  >
-                    +
-                  </button>
-                </div>
+                {/* Requerimiento 2: Seleccionar 2 contornos si el producto lo requiere */}
+                {item.hasContornos && (
+                  <div className="bg-zinc-950 p-2.5 rounded-lg border border-amber-500/30 text-xs space-y-2">
+                    <p className="font-semibold text-amber-400 flex items-center gap-1">
+                       Elige tus 2 contornos :
+                    </p>
+                    <div className="grid grid-cols-1 gap-2">
+                      <select
+                        value={item.selectedContornos?.[0] || ''}
+                        onChange={(e) => handleContornoSelect(item.id, 0, e.target.value)}
+                        className="w-full bg-zinc-900 border border-zinc-700 rounded p-2 text-white text-xs focus:outline-none focus:border-amber-500"
+                      >
+                        <option value="">-- Contorno 1 * --</option>
+                        {OPCIONES_CONTORNOS.map((op) => (
+                          <option key={`c1-${op}`} value={op}>
+                            {op}
+                          </option>
+                        ))}
+                      </select>
+
+                      <select
+                        value={item.selectedContornos?.[1] || ''}
+                        onChange={(e) => handleContornoSelect(item.id, 1, e.target.value)}
+                        className="w-full bg-zinc-900 border border-zinc-700 rounded p-2 text-white text-xs focus:outline-none focus:border-amber-500"
+                      >
+                        <option value="">-- Contorno 2 * --</option>
+                        {OPCIONES_CONTORNOS.map((op) => (
+                          <option
+                            key={`c2-${op}`}
+                            value={op}
+                            disabled={op === item.selectedContornos?.[0]}
+                          >
+                            {op}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                )}
               </div>
             ))
           )}
@@ -190,7 +314,7 @@ export default function CartDrawer({
           <div className="space-y-4 border-t border-zinc-800 pt-4">
             <div>
               <label className="block text-xs font-semibold text-zinc-300 mb-2">
-                 Opciones de Entrega:
+                Opciones de Entrega:
               </label>
               <div className="grid grid-cols-2 gap-2">
                 <button
@@ -225,13 +349,13 @@ export default function CartDrawer({
             {deliveryOption === 'delivery' && (
               <div className="space-y-2 relative">
                 <label className="block text-xs font-semibold text-zinc-300">
-                  📍 Dirección de entrega:
+                  📍 Buscar dirección (GPS / Búsqueda):
                 </label>
                 <div className="relative">
                   <input
                     type="text"
                     value={address}
-                    onChange={(e) => setAddress(e.target.value)}
+                    onChange={(e) => handleCustomerChange({ target: { name: 'direccion', value: e.target.value } })}
                     placeholder="Escribe tu zona, edf, calle o av..."
                     className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2.5 pr-8 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
                   />
@@ -240,6 +364,7 @@ export default function CartDrawer({
                       type="button"
                       onClick={() => {
                         setAddress('');
+                        setCustomerData(prev => ({ ...prev, direccion: '' }));
                         setSuggestions([]);
                         setDeliveryDistance(0);
                         setDeliveryCostUSD(0);
@@ -257,7 +382,6 @@ export default function CartDrawer({
                   </p>
                 )}
 
-                {/* Desplegable de sugerencias de autocompletado */}
                 {suggestions.length > 0 && (
                   <ul className="absolute z-50 left-0 right-0 bg-zinc-900 border border-zinc-700 rounded-lg shadow-2xl mt-1 max-h-48 overflow-y-auto divide-y divide-zinc-800">
                     {suggestions.map((item, index) => (
@@ -272,7 +396,6 @@ export default function CartDrawer({
                   </ul>
                 )}
 
-                {/* --- CAJA INFORMATIVA DE RANGOS DE KM --- */}
                 {deliveryDistance > 0 && (
                   <div className="bg-zinc-900 border border-amber-500/40 rounded-lg p-3 text-xs space-y-1">
                     <div className="flex justify-between text-zinc-300">
@@ -291,6 +414,67 @@ export default function CartDrawer({
                 )}
               </div>
             )}
+
+            {/* Requerimiento 1: Formulario con Datos del Cliente */}
+            <div className="bg-zinc-900 border border-zinc-800 p-3 rounded-lg space-y-2.5">
+              <p className="text-xs font-bold text-amber-400 text-center">
+                 Complete los siguientes datos
+              </p>
+
+              <input
+                type="text"
+                name="nombre"
+                placeholder="Nombre y Apellido *"
+                value={customerData.nombre}
+                onChange={handleCustomerChange}
+                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
+              />
+
+              <input
+                type="text"
+                name="referencia"
+                placeholder="Punto de referencia *"
+                value={customerData.referencia}
+                onChange={handleCustomerChange}
+                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
+              />
+
+              <div className="grid grid-cols-2 gap-2">
+                <input
+                  type="tel"
+                  name="telefono1"
+                  placeholder="Teléfono 1 *"
+                  value={customerData.telefono1}
+                  onChange={handleCustomerChange}
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
+                />
+                <input
+                  type="tel"
+                  name="telefono2"
+                  placeholder="Teléfono 2"
+                  value={customerData.telefono2}
+                  onChange={handleCustomerChange}
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
+                />
+              </div>
+
+              <select
+                name="pago"
+                value={customerData.pago}
+                onChange={handleCustomerChange}
+                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-amber-500"
+              >
+                <option value="">Forma de pago *</option>
+                <option value="Pago Móvil">Pago Móvil</option>
+                <option value="Efectivo (Bs)">Efectivo (Bs)</option>
+                <option value="Transferencia (Bs)">Transferencia (Bs)</option>
+                <option value="Zelle">Zelle</option>
+                <option value="Efectivo ($)">Efectivo ($)</option>
+                <option value="Binance">Binance</option>
+                <option value="Mercantil Panamá">Mercantil Panamá</option>
+                <option value="FaceBank">FaceBank</option>
+              </select>
+            </div>
 
             {/* Observaciones */}
             <div>
@@ -340,7 +524,7 @@ export default function CartDrawer({
 
           <button
             disabled={cart.length === 0}
-            onClick={onSendWhatsApp}
+            onClick={handleSendOrder}
             className="w-full py-3.5 bg-red-600 hover:bg-red-500 disabled:bg-zinc-800 text-white font-bold rounded-xl text-sm transition-all shadow-lg flex items-center justify-center gap-2 mt-2"
           >
             <span>💬</span> Pedir o Consultar por WhatsApp

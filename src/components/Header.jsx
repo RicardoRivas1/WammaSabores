@@ -15,7 +15,7 @@ export default function Header() {
             WAMMA SABORES
           </h1>
           <span className="text-[10px] text-wamma-gold uppercase tracking-widest font-semibold">
-            Sabor Callejero Premium
+            Nuestra Tierra | Comida de Autor
           </span>
         </div>
       </div>
