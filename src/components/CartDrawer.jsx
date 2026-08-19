@@ -441,7 +441,7 @@ export default function CartDrawer({
               <input
                 type="text"
                 name="nombre"
-                placeholder="Nombre y Apellido *"
+                placeholder="Nombre y Apellido"
                 value={customerData.nombre}
                 onChange={handleCustomerChange}
                 className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
@@ -452,7 +452,7 @@ export default function CartDrawer({
                 <input
                   type="text"
                   name="referencia"
-                  placeholder="Punto de referencia *"
+                  placeholder="Punto de referencia"
                   value={customerData.referencia}
                   onChange={handleCustomerChange}
                   className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
@@ -463,7 +463,7 @@ export default function CartDrawer({
                 <input
                   type="tel"
                   name="telefono1"
-                  placeholder="Teléfono 1 *"
+                  placeholder="Teléfono 1"
                   value={customerData.telefono1}
                   onChange={handleCustomerChange}
                   className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
