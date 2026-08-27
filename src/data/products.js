@@ -5,7 +5,7 @@ export const PRODUCTS = [
     name: 'Sopa del día',
     price: 6.50,
     category: 'entradas',
-    description: 'Sopa reconfortante del día.',
+    description: 'Consultar opción del día.',
     image: ''
   },
   {
@@ -13,7 +13,7 @@ export const PRODUCTS = [
     name: 'Carpaccio de Lomito',
     price: 11.50,
     category: 'entradas',
-    description: 'Finas láminas de lomito sazonadas.',
+    description: 'Finas lonjas de lomito crudo aderezado con salsa al pesto, acompañado con queso parmesano rugula y reducción balsámica.',
     image: ''
   },
   {
@@ -21,7 +21,7 @@ export const PRODUCTS = [
     name: 'Nachos Mexicanos',
     price: 10.50,
     category: 'entradas',
-    description: 'Crujientes totopos acompañados con toppings al estilo mexicano.',
+    description: 'Tortilla de maíz, cubiertos de queso cheddar acompañado de frijoles, carne, guacamole, pico de gallo.',
     image: ''
   },
   {
@@ -29,7 +29,7 @@ export const PRODUCTS = [
     name: 'Camarones al Ajillo',
     price: 10.50,
     category: 'entradas',
-    description: 'Camarones salteados en ajo y especias.',
+    description: 'Camarones cocinados en mantequilla, aceite y ajo, acompañado con casabe.',
     image: ''
   },
   {
@@ -37,7 +37,7 @@ export const PRODUCTS = [
     name: 'Ceviche Mixto',
     price: 17.50,
     category: 'entradas',
-    description: 'Mezcla fresca de mariscos y pescado marinados en cítricos.',
+    description: 'Pescado fresco en cubos con una gran variedad de mariscos marinados en jugo de limón, mezclados con cebolla, cilantro y sal.',
     image: ''
   },
   {
@@ -45,7 +45,7 @@ export const PRODUCTS = [
     name: 'Ración de Pork Belly',
     price: 9.50,
     category: 'entradas',
-    description: 'Crocantes trozos de barriga de cerdo.',
+    description: 'Crujiente porkbelly al horno acompañado con ensaladilla de tomate cherry, cebolla y limón.',
     image: ''
   },
   {
@@ -53,7 +53,7 @@ export const PRODUCTS = [
     name: 'Ración de Ensalada César',
     price: 6.50,
     category: 'entradas',
-    description: 'Clásica ensalada César individual.',
+    description: 'Ensalada de lechuga romana y crutones, mezclados con un aderezo César.',
     image: ''
   },
   {
@@ -61,7 +61,7 @@ export const PRODUCTS = [
     name: 'Tequeños con Queso y Papelón (6 unds)',
     price: 7.50,
     category: 'entradas',
-    description: '6 tequeños rellenos de queso con aderezo de papelón.',
+    description: 'Tequeño de queso con un sirope dulce y especiado a base de panela (6 und).',
     image: ''
   },
   {
@@ -69,7 +69,7 @@ export const PRODUCTS = [
     name: 'Casabe Gratinado',
     price: 5.50,
     category: 'entradas',
-    description: 'Ración de casabe crujiente con queso gratinado.',
+    description: 'Casabe gratinado con queso parmesano, mantequilla, ajo y perejil.',
     image: ''
   },
   {
@@ -77,7 +77,7 @@ export const PRODUCTS = [
     name: 'Croquetas de Pescado',
     price: 6.50,
     category: 'entradas',
-    description: 'Acompañadas con salsa tártara.',
+    description: 'Mézclum de pescado en textura crujiente, acompañado con salsa tártara (5 und)',
     image: ''
   },
   {
@@ -93,15 +93,15 @@ export const PRODUCTS = [
     name: 'Ceviche Sencillo',
     price: 13.00,
     category: 'entradas',
-    description: 'Pescado fresco marinado en limón.',
+    description: 'Trozos de pescado fresco marinados en jugo de limón, mezclados con cebolla, cilantro y ají acompañado con tostón.',
     image: ''
   },
   {
     id: 'ent-13',
-    name: 'Pan con Ajo',
+    name: 'Ración de Pan con Ajo',
     price: 3.50,
     category: 'entradas',
-    description: 'Ración de pan tostado con mantequilla de ajo.',
+    description: 'Rebanadas de pan horneado, untadas con mantequilla, aceite de oliva y ajo. ',
     image: ''
   },
   {
@@ -109,7 +109,7 @@ export const PRODUCTS = [
     name: 'Fosforera',
     price: 14.50,
     category: 'entradas',
-    description: 'Sopa concentrada de mariscos tradicionales.',
+    description: 'Sopa de mariscos y pescado.',
     image: ''
   },
 
@@ -317,7 +317,6 @@ export const PRODUCTS = [
     price: 17.00,
     category: 'carnes',
     description: 'Servido con 2 contornos a elección.',
-    hasContornos: true,
     image: ''
   },
   {
@@ -460,7 +459,6 @@ export const PRODUCTS = [
     price: 17.00,
     category: 'pescados',
     description: 'Pesca del día coronada con mariscos al graten. Incluye 2 contornos.',
-    hasContornos: true,
     image: ''
   },
   {
@@ -493,6 +491,7 @@ export const PRODUCTS = [
     price: 18.00,
     category: 'pescados',
     description: 'Variedad de mariscos en salsa especial de la casa.',
+    hasContornos: true,
     image: ''
   },
   {
