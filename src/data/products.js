@@ -332,7 +332,7 @@ export const PRODUCTS = [
     name: 'Cartocho de Lomito',
     price: 17.50,
     category: 'carnes',
-    description: 'Servido con 2 contornos a elección.',
+    description: 'Combinación de lomito con pasta Linguini en mezcla de 4 quesos en crema de leche con champiñones frescos.',
     image: ''
   },
   {
@@ -474,7 +474,7 @@ export const PRODUCTS = [
     name: 'Cartocho de Pescado y Mariscos',
     price: 17.50,
     category: 'pescados',
-    description: 'Pesca del día coronada con mariscos al graten. Incluye 2 contornos.',
+    description: 'Combinación de trozos de pescado con pasta Linguini a la crema con mariscos.',
     image: ''
   },
   {
@@ -506,7 +506,7 @@ export const PRODUCTS = [
     name: 'Cazuela de Mariscos',
     price: 18.00,
     category: 'pescados',
-    description: 'Variedad de mariscos en salsa especial de la casa.',
+    description: 'Variedad de mariscos en salsa especial de la casa. Servido con 2 contornos.',
     hasContornos: true,
     image: ''
   },
