@@ -43,7 +43,7 @@ export const PRODUCTS = [
   {
     id: 'ent-6',
     name: 'Ración de Pork Belly',
-    price: 9.50,
+    price: 10.00,
     category: 'entradas',
     description: 'Crujiente porkbelly al horno acompañado con ensaladilla de tomate cherry, cebolla y limón.',
     image: ''
@@ -91,7 +91,7 @@ export const PRODUCTS = [
   {
     id: 'ent-12',
     name: 'Ceviche Sencillo',
-    price: 13.00,
+    price: 13.50,
     category: 'entradas',
     description: 'Trozos de pescado fresco marinados en jugo de limón, mezclados con cebolla, cilantro y ají acompañado con tostón.',
     image: ''
@@ -107,9 +107,17 @@ export const PRODUCTS = [
   {
     id: 'ent-14',
     name: 'Fosforera',
-    price: 14.50,
+    price: 15.00,
     category: 'entradas',
     description: 'Sopa de mariscos y pescado.',
+    image: ''
+  },
+  {
+    id: 'ent-15',
+    name: 'Berenjena Crispy',
+    price: 10.00,
+    category: 'entradas',
+    description: 'Berenjena crujiente.',
     image: ''
   },
 
@@ -189,7 +197,7 @@ export const PRODUCTS = [
   {
     id: 'burg-10',
     name: 'Club House',
-    price: 10.00,
+    price: 10.50,
     category: 'hamburguesas',
     description: 'Sándwiches con pollo a la plancha, tomate, lechuga, jamón y papas fritas.',
     image: ''
@@ -266,6 +274,14 @@ export const PRODUCTS = [
     description: 'Jugosas tiras de pechuga de pollo empanizadas acompañadas con papas fritas.',
     image: ''
   },
+  {
+    id: 'burg-20',
+    name: 'Manhattan Mixta',
+    price: 13.50,
+    category: 'hamburguesas',
+    description: 'Doble carne de solomo 110g o 2 paty de pollo crispy, queso cheddar, tocineta, cebolla crujiente, lechuga, tomate y pepinillos. Versión mixta.',
+    image: ''
+  },
 
   // --- CARNES Y CERDO ---
   {
@@ -287,7 +303,7 @@ export const PRODUCTS = [
   {
     id: 'carne-3',
     name: 'Asado Negro',
-    price: 12.00,
+    price: 12.50,
     category: 'carnes',
     description: 'Servido con 2 contornos a elección.',
     hasContornos: true,
@@ -296,7 +312,7 @@ export const PRODUCTS = [
   {
     id: 'carne-4',
     name: 'Tiras Costilla en Salsa BBQ',
-    price: 13.00,
+    price: 13.50,
     category: 'carnes',
     description: 'Servidas con 2 contornos a elección.',
     hasContornos: true,
@@ -305,7 +321,7 @@ export const PRODUCTS = [
   {
     id: 'carne-5',
     name: 'Parrilla Criolla',
-    price: 20.50,
+    price: 21.00,
     category: 'carnes',
     description: '200g punta importada con tiras de costilla y chistorra. Incluye 2 contornos.',
     hasContornos: true,
@@ -314,7 +330,7 @@ export const PRODUCTS = [
   {
     id: 'carne-6',
     name: 'Cartocho de Lomito',
-    price: 17.00,
+    price: 17.50,
     category: 'carnes',
     description: 'Servido con 2 contornos a elección.',
     image: ''
@@ -338,7 +354,7 @@ export const PRODUCTS = [
   {
     id: 'carne-9',
     name: 'Parrilla Mar y Tierra',
-    price: 18.00,
+    price: 18.50,
     category: 'carnes',
     description: 'Churrasco de pollo, lomito, chistorra y salteado de mariscos. Incluye 2 contornos.',
     hasContornos: true,
@@ -346,8 +362,8 @@ export const PRODUCTS = [
   },
   {
     id: 'carne-10',
-    name: 'Pork Belly Plated',
-    price: 13.50,
+    name: 'Pork Belly (Menú)',
+    price: 14.00,
     category: 'carnes',
     description: 'Barriga de cerdo crujiente servida con 2 contornos a elección.',
     hasContornos: true,
@@ -358,7 +374,7 @@ export const PRODUCTS = [
   {
     id: 'pollo-1',
     name: 'Pechuga de Pollo al Grill',
-    price: 10.50,
+    price: 11.00,
     category: 'pollo',
     description: 'Incluye 2 contornos a elección.',
     hasContornos: true,
@@ -367,7 +383,7 @@ export const PRODUCTS = [
   {
     id: 'pollo-2',
     name: 'Churrasco de Pollo con Guasacaca',
-    price: 11.50,
+    price: 12.00,
     category: 'pollo',
     description: 'Incluye 2 contornos a elección.',
     hasContornos: true,
@@ -376,7 +392,7 @@ export const PRODUCTS = [
   {
     id: 'pollo-3',
     name: 'Tender Menú',
-    price: 12.00,
+    price: 12.50,
     category: 'pollo',
     description: 'Tiras de pollo empanizadas con 2 contornos a elección.',
     hasContornos: true,
@@ -385,7 +401,7 @@ export const PRODUCTS = [
   {
     id: 'pollo-4',
     name: 'Strogonoff de Pollo',
-    price: 13.00,
+    price: 13.50,
     category: 'pollo',
     description: 'Incluye 2 contornos a elección.',
     hasContornos: true,
@@ -394,7 +410,7 @@ export const PRODUCTS = [
   {
     id: 'pollo-5',
     name: 'Milanesa de Pollo a la Parmesana',
-    price: 13.00,
+    price: 13.50,
     category: 'pollo',
     description: 'Incluye 2 contornos a elección.',
     hasContornos: true,
@@ -403,7 +419,7 @@ export const PRODUCTS = [
   {
     id: 'pollo-6',
     name: 'Milanesa de Pollo al Graten',
-    price: 14.00,
+    price: 14.50,
     category: 'pollo',
     description: 'Con champiñones y queso gratinado. Incluye 2 contornos.',
     hasContornos: true,
@@ -412,7 +428,7 @@ export const PRODUCTS = [
   {
     id: 'pollo-7',
     name: 'Arroz con Pollo (1 Persona)',
-    price: 10.50,
+    price: 11.50,
     category: 'pollo',
     description: 'Clásico arroz con pollo sazonado de la casa.',
     image: ''
@@ -420,7 +436,7 @@ export const PRODUCTS = [
   {
     id: 'pollo-8',
     name: 'Arroz con Pollo (2 Personas)',
-    price: 19.50,
+    price: 23.00,
     category: 'pollo',
     description: 'Porción para compartir.',
     image: ''
@@ -438,7 +454,7 @@ export const PRODUCTS = [
   {
     id: 'pesc-1',
     name: 'Dedos de Pescado con Tártara',
-    price: 13.00,
+    price: 13.50,
     category: 'pescados',
     description: 'Incluye 2 contornos a elección.',
     hasContornos: true,
@@ -447,7 +463,7 @@ export const PRODUCTS = [
   {
     id: 'pesc-2',
     name: 'Filet de Pescado Blanco',
-    price: 14.00,
+    price: 14.50,
     category: 'pescados',
     description: 'Al Ajillo o Al Menier. Incluye 2 contornos a elección.',
     hasContornos: true,
@@ -456,7 +472,7 @@ export const PRODUCTS = [
   {
     id: 'pesc-3',
     name: 'Cartocho de Pescado y Mariscos',
-    price: 17.00,
+    price: 17.50,
     category: 'pescados',
     description: 'Pesca del día coronada con mariscos al graten. Incluye 2 contornos.',
     image: ''
@@ -472,7 +488,7 @@ export const PRODUCTS = [
   {
     id: 'pesc-5',
     name: 'Linguini con Camarones al Ajillo',
-    price: 16.00,
+    price: 16.50,
     category: 'pescados',
     description: 'Pasta linguini salteada con camarones al ajillo.',
     image: ''
@@ -480,7 +496,7 @@ export const PRODUCTS = [
   {
     id: 'pesc-6',
     name: 'Linguini Frutos del Mar',
-    price: 18.00,
+    price: 18.50,
     category: 'pescados',
     description: 'Pasta con selección de mariscos frescos.',
     image: ''
@@ -497,10 +513,34 @@ export const PRODUCTS = [
   {
     id: 'pesc-8',
     name: 'Atún en Salsa Ponzu',
-    price: 14.00,
+    price: 14.50,
     category: 'pescados',
     description: 'A la parrilla en salsa ponzu, coronado con wakame. Incluye 2 contornos.',
     hasContornos: true,
+    image: ''
+  },
+  {
+    id: 'pesc-9',
+    name: 'Arroz Caldoso (1 persona)',
+    price: 18.50,
+    category: 'pescados',
+    description: 'Arroz caldoso con mariscos y pescado, porción individual.',
+    image: ''
+  },
+  {
+    id: 'pesc-10',
+    name: 'Arroz Caldoso (2 personas)',
+    price: 37.00,
+    category: 'pescados',
+    description: 'Arroz caldoso con mariscos y pescado, porción para compartir.',
+    image: ''
+  },
+  {
+    id: 'pesc-11',
+    name: 'Arroz Caldoso (4 personas)',
+    price: 74.00,
+    category: 'pescados',
+    description: 'Arroz caldoso con mariscos y pescado, porción familiar.',
     image: ''
   },
 
@@ -682,7 +722,7 @@ export const PRODUCTS = [
   {
     id: 'beb-4',
     name: 'Té Lipton / Té Verde',
-    price: 2.50,
+    price: 2.60,
     category: 'bebidas',
     description: 'Té frío.',
     image: ''
@@ -738,7 +778,7 @@ export const PRODUCTS = [
   {
     id: 'beb-11',
     name: 'Jugo Natural de Melocotón',
-    price: 4.50,
+    price: 5.00,
     category: 'bebidas',
     description: 'Jugo concentrado de melocotón.',
     image: ''
@@ -754,7 +794,7 @@ export const PRODUCTS = [
   {
     id: 'beb-13',
     name: 'Cerveza Lata',
-    price: 1.20,
+    price: 1.50,
     category: 'bebidas',
     description: 'Cerveza nacional en lata.',
     image: ''
@@ -770,7 +810,7 @@ export const PRODUCTS = [
   {
     id: 'beb-15',
     name: 'Café Expresso / Pequeño',
-    price: 1.50,
+    price: 2.00,
     category: 'bebidas',
     description: 'Café concentrado.',
     image: ''
@@ -778,7 +818,7 @@ export const PRODUCTS = [
   {
     id: 'beb-16',
     name: 'Café Grande',
-    price: 2.50,
+    price: 3.00,
     category: 'bebidas',
     description: 'Café grande estilo negro o con leche.',
     image: ''
