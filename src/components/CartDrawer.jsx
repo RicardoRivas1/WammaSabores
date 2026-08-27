@@ -36,6 +36,7 @@ const OPCIONES_CONTORNOS = [
   "ENSALADA DE AGUACATE Y TOMATE CHERRY",
   "ENSALADA GALLINA",
   "PLÁTANO DULCE AL HORNO",
+  "OTROS",
 ];
 
 // TABLA DE PRECIOS POR KILÓMETROS
@@ -69,6 +70,7 @@ export default function CartDrawer({
   const [deliveryDistance, setDeliveryDistance] = useState(0);
   const [deliveryCostUSD, setDeliveryCostUSD] = useState(0);
   const [isZonaAltaDetected, setIsZonaAltaDetected] = useState(false);
+  const [customInputs, setCustomInputs] = useState({});
 
   // Estado con los datos del cliente
   const [customerData, setCustomerData] = useState({
@@ -94,10 +96,27 @@ export default function CartDrawer({
     }
   };
 
-  // Manejar selección de contornos por producto
-  const handleContornoSelect = (itemId, index, value) => {
+  const handleContornoSelect = (cartItemId, index, value) => {
     if (onUpdateContornos) {
-      onUpdateContornos(itemId, index, value);
+      if (value === 'OTROS') {
+        const customText = customInputs[cartItemId]?.[index] || '';
+        onUpdateContornos(cartItemId, index, value, customText);
+      } else {
+        onUpdateContornos(cartItemId, index, value);
+      }
+    }
+  };
+
+  const handleCustomTextChange = (cartItemId, index, text) => {
+    setCustomInputs((prev) => ({
+      ...prev,
+      [cartItemId]: {
+        ...(prev[cartItemId] || {}),
+        [index]: text,
+      },
+    }));
+    if (onUpdateContornos) {
+      onUpdateContornos(cartItemId, index, 'OTROS', text);
     }
   };
 
@@ -186,9 +205,9 @@ export default function CartDrawer({
 
   const handleDecrement = (item) => {
     if (item.quantity > 1) {
-      onUpdateQuantity(item.id, item.quantity - 1);
+      onUpdateQuantity(item.cartItemId, item.quantity - 1);
     } else {
-      onUpdateQuantity(item.id, 0);
+      onUpdateQuantity(item.cartItemId, 0);
     }
   };
 
@@ -205,13 +224,17 @@ export default function CartDrawer({
 
   // Validación de datos y contornos
   const isFormValid = () => {
-    const contornosValidos = cart.every(
-      (item) =>
-        !item.hasContornos ||
-        (item.selectedContornos &&
-          item.selectedContornos[0] &&
-          item.selectedContornos[1]),
-    );
+    const contornosValidos = cart.every((item) => {
+      if (!item.hasContornos) return true;
+      if (!item.selectedContornos) return false;
+      return item.selectedContornos.every((c, i) => {
+        if (!c) return false;
+        if (c === 'OTROS') {
+          return customInputs[item.cartItemId]?.[i]?.trim() !== '';
+        }
+        return true;
+      });
+    });
 
     const camposObligatorios =
       customerData.nombre.trim() !== "" &&
@@ -267,7 +290,7 @@ export default function CartDrawer({
           ) : (
             cart.map((item) => (
               <div
-                key={item.id}
+                key={item.cartItemId}
                 className="bg-zinc-900 border border-zinc-800 p-3 rounded-lg space-y-3"
               >
                 <div className="flex items-center justify-between">
@@ -296,7 +319,7 @@ export default function CartDrawer({
                     </span>
                     <button
                       onClick={() =>
-                        onUpdateQuantity(item.id, item.quantity + 1)
+                        onUpdateQuantity(item.cartItemId, item.quantity + 1)
                       }
                       className="text-zinc-300 hover:text-white font-bold text-base px-2 py-0.5 rounded active:scale-95 transition-transform"
                     >
@@ -312,39 +335,65 @@ export default function CartDrawer({
                       Elige tus 2 contornos :
                     </p>
                     <div className="grid grid-cols-1 gap-2">
-                      <select
-                        value={item.selectedContornos?.[0] || ""}
-                        onChange={(e) =>
-                          handleContornoSelect(item.id, 0, e.target.value)
-                        }
-                        className="w-full bg-zinc-900 border border-zinc-700 rounded p-2 text-white text-xs focus:outline-none focus:border-amber-500"
-                      >
-                        <option value="">-- Contorno 1 * --</option>
-                        {OPCIONES_CONTORNOS.map((op) => (
-                          <option key={`c1-${op}`} value={op}>
-                            {op}
-                          </option>
-                        ))}
-                      </select>
+                      <div>
+                        <select
+                          value={item.selectedContornos?.[0] || ""}
+                          onChange={(e) =>
+                            handleContornoSelect(item.cartItemId, 0, e.target.value)
+                          }
+                          className="w-full bg-zinc-900 border border-zinc-700 rounded p-2 text-white text-xs focus:outline-none focus:border-amber-500"
+                        >
+                          <option value="">-- Contorno 1 * --</option>
+                          {OPCIONES_CONTORNOS.map((op) => (
+                            <option key={`c1-${op}`} value={op}>
+                              {op}
+                            </option>
+                          ))}
+                        </select>
+                        {item.selectedContornos?.[0] === "OTROS" && (
+                          <input
+                            type="text"
+                            value={customInputs[item.cartItemId]?.[0] || ""}
+                            onChange={(e) =>
+                              handleCustomTextChange(item.cartItemId, 0, e.target.value)
+                            }
+                            placeholder="Escribe tus contornos personalizados..."
+                            className="w-full mt-1 bg-zinc-900 border border-amber-500/50 rounded p-2 text-white text-xs focus:outline-none focus:border-amber-500 placeholder-zinc-500"
+                          />
+                        )}
+                      </div>
 
-                      <select
-                        value={item.selectedContornos?.[1] || ""}
-                        onChange={(e) =>
-                          handleContornoSelect(item.id, 1, e.target.value)
-                        }
-                        className="w-full bg-zinc-900 border border-zinc-700 rounded p-2 text-white text-xs focus:outline-none focus:border-amber-500"
-                      >
-                        <option value="">-- Contorno 2 * --</option>
-                        {OPCIONES_CONTORNOS.map((op) => (
-                          <option
-                            key={`c2-${op}`}
-                            value={op}
-                            disabled={op === item.selectedContornos?.[0]}
-                          >
-                            {op}
-                          </option>
-                        ))}
-                      </select>
+                      <div>
+                        <select
+                          value={item.selectedContornos?.[1] || ""}
+                          onChange={(e) =>
+                            handleContornoSelect(item.cartItemId, 1, e.target.value)
+                          }
+                          className="w-full bg-zinc-900 border border-zinc-700 rounded p-2 text-white text-xs focus:outline-none focus:border-amber-500"
+                        >
+                          <option value="">-- Contorno 2 * --</option>
+                          {OPCIONES_CONTORNOS.map((op) => (
+                            <option
+                              key={`c2-${op}`}
+                              value={op}
+                              disabled={op === item.selectedContornos?.[0] && op !== "OTROS"}
+                            >
+                              {op}
+                            </option>
+                          ))}
+                        </select>
+                        {item.selectedContornos?.[1] === "OTROS" && (
+                          <input
+                            type="text"
+                            value={customInputs[item.cartItemId]?.[1] || ""}
+                            onChange={(e) =>
+                              handleCustomTextChange(item.cartItemId, 1, e.target.value)
+                            }
+                            placeholder="Escribe tus contornos personalizados..."
+                            className="w-full mt-1 bg-zinc-900 border border-amber-500/50 rounded p-2 text-white text-xs focus:outline-none focus:border-amber-500 placeholder-zinc-500"
+                          />
+                        )}
+                      </div>
                     </div>
                   </div>
                 )}

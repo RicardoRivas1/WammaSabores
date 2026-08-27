@@ -59,9 +59,14 @@ export function sendOrderToWhatsApp({
 
     // Si el producto tiene contornos seleccionados, los agrega al mensaje
     if (item.selectedContornos && Array.isArray(item.selectedContornos) && item.selectedContornos.length > 0) {
-      const c1 = item.selectedContornos[0] || 'Sin seleccionar';
-      const c2 = item.selectedContornos[1] || 'Sin seleccionar';
-      message += `   🥗 *Contornos:* ${c1} / ${c2}\n`;
+      const resolved = item.selectedContornos.map((c, i) => {
+        if (c === 'OTROS') {
+          const custom = item.customContornosText?.[i] || '';
+          return custom ? `OTROS: ${custom}` : 'OTROS (sin especificar)';
+        }
+        return c || 'Sin seleccionar';
+      });
+      message += `   🥗 *Contornos:* ${resolved[0]} / ${resolved[1]}\n`;
     }
   });
 

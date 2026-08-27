@@ -3,10 +3,23 @@ import { getTasaBCV } from '../utils/bcv';
 
 const CartContext = createContext();
 
+function getCartItemId(product, selectedContornos) {
+  if (!product.hasContornos || !selectedContornos) return product.id;
+  const sorted = [...selectedContornos].sort();
+  if (!sorted[0] && !sorted[1]) return product.id;
+  return `${product.id}|${sorted[0]}|${sorted[1]}`;
+}
+
 export function CartProvider({ children }) {
   const [cart, setCart] = useState(() => {
     const saved = localStorage.getItem('wamma_cart');
-    return saved ? JSON.parse(saved) : [];
+    if (!saved) return [];
+    const parsed = JSON.parse(saved);
+    return parsed.map((item) => ({
+      ...item,
+      cartItemId: item.cartItemId || getCartItemId(item, item.selectedContornos),
+      customContornosText: item.customContornosText || ['', ''],
+    }));
   });
 
   const [tasaBcv, setTasaBcv] = useState(36.50);
@@ -23,11 +36,14 @@ export function CartProvider({ children }) {
   }, []);
 
   const addToCart = (product) => {
+    const initialContornos = product.hasContornos ? ['', ''] : undefined;
+    const cartItemId = getCartItemId(product, initialContornos);
+
     setCart((prev) => {
-      const existing = prev.find((item) => item.id === product.id);
+      const existing = prev.find((item) => item.cartItemId === cartItemId);
       if (existing) {
         return prev.map((item) =>
-          item.id === product.id
+          item.cartItemId === cartItemId
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
@@ -36,40 +52,57 @@ export function CartProvider({ children }) {
         ...prev,
         {
           ...product,
+          cartItemId,
           quantity: 1,
-          selectedContornos: product.hasContornos ? ['', ''] : undefined,
+          selectedContornos: initialContornos,
+          customContornosText: product.hasContornos ? ['', ''] : undefined,
         },
       ];
     });
   };
 
-  const removeFromCart = (id) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
+  const removeFromCart = (cartItemId) => {
+    setCart((prev) => prev.filter((item) => item.cartItemId !== cartItemId));
   };
 
-  const updateQuantity = (id, newQuantity) => {
+  const updateQuantity = (cartItemId, newQuantity) => {
     setCart((prevCart) => {
       if (newQuantity <= 0) {
-        return prevCart.filter((item) => item.id !== id);
+        return prevCart.filter((item) => item.cartItemId !== cartItemId);
       }
       return prevCart.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
+        item.cartItemId === cartItemId ? { ...item, quantity: newQuantity } : item
       );
     });
   };
 
-  // Función inmutable para guardar la selección de contornos
-  const updateContornos = (itemId, index, value) => {
+  const updateContornos = (currentCartItemId, index, value, customText) => {
     setCart((prevCart) =>
       prevCart.map((item) => {
-        if (item.id === itemId) {
-          const currentContornos = item.selectedContornos
-            ? [...item.selectedContornos]
-            : ['', ''];
-          currentContornos[index] = value;
-          return { ...item, selectedContornos: currentContornos };
+        if (item.cartItemId !== currentCartItemId) return item;
+
+        const currentContornos = item.selectedContornos
+          ? [...item.selectedContornos]
+          : ['', ''];
+        currentContornos[index] = value;
+
+        const currentCustom = item.customContornosText
+          ? [...item.customContornosText]
+          : ['', ''];
+        if (value === 'OTROS' && customText !== undefined) {
+          currentCustom[index] = customText;
+        } else if (value !== 'OTROS') {
+          currentCustom[index] = '';
         }
-        return item;
+
+        const newCartItemId = getCartItemId(item, currentContornos);
+
+        return {
+          ...item,
+          cartItemId: newCartItemId,
+          selectedContornos: currentContornos,
+          customContornosText: currentCustom,
+        };
       })
     );
   };
