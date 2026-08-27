@@ -37,28 +37,18 @@ export function CartProvider({ children }) {
 
   const addToCart = (product) => {
     const initialContornos = product.hasContornos ? ['', ''] : undefined;
-    const cartItemId = getCartItemId(product, initialContornos);
+    const cartItemId = `${product.id}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 
-    setCart((prev) => {
-      const existing = prev.find((item) => item.cartItemId === cartItemId);
-      if (existing) {
-        return prev.map((item) =>
-          item.cartItemId === cartItemId
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [
-        ...prev,
-        {
-          ...product,
-          cartItemId,
-          quantity: 1,
-          selectedContornos: initialContornos,
-          customContornosText: product.hasContornos ? ['', ''] : undefined,
-        },
-      ];
-    });
+    setCart((prev) => [
+      ...prev,
+      {
+        ...product,
+        cartItemId,
+        quantity: 1,
+        selectedContornos: initialContornos,
+        customContornosText: product.hasContornos ? ['', ''] : undefined,
+      },
+    ]);
   };
 
   const removeFromCart = (cartItemId) => {
