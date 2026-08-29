@@ -1,25 +1,32 @@
-import React, { useState } from 'react';
-import { useCart } from './context/CartContext';
-import SearchBar from './components/SearchBar';
-import CategoryNav from './components/CategoryNav';
-import ProductGrid from './components/ProductGrid';
-import CartDrawer from './components/CartDrawer';
-import Header from './components/Header';
-import { PRODUCTS } from './data/products';
-import Footer from './components/Footer';
-import { sendOrderToWhatsApp } from './utils/whatsapp';
+import React, { useState } from "react";
+import { useCart } from "./context/CartContext";
+import SearchBar from "./components/SearchBar";
+import CategoryNav from "./components/CategoryNav";
+import ProductGrid from "./components/ProductGrid";
+import CartDrawer from "./components/CartDrawer";
+import Header from "./components/Header";
+import { PRODUCTS } from "./data/products";
+import Footer from "./components/Footer";
+import { sendOrderToWhatsApp } from "./utils/whatsapp";
+import { Analytics } from "@vercel/analytics/react";
 
 export default function App() {
-  const [selectedCategory, setSelectedCategory] = useState('todas');
-  const [searchTerm, setSearchTerm] = useState('');
-  
-  const [orderNotes, setOrderNotes] = useState('');
-  const [deliveryOption, setDeliveryOption] = useState('delivery'); // 'delivery' o 'pickup'
-  const [address, setAddress] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState("todas");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const [orderNotes, setOrderNotes] = useState("");
+  const [deliveryOption, setDeliveryOption] = useState("delivery"); // 'delivery' o 'pickup'
+  const [address, setAddress] = useState("");
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   // 1. Extraemos updateContornos del hook useCart
-  const { addToCart, cart = [], tasaBcv, updateQuantity, updateContornos } = useCart();
+  const {
+    addToCart,
+    cart = [],
+    tasaBcv,
+    updateQuantity,
+    updateContornos,
+  } = useCart();
 
   // Total de items agregados
   const totalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
@@ -31,7 +38,7 @@ export default function App() {
   // Filtrado por Categoría + Búsqueda
   const filteredProducts = PRODUCTS.filter((product) => {
     const matchesCategory =
-      selectedCategory === 'todas' ||
+      selectedCategory === "todas" ||
       product.cat === selectedCategory ||
       product.category === selectedCategory;
 
@@ -46,22 +53,26 @@ export default function App() {
 
   // Handler para procesar el envío usando utils/whatsapp.js
   const handleSendWhatsApp = (drawerData = {}) => {
-    const { customerData = {}, deliveryDistance = null, deliveryCostUSD = 0 } = drawerData;
+    const {
+      customerData = {},
+      deliveryDistance = null,
+      deliveryCostUSD = 0,
+    } = drawerData;
 
     const subtotalUSD = cart.reduce((sum, item) => {
-      const price = Number(String(item.price).replace(/[^0-9.-]+/g, '')) || 0;
+      const price = Number(String(item.price).replace(/[^0-9.-]+/g, "")) || 0;
       return sum + price * (item.quantity || 1);
     }, 0);
 
     sendOrderToWhatsApp({
       cart,
       totalUSD: subtotalUSD,
-      deliveryFeeUSD: deliveryOption === 'delivery' ? deliveryCostUSD : 0,
+      deliveryFeeUSD: deliveryOption === "delivery" ? deliveryCostUSD : 0,
       tasaBcv,
       address: customerData.direccion || address,
       distanceKm: deliveryDistance,
       notes: orderNotes,
-      customerData
+      customerData,
     });
   };
 
@@ -115,7 +126,10 @@ export default function App() {
           onClick={handleFloatingButtonClick}
           className="w-full py-3.5 bg-red-600 hover:bg-red-500 text-white font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-xl"
         >
-          <span>💬</span> {cart.length > 0 ? 'Ver Carrito y Confirmar Pedido' : 'Pedir o Consultar por WhatsApp'}
+          <span>💬</span>{" "}
+          {cart.length > 0
+            ? "Ver Carrito y Confirmar Pedido"
+            : "Pedir o Consultar por WhatsApp"}
         </button>
       </div>
 
@@ -125,7 +139,7 @@ export default function App() {
         onClose={() => setIsCartOpen(false)}
         cart={cart}
         onUpdateQuantity={updateQuantity}
-        onUpdateContornos={updateContornos} /* 2. Pasamos la función al Drawer */
+        onUpdateContornos={updateContornos}
         orderNotes={orderNotes}
         setOrderNotes={setOrderNotes}
         deliveryOption={deliveryOption}
@@ -135,8 +149,9 @@ export default function App() {
         onSendWhatsApp={handleSendWhatsApp}
         tasaBcv={tasaBcv}
       />
-    
+
       <Footer />
+      <Analytics />
     </div>
   );
 }
