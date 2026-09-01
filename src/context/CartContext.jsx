@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { getTasaBCV } from '../utils/bcv';
+import { calculateKmFromCoords, getDeliveryPricing } from '../utils/deliveryUtils';
 
 const CartContext = createContext();
 
@@ -25,10 +26,52 @@ export function CartProvider({ children }) {
   const [tasaBcv, setTasaBcv] = useState(36.50);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
+  // Ubicación de entrega persistida (coordenadas GPS + dirección)
+  const [locationData, setLocationData] = useState(() => {
+    const saved = localStorage.getItem('wamma_location');
+    if (!saved) return null;
+    try {
+      return JSON.parse(saved);
+    } catch (e) {
+      return null;
+    }
+  });
+
   // Guardar en localStorage cuando cambie el carrito
   useEffect(() => {
     localStorage.setItem('wamma_cart', JSON.stringify(cart));
   }, [cart]);
+
+  // Persistir la ubicación seleccionada
+  useEffect(() => {
+    if (locationData) {
+      localStorage.setItem('wamma_location', JSON.stringify(locationData));
+    } else {
+      localStorage.removeItem('wamma_location');
+    }
+  }, [locationData]);
+
+  // Información del delivery derivada de la ubicación confirmada
+  const deliveryInfo = useMemo(() => {
+    if (!locationData?.latitude || !locationData?.longitude) {
+      return { costUSD: 0, distanceKm: null, zone: null };
+    }
+
+    const distanceKm = calculateKmFromCoords(
+      locationData.latitude,
+      locationData.longitude
+    );
+    const addressText =
+      locationData.addressText ||
+      `${locationData.building || ''} ${locationData.reference || ''}`.trim();
+    const pricing = getDeliveryPricing({ distanceKm, addressText });
+
+    return {
+      costUSD: pricing.price,
+      distanceKm: pricing.distanceKm,
+      zone: pricing.zone,
+    };
+  }, [locationData]);
 
   // Tasa BCV
   useEffect(() => {
@@ -108,6 +151,11 @@ export function CartProvider({ children }) {
         tasaBcv,
         isCartOpen,
         setIsCartOpen,
+        locationData,
+        setLocationData,
+        deliveryCostUSD: deliveryInfo.costUSD,
+        deliveryDistanceKm: deliveryInfo.distanceKm,
+        deliveryZone: deliveryInfo.zone,
       }}
     >
       {children}

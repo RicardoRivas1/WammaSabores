@@ -26,6 +26,10 @@ export default function App() {
     tasaBcv,
     updateQuantity,
     updateContornos,
+    locationData,
+    setLocationData,
+    deliveryCostUSD,
+    deliveryDistanceKm,
   } = useCart();
 
   // Total de items agregados
@@ -53,11 +57,18 @@ export default function App() {
 
   // Handler para procesar el envío usando utils/whatsapp.js
   const handleSendWhatsApp = (drawerData = {}) => {
-    const {
-      customerData = {},
-      deliveryDistance = null,
-      deliveryCostUSD = 0,
-    } = drawerData;
+    const { customerData = {}, location = null } = drawerData;
+
+    const finalCustomerData = { ...customerData };
+    if (deliveryOption === "delivery" && location) {
+      if (!finalCustomerData.direccion) {
+        finalCustomerData.direccion = location.building || "";
+      }
+      if (!finalCustomerData.referencia) {
+        finalCustomerData.referencia =
+          location.reference || location.building || "";
+      }
+    }
 
     const subtotalUSD = cart.reduce((sum, item) => {
       const price = Number(String(item.price).replace(/[^0-9.-]+/g, "")) || 0;
@@ -69,10 +80,11 @@ export default function App() {
       totalUSD: subtotalUSD,
       deliveryFeeUSD: deliveryOption === "delivery" ? deliveryCostUSD : 0,
       tasaBcv,
-      address: customerData.direccion || address,
-      distanceKm: deliveryDistance,
+      address: finalCustomerData.direccion || address,
+      distanceKm: deliveryDistanceKm,
       notes: orderNotes,
-      customerData,
+      customerData: finalCustomerData,
+      location: deliveryOption === "delivery" ? location : null,
     });
   };
 
@@ -148,6 +160,10 @@ export default function App() {
         setAddress={setAddress}
         onSendWhatsApp={handleSendWhatsApp}
         tasaBcv={tasaBcv}
+        locationData={locationData}
+        setLocationData={setLocationData}
+        deliveryCostUSD={deliveryCostUSD}
+        deliveryDistanceKm={deliveryDistanceKm}
       />
 
       <Footer />

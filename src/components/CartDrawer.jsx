@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import LocationPicker from "./LocationPicker";
 
 // OPCIONES DE CONTORNOS DISPONIBLES
 const OPCIONES_CONTORNOS = [
@@ -33,6 +34,10 @@ export default function CartDrawer({
   setDeliveryOption,
   onSendWhatsApp,
   tasaBcv,
+  locationData,
+  setLocationData,
+  deliveryCostUSD = 0,
+  deliveryDistanceKm = null,
 }) {
   const [customInputs, setCustomInputs] = useState({});
 
@@ -91,7 +96,9 @@ export default function CartDrawer({
     return sum + price * (item.quantity || 1);
   }, 0);
 
-  const totalUSD = subtotalUSD;
+  const totalUSD =
+    subtotalUSD +
+    (deliveryOption === "delivery" ? Number(deliveryCostUSD) || 0 : 0);
   const totalVES = tasaBcv ? totalUSD * tasaBcv : 0;
 
   // Validación de datos y contornos
@@ -112,7 +119,7 @@ export default function CartDrawer({
       customerData.nombre.trim() !== "" &&
       customerData.telefono1.trim() !== "" &&
       customerData.pago !== "" &&
-      (deliveryOption === "pickup" || customerData.referencia.trim() !== "");
+      (deliveryOption === "pickup" || Boolean(locationData?.building));
 
     return contornosValidos && camposObligatorios;
   };
@@ -128,6 +135,9 @@ export default function CartDrawer({
     if (onSendWhatsApp) {
       onSendWhatsApp({
         customerData,
+        location: locationData,
+        deliveryCostUSD: deliveryOption === "delivery" ? deliveryCostUSD : 0,
+        deliveryDistanceKm,
       });
     }
   };
@@ -336,6 +346,14 @@ export default function CartDrawer({
               </div>
             )}
 
+            {/* Selector de ubicación en el mapa */}
+            {deliveryOption === "delivery" && (
+              <LocationPicker
+                locationData={locationData}
+                setLocationData={setLocationData}
+              />
+            )}
+
             {/* Formulario con Datos del Cliente */}
             <div className="bg-zinc-900 border border-zinc-800 p-3 rounded-lg space-y-2.5">
               <p className="text-xs font-bold text-amber-400 text-center">
@@ -350,17 +368,6 @@ export default function CartDrawer({
                 onChange={handleCustomerChange}
                 className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
               />
-
-              {deliveryOption === "delivery" && (
-                <input
-                  type="text"
-                  name="referencia"
-                  placeholder="Dirección / Punto de referencia *"
-                  value={customerData.referencia}
-                  onChange={handleCustomerChange}
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
-                />
-              )}
 
               <div className="grid grid-cols-2 gap-2">
                 <input
@@ -421,6 +428,18 @@ export default function CartDrawer({
             <span>Subtotal Productos:</span>
             <span>${subtotalUSD.toFixed(2)}</span>
           </div>
+
+          {deliveryOption === "delivery" && deliveryCostUSD > 0 && (
+            <div className="flex justify-between items-center text-xs text-zinc-400">
+              <span>
+                Delivery:
+                {deliveryDistanceKm != null
+                  ? ` · ${deliveryDistanceKm.toFixed(2)} km`
+                  : ""}
+              </span>
+              <span>${Number(deliveryCostUSD).toFixed(2)}</span>
+            </div>
+          )}
 
           <div className="flex justify-between items-center text-sm pt-2 border-t border-zinc-800/50">
             <span className="text-zinc-200 font-bold">Total USD:</span>

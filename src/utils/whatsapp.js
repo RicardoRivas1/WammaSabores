@@ -3,20 +3,6 @@ export const PHONE_NUMBER = '584123376629';
 
 export const GENERIC_MESSAGE = "¡Hola Wamma Sabores! Quisiera consultar el menú o realizar un pedido.";
 
-// Lógica de cálculo de tarifa de delivery por rangos exactos de kilómetros
-export function calculateDeliveryFee(distanceKm) {
-  const km = Number(distanceKm);
-  if (isNaN(km) || km <= 0) return 0;
-
-  if (km <= 1.00) return 1.00;
-  if (km <= 2.90) return 2.00;
-  if (km <= 8.90) return 3.00;
-  if (km <= 14.90) return 4.00;
-  if (km <= 16.91) return 5.00;
-  if (km <= 18.00) return 6.00;
-  return 7.00; // 18.01km en adelante
-}
-
 // Generador de URL oficial
 export function waLink(text = GENERIC_MESSAGE, phone = PHONE_NUMBER) {
   const cleanPhone = phone.replace(/\D/g, '');
@@ -33,7 +19,8 @@ export function sendOrderToWhatsApp({
   address = '',
   distanceKm = null,
   notes = '',
-  customerData = {} // 👈🏻 Requerimiento 1: Recibe los datos del cliente
+  customerData = {}, // 👈🏻 Requerimiento 1: Recibe los datos del cliente
+  location = null,   // 👈🏻 Ubicación GPS seleccionada en el mapa
 }) {
   if (!cart || cart.length === 0) {
     const url = waLink(GENERIC_MESSAGE);
@@ -74,10 +61,12 @@ export function sendOrderToWhatsApp({
   message += `\n💵 *Subtotal:* $${subtotalUSD.toFixed(2)}`;
   
   if (deliveryUSD > 0) {
-    message += `\n🛵 *Delivery (${distanceKm || 'N/A'} km):* $${deliveryUSD.toFixed(2)}`;
-  } else {
-    message += `\n🛵 *Delivery:* Por acordar / Ubicación no ingresada`;
-  }
+  message += `\n🛵 *Delivery`;
+  if (distanceKm != null) message += ` · ${distanceKm} km`;
+  message += `:* $${deliveryUSD.toFixed(2)}`;
+} else {
+  message += `\n🛵 *Delivery:* Por acordar / Ubicación no ingresada`;
+}
 
   message += `\n🔥 *TOTAL A PAGAR (USD):* $${finalTotalUSD.toFixed(2)}\n`;
 
@@ -109,6 +98,11 @@ export function sendOrderToWhatsApp({
 
   if (distanceKm) {
     message += `📏 *Distancia estimada:* ${distanceKm} km\n`;
+  }
+
+  // Ubicación exacta con enlace a Google Maps
+  if (location && location.latitude != null && location.longitude != null) {
+    message += `📍 *Ubicación exacta (GPS):* https://www.google.com/maps?q=${location.latitude},${location.longitude}\n`;
   }
 
   message += `\n❓ *¿Deseas confirmar el pedido?*`;

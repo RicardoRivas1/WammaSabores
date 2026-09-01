@@ -1,22 +1,59 @@
+import { ZONAS_DELIVERY } from '../data/deliveryZones';
+
 // Coordenadas fijas del local (Lat, Lon)
-const RESTAURANT_COORDS = {
+export const RESTAURANT_COORDS = {
   lat: 10.498625, // Cambiar por la latitud exacta del local btw
   lon: -66.898875, // Cambiar por la longitud exacta del local btw
 };
 
-// Tarifas del Delivery
-const TARIFA_BASE = 2.0;    // Precio base (hasta 2 km)
-const PRECIO_POR_KM = 0.50; // Costo por km adicional
-const KM_BASE = 2;          // Km incluidos en tarifa base
+// Redondea un número a 2 decimales
+function round2(value) {
+  return Number(Number(value).toFixed(2));
+}
 
-// Calcula la tarifa en $
-export function calculateDeliveryFee(distanceInKm) {
-  if (!distanceInKm || distanceInKm <= 0) return 0;
-  if (distanceInKm <= KM_BASE) return TARIFA_BASE;
+// Detecta si el texto de una dirección coincide con alguna zona fija de delivery
+export function detectZone(addressText) {
+  if (!addressText) return null;
+  const text = String(addressText).toLowerCase();
 
-  const kmExtra = distanceInKm - KM_BASE;
-  const total = TARIFA_BASE + kmExtra * PRECIO_POR_KM;
-  return Number(total.toFixed(2));
+  return (
+    ZONAS_DELIVERY.find((zona) =>
+      zona.keywords.some((kw) => text.includes(String(kw).toLowerCase())),
+    ) || null
+  );
+}
+
+// Escala de tarifas por kilómetro (la distancia ya va redondeada a 2 decimales)
+export function calculateDeliveryFeeByKm(distanceKm) {
+  const km = round2(distanceKm);
+  if (Number.isNaN(km) || km <= 0) return 0;
+
+  if (km <= 1.0) return 1.0;
+  if (km <= 2.9) return 2.0;
+  if (km <= 8.9) return 3.0;
+  if (km <= 14.9) return 4.0;
+  if (km <= 16.91) return 5.0;
+  if (km <= 18.0) return 6.0;
+  return 7.0; // Más de 18.00 km
+}
+
+// Calcula la tarifa final: zona fija si coincide, si no la escala por KM
+export function getDeliveryPricing({ distanceKm = null, addressText = '' } = {}) {
+  const roundedKm =
+    distanceKm != null && !Number.isNaN(Number(distanceKm))
+      ? round2(distanceKm)
+      : null;
+  const zone = detectZone(addressText);
+
+  if (zone) {
+    return { price: zone.precio, zone, distanceKm: roundedKm };
+  }
+
+  return {
+    price: roundedKm != null ? calculateDeliveryFeeByKm(roundedKm) : 0,
+    zone: null,
+    distanceKm: roundedKm,
+  };
 }
 
 // Calcula la distancia lineal en KM entre dos coordenadas (Fórmula Haversine)
@@ -57,7 +94,28 @@ export async function searchAddressFree(query) {
   }
 }
 
-// Calcula KM desde el local hasta la ubicación seleccionada
+// Reverse geocoding: convierte coordenadas a un texto de dirección legible
+export async function reverseGeocodeCoords(lat, lon) {
+  const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${encodeURIComponent(
+    lat
+  )}&lon=${encodeURIComponent(lon)}&zoom=18`;
+
+  try {
+    const res = await fetch(url, {
+      headers: {
+        'Accept-Language': 'es',
+      },
+    });
+    if (!res.ok) return '';
+    const data = await res.json();
+    return data.display_name || '';
+  } catch (error) {
+    console.error('Error en reverse geocoding:', error);
+    return '';
+  }
+}
+
+// Calcula KM desde el local hasta la ubicación seleccionada (redondeado a 2 decimales)
 export function calculateKmFromCoords(targetLat, targetLon) {
   const distanceKm = getKilometers(
     RESTAURANT_COORDS.lat,
@@ -65,5 +123,5 @@ export function calculateKmFromCoords(targetLat, targetLon) {
     parseFloat(targetLat),
     parseFloat(targetLon)
   );
-  return Number(distanceKm.toFixed(1));
+  return round2(distanceKm);
 }
