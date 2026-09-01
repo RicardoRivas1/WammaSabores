@@ -1,22 +1,4 @@
-import React, { useState, useEffect } from "react";
-
-// 📍 UBICACIÓN DE TU LOCAL
-const RESTAURANT_LOCATION = {
-  lat: 10.4965,
-  lon: -66.8983,
-};
-
-// ZONAS CON RECARGO AUTOMÁTICO DE +$1.00
-const ZONAS_ALTAS = [
-  "catia",
-  "23 de enero",
-  "petare",
-  "yaguara",
-  "bandera",
-  "propatria",
-  "algodonal",
-  "el valle",
-];
+import React, { useState } from "react";
 
 // OPCIONES DE CONTORNOS DISPONIBLES
 const OPCIONES_CONTORNOS = [
@@ -39,17 +21,6 @@ const OPCIONES_CONTORNOS = [
   "OTROS",
 ];
 
-// TABLA DE PRECIOS POR KILÓMETROS
-const calculateDeliveryFee = (km) => {
-  if (km <= 1.0) return 1.0;
-  if (km <= 2.9) return 2.0;
-  if (km <= 8.9) return 3.0;
-  if (km <= 14.9) return 4.0;
-  if (km <= 16.91) return 5.0;
-  if (km <= 18.0) return 6.0;
-  return 7.0; // 18.01 km en adelante
-};
-
 export default function CartDrawer({
   isOpen,
   onClose,
@@ -60,46 +31,30 @@ export default function CartDrawer({
   setOrderNotes,
   deliveryOption,
   setDeliveryOption,
-  address,
-  setAddress,
   onSendWhatsApp,
   tasaBcv,
 }) {
-  const [suggestions, setSuggestions] = useState([]);
-  const [isLoadingAddress, setIsLoadingAddress] = useState(false);
-  const [deliveryDistance, setDeliveryDistance] = useState(0);
-  const [deliveryCostUSD, setDeliveryCostUSD] = useState(0);
-  const [isZonaAltaDetected, setIsZonaAltaDetected] = useState(false);
   const [customInputs, setCustomInputs] = useState({});
 
   // Estado con los datos del cliente
   const [customerData, setCustomerData] = useState({
     nombre: "",
-    direccion: address || "",
     referencia: "",
     telefono1: "",
     telefono2: "",
     pago: "",
   });
 
-  // Sincronizar dirección prop con customerData.direccion
-  useEffect(() => {
-    setCustomerData((prev) => ({ ...prev, direccion: address }));
-  }, [address]);
-
   // Manejar cambios en el formulario del cliente
   const handleCustomerChange = (e) => {
     const { name, value } = e.target;
     setCustomerData((prev) => ({ ...prev, [name]: value }));
-    if (name === "direccion") {
-      setAddress(value);
-    }
   };
 
   const handleContornoSelect = (cartItemId, index, value) => {
     if (onUpdateContornos) {
-      if (value === 'OTROS') {
-        const customText = customInputs[cartItemId]?.[index] || '';
+      if (value === "OTROS") {
+        const customText = customInputs[cartItemId]?.[index] || "";
         onUpdateContornos(cartItemId, index, value, customText);
       } else {
         onUpdateContornos(cartItemId, index, value);
@@ -116,90 +71,7 @@ export default function CartDrawer({
       },
     }));
     if (onUpdateContornos) {
-      onUpdateContornos(cartItemId, index, 'OTROS', text);
-    }
-  };
-
-  // Cálculo de distancia (Haversine)
-  const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    const R = 6371;
-    const dLat = ((lat2 - lat1) * Math.PI) / 180;
-    const dLon = ((lon2 - lon1) * Math.PI) / 180;
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos((lat1 * Math.PI) / 180) *
-        Math.cos((lat2 * Math.PI) / 180) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c;
-    return parseFloat(distance.toFixed(2));
-  };
-
-  // Buscador de dirección
-  useEffect(() => {
-    if (!address || address.length < 3 || deliveryOption !== "delivery") {
-      setSuggestions([]);
-      return;
-    }
-
-    const timer = setTimeout(async () => {
-      setIsLoadingAddress(true);
-      try {
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-            address,
-          )}&countrycodes=ve&limit=5`,
-        );
-        const data = await response.json();
-        setSuggestions(data || []);
-      } catch (error) {
-        console.error("Error al buscar dirección:", error);
-      } finally {
-        setIsLoadingAddress(false);
-      }
-    }, 400);
-
-    return () => clearTimeout(timer);
-  }, [address, deliveryOption]);
-
-  if (!isOpen) return null;
-
-  // Seleccionar dirección del buscador GPS
-  const handleSelectAddress = (item) => {
-    const selectedText = item.display_name;
-    setAddress(selectedText);
-    setCustomerData((prev) => ({ ...prev, direccion: selectedText }));
-    setSuggestions([]);
-
-    const clientLat = parseFloat(item.lat);
-    const clientLon = parseFloat(item.lon);
-
-    if (clientLat && clientLon) {
-      const km = calculateDistance(
-        RESTAURANT_LOCATION.lat,
-        RESTAURANT_LOCATION.lon,
-        clientLat,
-        clientLon,
-      );
-      setDeliveryDistance(km);
-
-      // Tarifa base por kilómetros
-      let fee = calculateDeliveryFee(km);
-
-      // Verificación de zona alta por palabras clave
-      const textToSearch = (selectedText + " " + address).toLowerCase();
-      const esZonaAlta = ZONAS_ALTAS.some((zona) =>
-        textToSearch.includes(zona),
-      );
-
-      setIsZonaAltaDetected(esZonaAlta);
-
-      if (esZonaAlta) {
-        fee += 1.0; // Suma automática de $1.00
-      }
-
-      setDeliveryCostUSD(fee);
+      onUpdateContornos(cartItemId, index, "OTROS", text);
     }
   };
 
@@ -211,15 +83,15 @@ export default function CartDrawer({
     }
   };
 
+  if (!isOpen) return null;
+
   // Totales
   const subtotalUSD = cart.reduce((sum, item) => {
     const price = Number(String(item.price).replace(/[^0-9.-]+/g, "")) || 0;
     return sum + price * (item.quantity || 1);
   }, 0);
 
-  const currentDeliveryFee =
-    deliveryOption === "delivery" ? deliveryCostUSD : 0;
-  const totalUSD = subtotalUSD + currentDeliveryFee;
+  const totalUSD = subtotalUSD;
   const totalVES = tasaBcv ? totalUSD * tasaBcv : 0;
 
   // Validación de datos y contornos
@@ -229,8 +101,8 @@ export default function CartDrawer({
       if (!item.selectedContornos) return false;
       return item.selectedContornos.every((c, i) => {
         if (!c) return false;
-        if (c === 'OTROS') {
-          return customInputs[item.cartItemId]?.[i]?.trim() !== '';
+        if (c === "OTROS") {
+          return customInputs[item.cartItemId]?.[i]?.trim() !== "";
         }
         return true;
       });
@@ -240,9 +112,7 @@ export default function CartDrawer({
       customerData.nombre.trim() !== "" &&
       customerData.telefono1.trim() !== "" &&
       customerData.pago !== "" &&
-      (deliveryOption === "pickup" ||
-        (customerData.direccion.trim() !== "" &&
-          customerData.referencia.trim() !== ""));
+      (deliveryOption === "pickup" || customerData.referencia.trim() !== "");
 
     return contornosValidos && camposObligatorios;
   };
@@ -258,9 +128,6 @@ export default function CartDrawer({
     if (onSendWhatsApp) {
       onSendWhatsApp({
         customerData,
-        deliveryDistance,
-        deliveryCostUSD: currentDeliveryFee,
-        isZonaAlta: isZonaAltaDetected,
       });
     }
   };
@@ -339,7 +206,11 @@ export default function CartDrawer({
                         <select
                           value={item.selectedContornos?.[0] || ""}
                           onChange={(e) =>
-                            handleContornoSelect(item.cartItemId, 0, e.target.value)
+                            handleContornoSelect(
+                              item.cartItemId,
+                              0,
+                              e.target.value,
+                            )
                           }
                           className="w-full bg-zinc-900 border border-zinc-700 rounded p-2 text-white text-xs focus:outline-none focus:border-amber-500"
                         >
@@ -355,7 +226,11 @@ export default function CartDrawer({
                             type="text"
                             value={customInputs[item.cartItemId]?.[0] || ""}
                             onChange={(e) =>
-                              handleCustomTextChange(item.cartItemId, 0, e.target.value)
+                              handleCustomTextChange(
+                                item.cartItemId,
+                                0,
+                                e.target.value,
+                              )
                             }
                             placeholder="Escribe tus contornos personalizados..."
                             className="w-full mt-1 bg-zinc-900 border border-amber-500/50 rounded p-2 text-white text-xs focus:outline-none focus:border-amber-500 placeholder-zinc-500"
@@ -367,7 +242,11 @@ export default function CartDrawer({
                         <select
                           value={item.selectedContornos?.[1] || ""}
                           onChange={(e) =>
-                            handleContornoSelect(item.cartItemId, 1, e.target.value)
+                            handleContornoSelect(
+                              item.cartItemId,
+                              1,
+                              e.target.value,
+                            )
                           }
                           className="w-full bg-zinc-900 border border-zinc-700 rounded p-2 text-white text-xs focus:outline-none focus:border-amber-500"
                         >
@@ -376,7 +255,10 @@ export default function CartDrawer({
                             <option
                               key={`c2-${op}`}
                               value={op}
-                              disabled={op === item.selectedContornos?.[0] && op !== "OTROS"}
+                              disabled={
+                                op === item.selectedContornos?.[0] &&
+                                op !== "OTROS"
+                              }
                             >
                               {op}
                             </option>
@@ -387,7 +269,11 @@ export default function CartDrawer({
                             type="text"
                             value={customInputs[item.cartItemId]?.[1] || ""}
                             onChange={(e) =>
-                              handleCustomTextChange(item.cartItemId, 1, e.target.value)
+                              handleCustomTextChange(
+                                item.cartItemId,
+                                1,
+                                e.target.value,
+                              )
                             }
                             placeholder="Escribe tus contornos personalizados..."
                             className="w-full mt-1 bg-zinc-900 border border-amber-500/50 rounded p-2 text-white text-xs focus:outline-none focus:border-amber-500 placeholder-zinc-500"
@@ -423,12 +309,7 @@ export default function CartDrawer({
                 </button>
                 <button
                   type="button"
-                  onClick={() => {
-                    setDeliveryOption("pickup");
-                    setDeliveryDistance(0);
-                    setDeliveryCostUSD(0);
-                    setIsZonaAltaDetected(false);
-                  }}
+                  onClick={() => setDeliveryOption("pickup")}
                   className={`py-2 px-3 rounded-lg text-xs font-bold border transition-colors ${
                     deliveryOption === "pickup"
                       ? "bg-amber-500 text-black border-amber-500"
@@ -440,89 +321,18 @@ export default function CartDrawer({
               </div>
             </div>
 
+            {/* NOTA INFORMATIVA DE DELIVERY */}
             {deliveryOption === "delivery" && (
-              <div className="space-y-2 relative">
-                <label className="block text-xs font-semibold text-zinc-300">
-                  📍 Buscar dirección (GPS / Búsqueda):
-                </label>
-
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={address}
-                    onChange={(e) =>
-                      handleCustomerChange({
-                        target: { name: "direccion", value: e.target.value },
-                      })
-                    }
-                    placeholder="Escribe tu zona, edf, calle o av..."
-                    className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2.5 pr-8 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
-                  />
-                  {address && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setAddress("");
-                        setCustomerData((prev) => ({ ...prev, direccion: "" }));
-                        setSuggestions([]);
-                        setDeliveryDistance(0);
-                        setDeliveryCostUSD(0);
-                        setIsZonaAltaDetected(false);
-                      }}
-                      className="absolute right-2.5 top-2.5 text-zinc-500 hover:text-white text-xs font-bold"
-                    >
-                      ✕
-                    </button>
-                  )}
-                </div>
-
-                {isLoadingAddress && (
-                  <p className="text-[10px] text-amber-400 animate-pulse">
-                    Buscando dirección...
-                  </p>
-                )}
-
-                {suggestions.length > 0 && (
-                  <ul className="absolute z-50 left-0 right-0 bg-zinc-900 border border-zinc-700 rounded-lg shadow-2xl mt-1 max-h-48 overflow-y-auto divide-y divide-zinc-800">
-                    {suggestions.map((item, index) => (
-                      <li
-                        key={index}
-                        onClick={() => handleSelectAddress(item)}
-                        className="p-2.5 text-xs text-zinc-200 hover:bg-amber-500 hover:text-black cursor-pointer transition-colors"
-                      >
-                        📍 {item.display_name}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-
-                {deliveryDistance > 0 && (
-                  <div className="bg-zinc-900 border border-amber-500/40 rounded-lg p-3 text-xs space-y-1">
-                    <div className="flex justify-between text-zinc-300">
-                      <span>📏 Distancia estimada:</span>
-                      <span className="font-bold text-white">
-                        {deliveryDistance} km
-                      </span>
-                    </div>
-                    <div className="flex justify-between text-zinc-300">
-                      <span>🛵 Tarifa de delivery:</span>
-                      <span className="font-bold text-amber-400">
-                        ${deliveryCostUSD.toFixed(2)}{" "}
-                      </span>
-                    </div>
-                  </div>
-                )}
-
-                {/* AVISO DE TARIFA ESTIMADA */}
-                <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-2.5 text-[11px] text-amber-200/90 leading-relaxed flex items-start gap-2">
-                  <span className="text-amber-400 text-sm">⚠️</span>
-                  <p>
-                    <strong className="text-amber-400">Nota:</strong> El costo
-                    del delivery es estimado. Si la dirección se encuentra en
-                    una parte alta o zona de difícil acceso, la tarifa final
-                    puede variar al confirmar por WhatsApp.
-                  </p>
-                </div>
+              <div className="bg-amber-950/40 border border-amber-800/60 p-3 rounded-xl flex items-start gap-2 text-xs text-amber-200/90 mt-2">
+                <span className="text-amber-400 text-base leading-none">
+                  ⚠️
+                </span>
+                <p>
+                  <strong className="text-amber-400 font-bold">Nota:</strong> El
+                  costo del delivery es estimado. Si la dirección se encuentra
+                  en una parte alta o zona de difícil acceso, la tarifa final
+                  puede variar al confirmar por WhatsApp.
+                </p>
               </div>
             )}
 
@@ -535,7 +345,7 @@ export default function CartDrawer({
               <input
                 type="text"
                 name="nombre"
-                placeholder="Nombre y Apellido"
+                placeholder="Nombre y Apellido *"
                 value={customerData.nombre}
                 onChange={handleCustomerChange}
                 className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
@@ -545,7 +355,7 @@ export default function CartDrawer({
                 <input
                   type="text"
                   name="referencia"
-                  placeholder="Punto de referencia"
+                  placeholder="Dirección / Punto de referencia *"
                   value={customerData.referencia}
                   onChange={handleCustomerChange}
                   className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
@@ -556,7 +366,7 @@ export default function CartDrawer({
                 <input
                   type="tel"
                   name="telefono1"
-                  placeholder="Teléfono 1"
+                  placeholder="Teléfono 1 *"
                   value={customerData.telefono1}
                   onChange={handleCustomerChange}
                   className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
@@ -564,7 +374,7 @@ export default function CartDrawer({
                 <input
                   type="tel"
                   name="telefono2"
-                  placeholder="Teléfono 2"
+                  placeholder="Teléfono 2 (Opcional)"
                   value={customerData.telefono2}
                   onChange={handleCustomerChange}
                   className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500"
@@ -611,15 +421,6 @@ export default function CartDrawer({
             <span>Subtotal Productos:</span>
             <span>${subtotalUSD.toFixed(2)}</span>
           </div>
-
-          {deliveryOption === "delivery" && (
-            <div className="flex justify-between items-center text-xs text-zinc-400">
-              <span>Envío ({deliveryDistance} km):</span>
-              <span className="text-amber-400 font-semibold">
-                ${deliveryCostUSD.toFixed(2)}
-              </span>
-            </div>
-          )}
 
           <div className="flex justify-between items-center text-sm pt-2 border-t border-zinc-800/50">
             <span className="text-zinc-200 font-bold">Total USD:</span>
