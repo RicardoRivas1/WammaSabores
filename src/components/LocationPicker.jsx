@@ -10,6 +10,7 @@ import {
   searchAddressFree,
   reverseGeocodeCoords,
   calculateKmFromCoords,
+  getDrivingDistance,
   getDeliveryPricing,
 } from '../utils/deliveryUtils';
 
@@ -67,10 +68,35 @@ export default function LocationPicker({ locationData, setLocationData }) {
   );
 
   // Distancia y tarifa en vivo según el pin actual y el texto de la dirección
-  const distanceKm =
+  const [distanceKm, setDistanceKm] = useState(() =>
     position && position.length === 2
       ? calculateKmFromCoords(position[0], position[1])
-      : null;
+      : null,
+  );
+  const [isCalculatingDistance, setIsCalculatingDistance] = useState(false);
+
+  useEffect(() => {
+    if (!position || position.length !== 2) {
+      setDistanceKm(null);
+      setIsCalculatingDistance(false);
+      return;
+    }
+
+    let cancelled = false;
+    setIsCalculatingDistance(true);
+    getDrivingDistance(
+      { lat: position[0], lng: position[1] },
+      { lat: RESTAURANT_COORDS.lat, lng: RESTAURANT_COORDS.lon },
+    ).then((km) => {
+      if (cancelled) return;
+      setDistanceKm(km);
+      setIsCalculatingDistance(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [position]);
+
   const pricing = getDeliveryPricing({
     distanceKm,
     addressText,
@@ -326,13 +352,19 @@ export default function LocationPicker({ locationData, setLocationData }) {
         <div className="flex justify-between items-center">
           <span className="text-zinc-400">Distancia desde el local:</span>
           <span className="font-bold text-white">
-            {distanceKm != null ? `${distanceKm.toFixed(2)} km` : '—'}
+            {isCalculatingDistance
+              ? 'calculando…'
+              : distanceKm != null
+                ? `${distanceKm.toFixed(2)} km`
+                : '—'}
           </span>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-zinc-400">Costo de envío:</span>
           <span className="font-bold text-amber-400 text-sm">
-            ${Number(pricing.price || 0).toFixed(2)}
+            {isCalculatingDistance
+              ? '…'
+              : `$${Number(pricing.price || 0).toFixed(2)}`}
           </span>
         </div>
       </div>

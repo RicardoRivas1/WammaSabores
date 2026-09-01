@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { searchAddressFree, calculateKmFromCoords } from '../utils/deliveryUtils';
+import {
+  RESTAURANT_COORDS,
+  searchAddressFree,
+  calculateKmFromCoords,
+  getDrivingDistance,
+} from '../utils/deliveryUtils';
 
 export default function AddressSearch({ onAddressSelect }) {
   const [query, setQuery] = useState('');
@@ -21,12 +26,17 @@ export default function AddressSearch({ onAddressSelect }) {
     return () => clearTimeout(timer);
   }, [query]);
 
-  const handleSelect = (place) => {
+  const handleSelect = async (place) => {
     const addressName = place.display_name;
-    const distanceKm = calculateKmFromCoords(place.lat, place.lon);
 
     setQuery(addressName);
     setResults([]);
+
+    const distanceKm =
+      (await getDrivingDistance(
+        { lat: place.lat, lng: place.lon },
+        { lat: RESTAURANT_COORDS.lat, lng: RESTAURANT_COORDS.lon },
+      )) ?? calculateKmFromCoords(place.lat, place.lon);
 
     if (onAddressSelect) {
       onAddressSelect({ address: addressName, distance: distanceKm });

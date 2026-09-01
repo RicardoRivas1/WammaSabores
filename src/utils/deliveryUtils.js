@@ -2,8 +2,8 @@ import { ZONAS_DELIVERY } from '../data/deliveryZones';
 
 // Coordenadas fijas del local (Lat, Lon)
 export const RESTAURANT_COORDS = {
-  lat: 10.498625, // Cambiar por la latitud exacta del local btw
-  lon: -66.898875, // Cambiar por la longitud exacta del local btw
+  lat: 10.50383381297807,
+  lon: -66.89945841982515,
 };
 
 // Redondea un número a 2 decimales
@@ -124,4 +124,33 @@ export function calculateKmFromCoords(targetLat, targetLon) {
     parseFloat(targetLon)
   );
   return round2(distanceKm);
+}
+
+// Distancia real de conducción por calles vía OSRM (fallback: línea recta ajustada x1.3)
+export async function getDrivingDistance(origin, destination) {
+  const oLat = Number(origin.lat);
+  const oLng = Number(origin.lng ?? origin.lon);
+  const dLat = Number(destination.lat);
+  const dLng = Number(destination.lng ?? destination.lon);
+
+  if ([oLat, oLng, dLat, dLng].some((v) => Number.isNaN(v))) return null;
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
+  const url = `https://router.project-osrm.org/route/v1/driving/${oLng},${oLat};${dLng},${dLat}?overview=false`;
+
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    if (!res.ok) throw new Error(`OSRM respondió ${res.status}`);
+    const data = await res.json();
+    const distanceMeters = data?.routes?.[0]?.distance;
+    if (distanceMeters == null) throw new Error('OSRM sin ruta');
+    return round2(distanceMeters / 1000);
+  } catch (error) {
+    console.error('Error obteniendo distancia de conducción:', error);
+    const straightLineKm = getKilometers(oLat, oLng, dLat, dLng);
+    return round2(straightLineKm * 1.3);
+  } finally {
+    clearTimeout(timeout);
+  }
 }

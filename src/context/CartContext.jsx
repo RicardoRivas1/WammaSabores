@@ -1,6 +1,11 @@
-import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getTasaBCV } from '../utils/bcv';
-import { calculateKmFromCoords, getDeliveryPricing } from '../utils/deliveryUtils';
+import {
+  RESTAURANT_COORDS,
+  calculateKmFromCoords,
+  getDrivingDistance,
+  getDeliveryPricing,
+} from '../utils/deliveryUtils';
 
 const CartContext = createContext();
 
@@ -9,6 +14,19 @@ function getCartItemId(product, selectedContornos) {
   const sorted = [...selectedContornos].sort();
   if (!sorted[0] && !sorted[1]) return product.id;
   return `${product.id}|${sorted[0]}|${sorted[1]}`;
+}
+
+function buildDeliveryInfo(locationData, distanceKm) {
+  const addressText =
+    locationData?.addressText ||
+    `${locationData?.building || ''} ${locationData?.reference || ''}`.trim();
+  const pricing = getDeliveryPricing({ distanceKm, addressText });
+
+  return {
+    costUSD: pricing.price,
+    distanceKm: pricing.distanceKm,
+    zone: pricing.zone,
+  };
 }
 
 export function CartProvider({ children }) {
@@ -52,24 +70,38 @@ export function CartProvider({ children }) {
   }, [locationData]);
 
   // Información del delivery derivada de la ubicación confirmada
-  const deliveryInfo = useMemo(() => {
+  const [deliveryInfo, setDeliveryInfo] = useState(() => {
     if (!locationData?.latitude || !locationData?.longitude) {
       return { costUSD: 0, distanceKm: null, zone: null };
     }
-
-    const distanceKm = calculateKmFromCoords(
-      locationData.latitude,
-      locationData.longitude
+    return buildDeliveryInfo(
+      locationData,
+      calculateKmFromCoords(locationData.latitude, locationData.longitude),
     );
-    const addressText =
-      locationData.addressText ||
-      `${locationData.building || ''} ${locationData.reference || ''}`.trim();
-    const pricing = getDeliveryPricing({ distanceKm, addressText });
+  });
 
-    return {
-      costUSD: pricing.price,
-      distanceKm: pricing.distanceKm,
-      zone: pricing.zone,
+  useEffect(() => {
+    if (!locationData?.latitude || !locationData?.longitude) {
+      setDeliveryInfo({ costUSD: 0, distanceKm: null, zone: null });
+      return;
+    }
+
+    const straightKm = calculateKmFromCoords(
+      locationData.latitude,
+      locationData.longitude,
+    );
+    setDeliveryInfo(buildDeliveryInfo(locationData, straightKm));
+
+    let cancelled = false;
+    getDrivingDistance(
+      { lat: locationData.latitude, lng: locationData.longitude },
+      { lat: RESTAURANT_COORDS.lat, lng: RESTAURANT_COORDS.lon },
+    ).then((km) => {
+      if (cancelled) return;
+      if (km != null) setDeliveryInfo(buildDeliveryInfo(locationData, km));
+    });
+    return () => {
+      cancelled = true;
     };
   }, [locationData]);
 
