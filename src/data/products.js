@@ -120,6 +120,14 @@ export const PRODUCTS = [
     description: 'Berenjena crujiente.',
     image: ''
   },
+  {
+    id: 'ent-16',
+    name: '1/2 Carpaccio Seño',
+    price: 6.50,
+    category: 'entradas',
+    description: '',
+    image: ''
+  },
 
   // --- HAMBURGUESAS Y SANDWICHES ---
   {
@@ -367,6 +375,22 @@ export const PRODUCTS = [
     category: 'carnes',
     description: 'Barriga de cerdo crujiente servida con 2 contornos a elección.',
     hasContornos: true,
+    image: ''
+  },
+  {
+    id: 'carne-11',
+    name: '1/2 Fajitas',
+    price: 12.50,
+    category: 'carnes',
+    description: '',
+    image: ''
+  },
+  {
+    id: 'carne-12',
+    name: '1/2 Rack',
+    price: 13.50,
+    category: 'carnes',
+    description: '',
     image: ''
   },
 
