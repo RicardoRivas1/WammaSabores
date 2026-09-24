@@ -125,7 +125,7 @@ export const PRODUCTS = [
     name: '1/2 Carpaccio Seño',
     price: 6.50,
     category: 'entradas',
-    description: '',
+    description: 'Finas lonjas de lomito crudo aderezado con salsa al pesto, acompañado con queso parmesano rugula y reducción balsámica.',
     image: ''
   },
 
@@ -382,7 +382,7 @@ export const PRODUCTS = [
     name: '1/2 Fajitas',
     price: 12.50,
     category: 'carnes',
-    description: '',
+    description: 'Pollo y lomito a la parrilla, tortillas caseras, pico de gallo, crema agria, guacamole y queso.',
     image: ''
   },
   {
@@ -390,7 +390,7 @@ export const PRODUCTS = [
     name: '1/2 Rack',
     price: 13.50,
     category: 'carnes',
-    description: '',
+    description: 'Acompañado con papas fritas y ensalada (César, rallada o mixta).',
     image: ''
   },
 
