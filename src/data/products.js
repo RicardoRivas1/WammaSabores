@@ -128,6 +128,86 @@ export const PRODUCTS = [
     description: 'Finas lonjas de lomito crudo aderezado con salsa al pesto, acompañado con queso parmesano rugula y reducción balsámica.',
     image: ''
   },
+  {
+    id: 'ent-17',
+    name: '1/2 Sopa del día',
+    price: 4.99,
+    category: 'entradas',
+    description: 'Media porción. Consultar opción del día.',
+    image: ''
+  },
+  {
+    id: 'ent-18',
+    name: '1/2 Croquetas de Pescado',
+    price: 4.99,
+    category: 'entradas',
+    description: 'Media porción de croquetas de pescado en textura crujiente, acompañado con salsa tártara.',
+    image: ''
+  },
+  {
+    id: 'ent-19',
+    name: '1/2 Tequeños con Queso y Papelón',
+    price: 4.99,
+    category: 'entradas',
+    description: 'Media porción de tequeño de queso con un sirope dulce y especiado a base de panela.',
+    image: ''
+  },
+  {
+    id: 'ent-20',
+    name: '1/2 Casabe Gratinado',
+    price: 3.99,
+    category: 'entradas',
+    description: 'Media porción de casabe gratinado con queso parmesano, mantequilla, ajo y perejil.',
+    image: ''
+  },
+  {
+    id: 'ent-21',
+    name: '1/2 Ración de Pan con Ajo',
+    price: 2.99,
+    category: 'entradas',
+    description: 'Media porción de rebanadas de pan horneado, untadas con mantequilla, aceite de oliva y ajo.',
+    image: ''
+  },
+  {
+    id: 'ent-22',
+    name: '1/2 Ración de Papas Fritas',
+    price: 3.99,
+    category: 'entradas',
+    description: 'Media porción de papas fritas crujientes doradas.',
+    image: ''
+  },
+  {
+    id: 'ent-23',
+    name: '1/2 Ceviche',
+    price: 8.99,
+    category: 'entradas',
+    description: 'Media porción de trozos de pescado fresco marinados en jugo de limón, mezclados con cebolla, cilantro y ají acompañado con tostón.',
+    image: ''
+  },
+  {
+    id: 'ent-24',
+    name: '1/2 Ceviche Mixto',
+    price: 9.99,
+    category: 'entradas',
+    description: 'Media porción de pescado fresco en cubos con una gran variedad de mariscos marinados en jugo de limón, mezclados con cebolla, cilantro y sal.',
+    image: ''
+  },
+  {
+    id: 'ent-25',
+    name: '1/2 Nachos Mexicanos',
+    price: 6.50,
+    category: 'entradas',
+    description: 'Media porción de tortilla de maíz, cubiertos de queso cheddar acompañado de frijoles, carne, guacamole, pico de gallo.',
+    image: ''
+  },
+  {
+    id: 'ent-26',
+    name: 'Ensalada Neptuno',
+    price: 9.99,
+    category: 'entradas',
+    description: 'Mezclum de lechuga con atún, camarones y palmitos, aderezada con salsa de la casa.',
+    image: ''
+  },
 
   // --- HAMBURGUESAS Y SANDWICHES ---
   {
@@ -853,6 +933,22 @@ export const PRODUCTS = [
     price: 4.00,
     category: 'bebidas',
     description: 'Café con leche condensada.',
+    image: ''
+  },
+  {
+    id: 'beb-18',
+    name: 'Cócteles',
+    price: 4.50,
+    category: 'bebidas',
+    description: 'Coctel de la casa.',
+    image: ''
+  },
+  {
+    id: 'beb-19',
+    name: 'Copa de Vino / Sangría',
+    price: 5.99,
+    category: 'bebidas',
+    description: 'Copa de vino o sangría.',
     image: ''
   },
 
