@@ -3,7 +3,7 @@ export const PRODUCTS = [
   {
     id: 'ent-1',
     name: 'Sopa del día',
-    price: 6.50,
+    price: 6.99,
     category: 'entradas',
     description: 'Consultar opción del día.',
     image: ''
@@ -11,7 +11,7 @@ export const PRODUCTS = [
   {
     id: 'ent-2',
     name: 'Carpaccio de Lomito',
-    price: 11.50,
+    price: 12.99,
     category: 'entradas',
     description: 'Finas lonjas de lomito crudo aderezado con salsa al pesto, acompañado con queso parmesano rugula y reducción balsámica.',
     image: ''
@@ -19,7 +19,7 @@ export const PRODUCTS = [
   {
     id: 'ent-3',
     name: 'Nachos Mexicanos',
-    price: 10.50,
+    price: 11.99,
     category: 'entradas',
     description: 'Tortilla de maíz, cubiertos de queso cheddar acompañado de frijoles, carne, guacamole, pico de gallo.',
     image: ''
@@ -27,7 +27,7 @@ export const PRODUCTS = [
   {
     id: 'ent-4',
     name: 'Camarones al Ajillo',
-    price: 10.50,
+    price: 12.99,
     category: 'entradas',
     description: 'Camarones cocinados en mantequilla, aceite y ajo, acompañado con casabe.',
     image: ''
@@ -35,7 +35,7 @@ export const PRODUCTS = [
   {
     id: 'ent-5',
     name: 'Ceviche Mixto',
-    price: 17.50,
+    price: 18.99,
     category: 'entradas',
     description: 'Pescado fresco en cubos con una gran variedad de mariscos marinados en jugo de limón, mezclados con cebolla, cilantro y sal.',
     image: ''
@@ -43,7 +43,7 @@ export const PRODUCTS = [
   {
     id: 'ent-6',
     name: 'Ración de Pork Belly',
-    price: 10.00,
+    price: 11.59,
     category: 'entradas',
     description: 'Crujiente porkbelly al horno acompañado con ensaladilla de tomate cherry, cebolla y limón.',
     image: ''
@@ -51,7 +51,7 @@ export const PRODUCTS = [
   {
     id: 'ent-7',
     name: 'Ración de Ensalada César',
-    price: 6.50,
+    price: 6.99,
     category: 'entradas',
     description: 'Ensalada de lechuga romana y crutones, mezclados con un aderezo César.',
     image: ''
@@ -59,7 +59,7 @@ export const PRODUCTS = [
   {
     id: 'ent-8',
     name: 'Tequeños con Queso y Papelón (6 unds)',
-    price: 7.50,
+    price: 7.99,
     category: 'entradas',
     description: 'Tequeño de queso con un sirope dulce y especiado a base de panela (6 und).',
     image: ''
@@ -67,7 +67,7 @@ export const PRODUCTS = [
   {
     id: 'ent-9',
     name: 'Casabe Gratinado',
-    price: 5.50,
+    price: 5.99,
     category: 'entradas',
     description: 'Casabe gratinado con queso parmesano, mantequilla, ajo y perejil.',
     image: ''
@@ -75,7 +75,7 @@ export const PRODUCTS = [
   {
     id: 'ent-10',
     name: 'Croquetas de Pescado',
-    price: 6.50,
+    price: 6.99,
     category: 'entradas',
     description: 'Mézclum de pescado en textura crujiente, acompañado con salsa tártara (5 und)',
     image: ''
@@ -83,7 +83,7 @@ export const PRODUCTS = [
   {
     id: 'ent-11',
     name: 'Ración de Papas Fritas',
-    price: 5.50,
+    price: 5.99,
     category: 'entradas',
     description: 'Papas fritas crujientes doradas.',
     image: ''
@@ -91,7 +91,7 @@ export const PRODUCTS = [
   {
     id: 'ent-12',
     name: 'Ceviche Sencillo',
-    price: 13.50,
+    price: 14.99,
     category: 'entradas',
     description: 'Trozos de pescado fresco marinados en jugo de limón, mezclados con cebolla, cilantro y ají acompañado con tostón.',
     image: ''
@@ -99,7 +99,7 @@ export const PRODUCTS = [
   {
     id: 'ent-13',
     name: 'Ración de Pan con Ajo',
-    price: 3.50,
+    price: 3.99,
     category: 'entradas',
     description: 'Rebanadas de pan horneado, untadas con mantequilla, aceite de oliva y ajo. ',
     image: ''
@@ -107,7 +107,7 @@ export const PRODUCTS = [
   {
     id: 'ent-14',
     name: 'Fosforera',
-    price: 15.00,
+    price: 17.99,
     category: 'entradas',
     description: 'Sopa de mariscos y pescado.',
     image: ''
@@ -133,7 +133,7 @@ export const PRODUCTS = [
   {
     id: 'burg-1',
     name: 'Guarapo Burger',
-    price: 11.00,
+    price: 11.99,
     category: 'hamburguesas',
     description: '170g carne de solomo, queso cheddar, aderezo de papelón (picante), lechuga, tomate y cebolla morada.',
     image: ''
@@ -141,7 +141,7 @@ export const PRODUCTS = [
   {
     id: 'burg-2',
     name: 'Chicken Crispy Burger',
-    price: 11.00,
+    price: 11.49,
     category: 'hamburguesas',
     description: 'Pechuga de pollo empanizada, queso cheddar fundido, tomate rostizado, lechuga y aros de cebolla.',
     image: ""
@@ -149,7 +149,7 @@ export const PRODUCTS = [
   {
     id: 'burg-3',
     name: 'Chicken Burger Plancha',
-    price: 10.50,
+    price: 10.99,
     category: 'hamburguesas',
     description: 'Pechuga a la plancha, queso cheddar fundido, tomate rostizado, lechuga y aros de cebolla.',
     image: ''
@@ -157,7 +157,7 @@ export const PRODUCTS = [
   {
     id: 'burg-4',
     name: 'Gourmet Burger',
-    price: 12.00,
+    price: 12.99,
     category: 'hamburguesas',
     description: '170g carne de solomo, queso cheddar, champiñones salteados, cebolla caramelizada, rúgula y tomates secos.',
     image: ''
@@ -165,7 +165,7 @@ export const PRODUCTS = [
   {
     id: 'burg-5',
     name: 'American Burger',
-    price: 12.00,
+    price: 12.99,
     category: 'hamburguesas',
     description: '170g carne de solomo, queso cheddar, tocineta, lechuga, tomate, cebolla morada y pepinillos.',
     image: ''
@@ -173,7 +173,7 @@ export const PRODUCTS = [
   {
     id: 'burg-6',
     name: 'Criolla Burger',
-    price: 12.00,
+    price: 12.99,
     category: 'hamburguesas',
     description: '170g carne de solomo, queso cheddar, jamón, huevo, lechuga, tomate, cebolla morada y aguacate.',
     image: ''
@@ -181,7 +181,7 @@ export const PRODUCTS = [
   {
     id: 'burg-7',
     name: 'Ahumada Burger',
-    price: 11.00,
+    price: 11.55,
     category: 'hamburguesas',
     description: '170g carne de solomo ahumada, queso cheddar fundido, salsa BBQ, pimentón ahumado y rúgula.',
     image: ''
@@ -189,7 +189,7 @@ export const PRODUCTS = [
   {
     id: 'burg-8',
     name: 'Combo Cheese (2 Hamburguesas)',
-    price: 9.50,
+    price: 9.99,
     category: 'hamburguesas',
     description: '2 hamburguesas cheese (pollo, carne o mixtas) acompañadas con papas fritas.',
     image: ''
@@ -197,7 +197,7 @@ export const PRODUCTS = [
   {
     id: 'burg-9',
     name: 'Cheese Burger',
-    price: 7.00,
+    price: 7.49,
     category: 'hamburguesas',
     description: '110g de carne o pollo, queso Kraft, cebolla en cuadritos y pepinillo.',
     image: ''
@@ -205,7 +205,7 @@ export const PRODUCTS = [
   {
     id: 'burg-10',
     name: 'Club House',
-    price: 10.50,
+    price: 11.99,
     category: 'hamburguesas',
     description: 'Sándwiches con pollo a la plancha, tomate, lechuga, jamón y papas fritas.',
     image: ''
@@ -213,7 +213,7 @@ export const PRODUCTS = [
   {
     id: 'burg-11',
     name: 'Manhattan Burger',
-    price: 13.00,
+    price: 13.99,
     category: 'hamburguesas',
     description: 'Doble carne de solomo 110g o 2 paty de pollo crispy, queso cheddar, tocineta, cebolla crujiente, lechuga, tomate y pepinillos.',
     image: ''
@@ -221,7 +221,7 @@ export const PRODUCTS = [
   {
     id: 'burg-12',
     name: 'Mexicana Burger',
-    price: 11.00,
+    price: 11.55,
     category: 'hamburguesas',
     description: '170g carne de solomo ahumada, queso cheddar, confitura ají, lechuga, tomate, cebolla morada y guacamole.',
     image: ''
@@ -229,7 +229,7 @@ export const PRODUCTS = [
   {
     id: 'burg-13',
     name: 'Berenjena Crispy Burger',
-    price: 9.00,
+    price: 9.99,
     category: 'hamburguesas',
     description: 'Ruedas de berenjena empanizadas, queso cheddar fundido, lechuga, tomate y cebolla morada.',
     image: ''
@@ -237,7 +237,7 @@ export const PRODUCTS = [
   {
     id: 'burg-14',
     name: 'Parriburger',
-    price: 12.00,
+    price: 13.99,
     category: 'hamburguesas',
     description: '170g carne de solomo, chistorra, lechuga, tomate, queso cheddar y chimichurri.',
     image: ''
@@ -245,7 +245,7 @@ export const PRODUCTS = [
   {
     id: 'burg-15',
     name: 'Burger Fish',
-    price: 13.50,
+    price: 14.99,
     category: 'hamburguesas',
     description: 'Pescado blanco con topping de kani y camarón, acompañado con papas fritas.',
     image: ''
@@ -253,7 +253,7 @@ export const PRODUCTS = [
   {
     id: 'burg-16',
     name: 'Smash Burger - Simple',
-    price: 9.00,
+    price: 9.99,
     category: 'hamburguesas',
     description: '1 carne smash, queso Kraft, tocineta, pepinillo, pan de papa y salsa especial.',
     image: ''
@@ -261,7 +261,7 @@ export const PRODUCTS = [
   {
     id: 'burg-17',
     name: 'Smash Burger - Doble',
-    price: 11.00,
+    price: 11.99,
     category: 'hamburguesas',
     description: '2 carnes smash, queso Kraft, tocineta, pepinillo, pan de papa y salsa especial.',
     image: ''
@@ -269,7 +269,7 @@ export const PRODUCTS = [
   {
     id: 'burg-18',
     name: 'Smash Burger - Triple',
-    price: 14.00,
+    price: 14.99,
     category: 'hamburguesas',
     description: '3 carnes smash, queso Kraft, tocineta, pepinillo, pan de papa y salsa especial.',
     image: ''
@@ -277,7 +277,7 @@ export const PRODUCTS = [
   {
     id: 'burg-19',
     name: 'Tenders de Pollo con Papas',
-    price: 9.50,
+    price: 10.99,
     category: 'hamburguesas',
     description: 'Jugosas tiras de pechuga de pollo empanizadas acompañadas con papas fritas.',
     image: ''
@@ -285,7 +285,7 @@ export const PRODUCTS = [
   {
     id: 'burg-20',
     name: 'Manhattan Mixta',
-    price: 13.50,
+    price: 14.99,
     category: 'hamburguesas',
     description: 'Doble carne de solomo 110g o 2 paty de pollo crispy, queso cheddar, tocineta, cebolla crujiente, lechuga, tomate y pepinillos. Versión mixta.',
     image: ''
@@ -295,7 +295,7 @@ export const PRODUCTS = [
   {
     id: 'carne-1',
     name: 'Pasticho de Carne Pequeño',
-    price: 8.50,
+    price: 9.99,
     category: 'carnes',
     description: 'Pasta artesanal de la casa, acompañado de pan con ajo.',
     image: ''
@@ -303,7 +303,7 @@ export const PRODUCTS = [
   {
     id: 'carne-2',
     name: 'Pasticho de Carne Mediano',
-    price: 10.50,
+    price: 11.99,
     category: 'carnes',
     description: 'Pasta artesanal de la casa, acompañado de pan con ajo.',
     image: ''
@@ -311,7 +311,7 @@ export const PRODUCTS = [
   {
     id: 'carne-3',
     name: 'Asado Negro',
-    price: 12.50,
+    price: 13.49,
     category: 'carnes',
     description: 'Servido con 2 contornos a elección.',
     hasContornos: true,
@@ -320,7 +320,7 @@ export const PRODUCTS = [
   {
     id: 'carne-4',
     name: 'Tiras Costilla en Salsa BBQ',
-    price: 13.50,
+    price: 14.99,
     category: 'carnes',
     description: 'Servidas con 2 contornos a elección.',
     hasContornos: true,
@@ -338,7 +338,7 @@ export const PRODUCTS = [
   {
     id: 'carne-6',
     name: 'Cartocho de Lomito',
-    price: 17.50,
+    price: 18.49,
     category: 'carnes',
     description: 'Combinación de lomito con pasta Linguini en mezcla de 4 quesos en crema de leche con champiñones frescos.',
     image: ''
@@ -346,7 +346,7 @@ export const PRODUCTS = [
   {
     id: 'carne-7',
     name: 'Fajitas Mexicanas (Para 2 personas)',
-    price: 19.50,
+    price: 21.99,
     category: 'carnes',
     description: 'Pollo y lomito a la parrilla, tortillas caseras, pico de gallo, crema agria, guacamole y queso.',
     image: ''
@@ -354,7 +354,7 @@ export const PRODUCTS = [
   {
     id: 'carne-8',
     name: 'Rack de Costillas',
-    price: 22.50,
+    price: 24.99,
     category: 'carnes',
     description: 'Acompañado con papas fritas y ensalada (César, rallada o mixta).',
     image: ''
@@ -362,7 +362,7 @@ export const PRODUCTS = [
   {
     id: 'carne-9',
     name: 'Parrilla Mar y Tierra',
-    price: 18.50,
+    price: 19.49,
     category: 'carnes',
     description: 'Churrasco de pollo, lomito, chistorra y salteado de mariscos. Incluye 2 contornos.',
     hasContornos: true,
@@ -371,7 +371,7 @@ export const PRODUCTS = [
   {
     id: 'carne-10',
     name: 'Pork Belly (Menú)',
-    price: 14.00,
+    price: 15.99,
     category: 'carnes',
     description: 'Barriga de cerdo crujiente servida con 2 contornos a elección.',
     hasContornos: true,
@@ -380,7 +380,7 @@ export const PRODUCTS = [
   {
     id: 'carne-11',
     name: '1/2 Fajitas',
-    price: 12.50,
+    price: 11.99,
     category: 'carnes',
     description: 'Pollo y lomito a la parrilla, tortillas caseras, pico de gallo, crema agria, guacamole y queso.',
     image: ''
@@ -388,7 +388,7 @@ export const PRODUCTS = [
   {
     id: 'carne-12',
     name: '1/2 Rack de Costillas',
-    price: 13.50,
+    price: 14.99,
     category: 'carnes',
     description: 'Acompañado con papas fritas y ensalada (César, rallada o mixta).',
     image: ''
@@ -398,7 +398,7 @@ export const PRODUCTS = [
   {
     id: 'pollo-1',
     name: 'Pechuga de Pollo al Grill',
-    price: 11.00,
+    price: 11.55,
     category: 'pollo',
     description: 'Incluye 2 contornos a elección.',
     hasContornos: true,
@@ -407,7 +407,7 @@ export const PRODUCTS = [
   {
     id: 'pollo-2',
     name: 'Churrasco de Pollo con Guasacaca',
-    price: 12.00,
+    price: 12.99,
     category: 'pollo',
     description: 'Incluye 2 contornos a elección.',
     hasContornos: true,
@@ -416,7 +416,7 @@ export const PRODUCTS = [
   {
     id: 'pollo-3',
     name: 'Tender Menú',
-    price: 12.50,
+    price: 12.99,
     category: 'pollo',
     description: 'Tiras de pollo empanizadas con 2 contornos a elección.',
     hasContornos: true,
@@ -425,7 +425,7 @@ export const PRODUCTS = [
   {
     id: 'pollo-4',
     name: 'Strogonoff de Pollo',
-    price: 13.50,
+    price: 14.49,
     category: 'pollo',
     description: 'Incluye 2 contornos a elección.',
     hasContornos: true,
@@ -434,7 +434,7 @@ export const PRODUCTS = [
   {
     id: 'pollo-5',
     name: 'Milanesa de Pollo a la Parmesana',
-    price: 13.50,
+    price: 14.99,
     category: 'pollo',
     description: 'Incluye 2 contornos a elección.',
     hasContornos: true,
@@ -443,7 +443,7 @@ export const PRODUCTS = [
   {
     id: 'pollo-6',
     name: 'Milanesa de Pollo al Graten',
-    price: 14.50,
+    price: 15.49,
     category: 'pollo',
     description: 'Con champiñones y queso gratinado. Incluye 2 contornos.',
     hasContornos: true,
@@ -452,7 +452,7 @@ export const PRODUCTS = [
   {
     id: 'pollo-7',
     name: 'Arroz con Pollo (1 Persona)',
-    price: 11.50,
+    price: 11.99,
     category: 'pollo',
     description: 'Clásico arroz con pollo sazonado de la casa.',
     image: ''
@@ -460,7 +460,7 @@ export const PRODUCTS = [
   {
     id: 'pollo-8',
     name: 'Arroz con Pollo (2 Personas)',
-    price: 23.00,
+    price: 23.99,
     category: 'pollo',
     description: 'Porción para compartir.',
     image: ''
@@ -468,7 +468,7 @@ export const PRODUCTS = [
   {
     id: 'pollo-9',
     name: 'Alitas BBQ con Papas y Ensalada',
-    price: 11.00,
+    price: 11.99,
     category: 'pollo',
     description: 'Alitas bañadas en salsa BBQ con papas fritas y ensalada rallada.',
     image: ''
@@ -478,7 +478,7 @@ export const PRODUCTS = [
   {
     id: 'pesc-1',
     name: 'Dedos de Pescado con Tártara',
-    price: 13.50,
+    price: 13.99,
     category: 'pescados',
     description: 'Incluye 2 contornos a elección.',
     hasContornos: true,
@@ -487,7 +487,7 @@ export const PRODUCTS = [
   {
     id: 'pesc-2',
     name: 'Filet de Pescado Blanco',
-    price: 14.50,
+    price: 15.49,
     category: 'pescados',
     description: 'Al Ajillo o Al Menier. Incluye 2 contornos a elección.',
     hasContornos: true,
@@ -496,7 +496,7 @@ export const PRODUCTS = [
   {
     id: 'pesc-3',
     name: 'Cartocho de Pescado y Mariscos',
-    price: 17.50,
+    price: 18.49,
     category: 'pescados',
     description: 'Combinación de trozos de pescado con pasta Linguini a la crema con mariscos.',
     image: ''
@@ -504,7 +504,7 @@ export const PRODUCTS = [
   {
     id: 'pesc-4',
     name: 'Linguini Carbonara con Camarón',
-    price: 16.00,
+    price: 17.49,
     category: 'pescados',
     description: 'Pasta linguini en crema carbonara con camarones.',
     image: ''
@@ -512,7 +512,7 @@ export const PRODUCTS = [
   {
     id: 'pesc-5',
     name: 'Linguini con Camarones al Ajillo',
-    price: 16.50,
+    price: 17.49,
     category: 'pescados',
     description: 'Pasta linguini salteada con camarones al ajillo.',
     image: ''
@@ -520,7 +520,7 @@ export const PRODUCTS = [
   {
     id: 'pesc-6',
     name: 'Linguini Frutos del Mar',
-    price: 18.50,
+    price: 19.49,
     category: 'pescados',
     description: 'Pasta con selección de mariscos frescos.',
     image: ''
@@ -528,7 +528,7 @@ export const PRODUCTS = [
   {
     id: 'pesc-7',
     name: 'Cazuela de Mariscos',
-    price: 18.00,
+    price: 19.49,
     category: 'pescados',
     description: 'Variedad de mariscos en salsa especial de la casa. Servido con 2 contornos.',
     hasContornos: true,
@@ -537,7 +537,7 @@ export const PRODUCTS = [
   {
     id: 'pesc-8',
     name: 'Atún en Salsa Ponzu',
-    price: 14.50,
+    price: 15.49,
     category: 'pescados',
     description: 'A la parrilla en salsa ponzu, coronado con wakame. Incluye 2 contornos.',
     hasContornos: true,
@@ -546,7 +546,7 @@ export const PRODUCTS = [
   {
     id: 'pesc-9',
     name: 'Arroz Caldoso (1 persona)',
-    price: 18.50,
+    price: 19.49,
     category: 'pescados',
     description: 'Arroz caldoso con mariscos y pescado, porción individual.',
     image: ''
@@ -554,7 +554,7 @@ export const PRODUCTS = [
   {
     id: 'pesc-10',
     name: 'Arroz Caldoso (2 personas)',
-    price: 37.00,
+    price: 37.99,
     category: 'pescados',
     description: 'Arroz caldoso con mariscos y pescado, porción para compartir.',
     image: ''
@@ -562,7 +562,7 @@ export const PRODUCTS = [
   {
     id: 'pesc-11',
     name: 'Arroz Caldoso (4 personas)',
-    price: 74.00,
+    price: 76.99,
     category: 'pescados',
     description: 'Arroz caldoso con mariscos y pescado, porción familiar.',
     image: ''
@@ -572,7 +572,7 @@ export const PRODUCTS = [
   {
     id: 'piz-1',
     name: 'Pizza Primavera',
-    price: 12.50,
+    price: 13.99,
     category: 'pizzas',
     description: 'Salsa nápoli, queso mozzarella, jamón, tocineta y maíz.',
     image: ''
@@ -580,7 +580,7 @@ export const PRODUCTS = [
   {
     id: 'piz-2',
     name: 'Pizza Chistorra',
-    price: 12.50,
+    price: 13.99,
     category: 'pizzas',
     description: 'Salsa nápoli, queso mozzarella, jamón, chistorra, pimentón y cebolla.',
     image: ''
@@ -588,7 +588,7 @@ export const PRODUCTS = [
   {
     id: 'piz-3',
     name: 'Pizza Tradicional',
-    price: 12.50,
+    price: 13.99,
     category: 'pizzas',
     description: 'Salsa nápoli, queso mozzarella, jamón y champiñones.',
     image: ''
@@ -596,7 +596,7 @@ export const PRODUCTS = [
   {
     id: 'piz-4',
     name: 'Pizza Pepperoni',
-    price: 12.50,
+    price: 13.99,
     category: 'pizzas',
     description: 'Salsa nápoli, queso mozzarella y abundante pepperoni.',
     image: ''
@@ -604,7 +604,7 @@ export const PRODUCTS = [
   {
     id: 'piz-5',
     name: 'Pizza Napolitana',
-    price: 12.50,
+    price: 13.99,
     category: 'pizzas',
     description: 'Salsa nápoli, mozzarella, jamón, anchoas, aceitunas negras y chorizo español.',
     image: ''
@@ -612,7 +612,7 @@ export const PRODUCTS = [
   {
     id: 'piz-6',
     name: 'Pizza Margarita',
-    price: 11.50,
+    price: 11.99,
     category: 'pizzas',
     description: 'Salsa nápoli, queso mozzarella y jamón.',
     image: ''
@@ -620,7 +620,7 @@ export const PRODUCTS = [
   {
     id: 'piz-7',
     name: 'Pizza Vegetariana',
-    price: 12.50,
+    price: 13.99,
     category: 'pizzas',
     description: 'Salsa nápoli, mozzarella, cebolla, aceitunas negras, champiñones, pimentón y calabacín.',
     image: ''
@@ -630,7 +630,7 @@ export const PRODUCTS = [
   {
     id: 'sush-1',
     name: 'Dinamita Rolls',
-    price: 14.50,
+    price: 14.99,
     category: 'sushi',
     description: 'Ensalada Neptuno, aguacate y queso crema con topping de salsa dinamita y wakame.',
     image: ''
@@ -638,7 +638,7 @@ export const PRODUCTS = [
   {
     id: 'sush-2',
     name: 'American Rolls',
-    price: 14.50,
+    price: 14.99,
     category: 'sushi',
     description: 'Atún, salmón, aguacate, queso crema y topping de langostino.',
     image: ''
@@ -646,7 +646,7 @@ export const PRODUCTS = [
   {
     id: 'sush-3',
     name: 'Plátano Rolls',
-    price: 14.50,
+    price: 14.99,
     category: 'sushi',
     description: 'Plátano, camarones tempura, queso crema y aguacate con topping de salsa dinamita.',
     image: ''
@@ -654,7 +654,7 @@ export const PRODUCTS = [
   {
     id: 'sush-4',
     name: 'Alaska Especial Rolls',
-    price: 14.50,
+    price: 14.99,
     category: 'sushi',
     description: 'Salmón, queso crema, aguacate, kani y topping de wakame.',
     image: ''
@@ -662,7 +662,7 @@ export const PRODUCTS = [
   {
     id: 'sush-5',
     name: 'Inari Rolls',
-    price: 14.50,
+    price: 14.99,
     category: 'sushi',
     description: 'Atún, salmón y aguacate con topping de tartar de atún.',
     image: ''
@@ -670,7 +670,7 @@ export const PRODUCTS = [
   {
     id: 'sush-6',
     name: 'Kamikaze Rolls',
-    price: 14.50,
+    price: 14.99,
     category: 'sushi',
     description: 'Atún, salmón, kani y aguacate con topping de ensalada Neptuno y salsa dragón.',
     image: ''
@@ -678,7 +678,7 @@ export const PRODUCTS = [
   {
     id: 'sush-7',
     name: 'Vegetariano Rolls',
-    price: 14.50,
+    price: 14.99,
     category: 'sushi',
     description: 'Zanahoria, pepino, cebollín, aguacate y wakame con vegetales tempurizados.',
     image: ''
@@ -688,7 +688,7 @@ export const PRODUCTS = [
   {
     id: 'ens-1',
     name: 'Ensalada Pollo Crispy',
-    price: 10.50,
+    price: 11.99,
     category: 'ensaladas',
     description: 'Mezclum de lechuga, tiras de pollo crispy, cebolla morada, tomate, queso emmental y miel mostaza.',
     image: ''
@@ -696,7 +696,7 @@ export const PRODUCTS = [
   {
     id: 'ens-2',
     name: 'Ensalada César con Pollo',
-    price: 10.50,
+    price: 11.99,
     category: 'ensaladas',
     description: 'Lechugas, tiras de pollo, crutones, queso parmesano y aderezo césar.',
     image: ''
@@ -704,7 +704,7 @@ export const PRODUCTS = [
   {
     id: 'ens-3',
     name: 'Ensalada Tropical',
-    price: 10.50,
+    price: 11.99,
     category: 'ensaladas',
     description: 'Lechugas, pollo, queso emmental, frutos secos, piña y aderezo miel mostaza.',
     image: ''
@@ -712,7 +712,7 @@ export const PRODUCTS = [
   {
     id: 'ens-4',
     name: 'Ensalada Wamma',
-    price: 10.50,
+    price: 11.99,
     category: 'ensaladas',
     description: 'Lechugas, pollo al grill, pimentón ahumado y queso emmental.',
     image: ''
@@ -722,7 +722,7 @@ export const PRODUCTS = [
   {
     id: 'beb-1',
     name: 'Papelón con Limón',
-    price: 2.50,
+    price: 2.70,
     category: 'bebidas',
     description: 'Vaso de papelón frío con limón.',
     image: ''
@@ -730,7 +730,7 @@ export const PRODUCTS = [
   {
     id: 'beb-2',
     name: 'Malta',
-    price: 1.50,
+    price: 2.99,
     category: 'bebidas',
     description: 'Malta bien fría.',
     image: ''
@@ -738,7 +738,7 @@ export const PRODUCTS = [
   {
     id: 'beb-3',
     name: 'Refresco en Lata',
-    price: 2.50,
+    price: 2.99,
     category: 'bebidas',
     description: 'Coca-Cola, Pepsi, 7Up, Colita, etc.',
     image: ''
@@ -746,7 +746,7 @@ export const PRODUCTS = [
   {
     id: 'beb-4',
     name: 'Té Lipton / Té Verde',
-    price: 2.60,
+    price: 2.99,
     category: 'bebidas',
     description: 'Té frío.',
     image: ''
@@ -754,7 +754,7 @@ export const PRODUCTS = [
   {
     id: 'beb-5',
     name: 'Jugo Yukery',
-    price: 2.50,
+    price: 2.99,
     category: 'bebidas',
     description: 'Jugo de botella.',
     image: ''
@@ -762,7 +762,7 @@ export const PRODUCTS = [
   {
     id: 'beb-6',
     name: 'Gatorade',
-    price: 3.00,
+    price: 3.50,
     category: 'bebidas',
     description: 'Bebida hidratante.',
     image: ''
@@ -770,7 +770,7 @@ export const PRODUCTS = [
   {
     id: 'beb-7',
     name: 'Refresco 1 Litro',
-    price: 1.30,
+    price: 1.49,
     category: 'bebidas',
     description: 'Variedad de sabores.',
     image: ''
@@ -778,7 +778,7 @@ export const PRODUCTS = [
   {
     id: 'beb-8',
     name: 'Refresco 1.5 Litros',
-    price: 2.30,
+    price: 2.49,
     category: 'bebidas',
     description: 'Variedad de sabores.',
     image: ''
@@ -786,7 +786,7 @@ export const PRODUCTS = [
   {
     id: 'beb-9',
     name: 'Refresco 2 Litros',
-    price: 3.00,
+    price: 3.30,
     category: 'bebidas',
     description: 'Coca-Cola, Pepsi, Chinotto.',
     image: ''
@@ -794,7 +794,7 @@ export const PRODUCTS = [
   {
     id: 'beb-10',
     name: 'Jugo Natural de Fresa',
-    price: 4.00,
+    price: 4.50,
     category: 'bebidas',
     description: 'Jugo de fresas naturales.',
     image: ''
@@ -802,7 +802,7 @@ export const PRODUCTS = [
   {
     id: 'beb-11',
     name: 'Jugo Natural de Melocotón',
-    price: 5.00,
+    price: 4.99,
     category: 'bebidas',
     description: 'Jugo concentrado de melocotón.',
     image: ''
@@ -810,7 +810,7 @@ export const PRODUCTS = [
   {
     id: 'beb-12',
     name: 'Jugos Naturales (Variados)',
-    price: 3.50,
+    price: 3.99,
     category: 'bebidas',
     description: 'Sabores del día.',
     image: ''
@@ -818,7 +818,7 @@ export const PRODUCTS = [
   {
     id: 'beb-13',
     name: 'Cerveza Lata',
-    price: 1.50,
+    price: 2.50,
     category: 'bebidas',
     description: 'Cerveza nacional en lata.',
     image: ''
@@ -826,7 +826,7 @@ export const PRODUCTS = [
   {
     id: 'beb-14',
     name: 'Cerveza Tercio',
-    price: 1.80,
+    price: 1.99,
     category: 'bebidas',
     description: 'Cerveza en botella de tercio.',
     image: ''
@@ -850,7 +850,7 @@ export const PRODUCTS = [
   {
     id: 'beb-17',
     name: 'Café Bombón',
-    price: 3.00,
+    price: 4.00,
     category: 'bebidas',
     description: 'Café con leche condensada.',
     image: ''
@@ -868,7 +868,7 @@ export const PRODUCTS = [
   {
     id: 'pos-2',
     name: 'Torta de Zanahoria',
-    price: 4.00,
+    price: 5.99,
     category: 'postres',
     description: 'Porción de torta casera de zanahoria.',
     image: ''
@@ -876,7 +876,7 @@ export const PRODUCTS = [
   {
     id: 'pos-3',
     name: 'Pie de Limón / Parchita',
-    price: 4.00,
+    price: 5.99,
     category: 'postres',
     description: 'Pie cítrico y cremoso.',
     image: ''
@@ -892,7 +892,7 @@ export const PRODUCTS = [
   {
     id: 'pos-5',
     name: 'Torta de Chocolate',
-    price: 4.00,
+    price: 5.99,
     category: 'postres',
     description: 'Húmeda y chocolatosa.',
     image: ''
@@ -900,7 +900,7 @@ export const PRODUCTS = [
   {
     id: 'pos-6',
     name: 'Tres Leches',
-    price: 4.00,
+    price: 5.99,
     category: 'postres',
     description: 'Torta tradicional tres leches.',
     image: ''
@@ -908,7 +908,7 @@ export const PRODUCTS = [
   {
     id: 'pos-7',
     name: 'Quesillo Casero',
-    price: 5.00,
+    price: 5.49,
     category: 'postres',
     description: 'Quesillo tradicional venezolano.',
     image: ''
@@ -916,7 +916,7 @@ export const PRODUCTS = [
   {
     id: 'pos-8',
     name: 'Torta de Pistacho',
-    price: 7.00,
+    price: 8.99,
     category: 'postres',
     description: 'Especialidad de la casa con pistacho.',
     image: ''
@@ -924,7 +924,7 @@ export const PRODUCTS = [
   {
     id: 'pos-9',
     name: 'Brownie con Helado',
-    price: 7.00,
+    price: 7.99,
     category: 'postres',
     description: 'Brownie caliente servido con bola de helado.',
     image: ''
@@ -932,7 +932,7 @@ export const PRODUCTS = [
   {
     id: 'pos-10',
     name: 'Bola de Helado',
-    price: 4.00,
+    price: 4.99,
     category: 'postres',
     description: 'Sabor a elección.',
     image: ''
