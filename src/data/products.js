@@ -409,7 +409,7 @@ export const PRODUCTS = [
   {
     id: 'carne-5',
     name: 'Parrilla Criolla',
-    price: 21.00,
+    price: 24.90,
     category: 'carnes',
     description: '200g punta importada con tiras de costilla y chistorra. Incluye 2 contornos.',
     hasContornos: true,
