@@ -474,6 +474,16 @@ export const PRODUCTS = [
     image: ''
   },
 
+  // --- PASTAS ---
+  {
+    id: 'pasta-1',
+    name: 'Pasta Carbonara',
+    price: 17.49,
+    category: 'pastas',
+    description: 'Pasta en crema carbonara.',
+    image: ''
+  },
+
   // --- POLLO ---
   {
     id: 'pollo-1',
@@ -1040,6 +1050,7 @@ export const CATEGORIES = [
   { id: 'entradas', name: 'Entradas' },
   { id: 'hamburguesas', name: 'Hamburguesas' },
   { id: 'carnes', name: 'Carnes y Cerdo' },
+  { id: 'pastas', name: 'Pastas' },
   { id: 'pollo', name: 'Pollo' },
   { id: 'pescados', name: 'Pescados y Mariscos' },
   { id: 'pizzas', name: 'Pizzas' },
